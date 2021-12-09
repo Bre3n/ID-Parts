@@ -28,111 +28,304 @@ class Ui_MainWindow(object):
         MainWindow.setSizeIncrement(QSize(0, 0))
         MainWindow.setStyleSheet(u"background:rgb(91,90,90);")
         MainWindow.setIconSize(QSize(24, 24))
+        self.actionZalohuj = QAction(MainWindow)
+        self.actionZalohuj.setObjectName(u"actionZalohuj")
+        self.actionZaloguj = QAction(MainWindow)
+        self.actionZaloguj.setObjectName(u"actionZaloguj")
+        font = QFont()
+        font.setFamily(u"Segoe UI")
+        font.setPointSize(14)
+        self.actionZaloguj.setFont(font)
+        self.actionWyloguj = QAction(MainWindow)
+        self.actionWyloguj.setObjectName(u"actionWyloguj")
+        self.actionWyloguj.setFont(font)
+        self.actionOtworzbazedanych = QAction(MainWindow)
+        self.actionOtworzbazedanych.setObjectName(u"actionOtworzbazedanych")
+        self.actionOtworzbazedanych.setFont(font)
+        self.actionEdytujbazedanych = QAction(MainWindow)
+        self.actionEdytujbazedanych.setObjectName(u"actionEdytujbazedanych")
+        self.actionEdytujbazedanych.setFont(font)
+        self.actionUstawienia_globalne = QAction(MainWindow)
+        self.actionUstawienia_globalne.setObjectName(u"actionUstawienia_globalne")
+        self.actionUstawienia_globalne.setFont(font)
+        self.actionBacktomain = QAction(MainWindow)
+        self.actionBacktomain.setObjectName(u"actionBacktomain")
+        self.actionBacktomain.setFont(font)
+        self.actionConnectDatabase = QAction(MainWindow)
+        self.actionConnectDatabase.setObjectName(u"actionConnectDatabase")
+        self.actionConnectDatabase.setFont(font)
+        self.actionDisconnectDatabase = QAction(MainWindow)
+        self.actionDisconnectDatabase.setObjectName(u"actionDisconnectDatabase")
+        self.actionDisconnectDatabase.setFont(font)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
         self.centralwidget.setSizePolicy(sizePolicy)
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.stackedWidget = QStackedWidget(self.centralwidget)
+        self.stackedWidget.setObjectName(u"stackedWidget")
+        self.page_main = QWidget()
+        self.page_main.setObjectName(u"page_main")
+        self.verticalLayout_3 = QVBoxLayout(self.page_main)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label = QLabel(self.centralwidget)
-        self.label.setObjectName(u"label")
-        self.label.setMaximumSize(QSize(16777215, 70))
-        font = QFont()
-        font.setFamily(u"Segoe UI")
-        font.setPointSize(20)
-        self.label.setFont(font)
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.verticalLayout.addWidget(self.label)
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
+
+        self.label_3 = QLabel(self.page_main)
+        self.label_3.setObjectName(u"label_3")
+        font1 = QFont()
+        font1.setFamily(u"Segoe UI")
+        font1.setPointSize(20)
+        self.label_3.setFont(font1)
+        self.label_3.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_3.addWidget(self.label_3)
+
+        self.label_4 = QLabel(self.page_main)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setFont(font1)
+
+        self.horizontalLayout_3.addWidget(self.label_4)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_4)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
+
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.widget = QWidget(self.page_main)
+        self.widget.setObjectName(u"widget")
+        self.gridLayout_2 = QGridLayout(self.widget)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+
+        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
+
+
+        self.horizontalLayout_4.addWidget(self.widget)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
+
+
+        self.verticalLayout_3.addLayout(self.verticalLayout)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.widget = QWidget(self.centralwidget)
-        self.widget.setObjectName(u"widget")
-        self.horizontalLayout_3 = QHBoxLayout(self.widget)
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.bn_first = QPushButton(self.widget)
-        self.bn_first.setObjectName(u"bn_first")
-        font1 = QFont()
-        font1.setFamily(u"Segoe UI")
-        font1.setPointSize(36)
-        self.bn_first.setFont(font1)
-        self.bn_first.setStyleSheet(u"QPushButton {\n"
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer_2)
+
+        self.label = QLabel(self.page_main)
+        self.label.setObjectName(u"label")
+        self.label.setFont(font1)
+        self.label.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout.addWidget(self.label)
+
+        self.label_2 = QLabel(self.page_main)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setFont(font1)
+
+        self.horizontalLayout.addWidget(self.label_2)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout)
+
+        self.stackedWidget.addWidget(self.page_main)
+        self.page_2 = QWidget()
+        self.page_2.setObjectName(u"page_2")
+        self.stackedWidget.addWidget(self.page_2)
+        self.page_database_login = QWidget()
+        self.page_database_login.setObjectName(u"page_database_login")
+        self.horizontalLayout_2 = QHBoxLayout(self.page_database_login)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.verticalLayout_7 = QVBoxLayout()
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.verticalLayout_8 = QVBoxLayout()
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.label_7 = QLabel(self.page_database_login)
+        self.label_7.setObjectName(u"label_7")
+        font2 = QFont()
+        font2.setFamily(u"Segoe UI")
+        font2.setPointSize(36)
+        self.label_7.setFont(font2)
+        self.label_7.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_8.addWidget(self.label_7)
+
+        self.label_8 = QLabel(self.page_database_login)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setFont(font2)
+        self.label_8.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_8.addWidget(self.label_8)
+
+        self.label_9 = QLabel(self.page_database_login)
+        self.label_9.setObjectName(u"label_9")
+        self.label_9.setFont(font2)
+        self.label_9.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_8.addWidget(self.label_9)
+
+
+        self.horizontalLayout_7.addLayout(self.verticalLayout_8)
+
+        self.verticalLayout_9 = QVBoxLayout()
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.lineEdit_3 = QLineEdit(self.page_database_login)
+        self.lineEdit_3.setObjectName(u"lineEdit_3")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.lineEdit_3.sizePolicy().hasHeightForWidth())
+        self.lineEdit_3.setSizePolicy(sizePolicy1)
+        self.lineEdit_3.setFont(font2)
+
+        self.verticalLayout_9.addWidget(self.lineEdit_3)
+
+        self.lineEdit_4 = QLineEdit(self.page_database_login)
+        self.lineEdit_4.setObjectName(u"lineEdit_4")
+        sizePolicy1.setHeightForWidth(self.lineEdit_4.sizePolicy().hasHeightForWidth())
+        self.lineEdit_4.setSizePolicy(sizePolicy1)
+        self.lineEdit_4.setFont(font2)
+
+        self.verticalLayout_9.addWidget(self.lineEdit_4)
+
+        self.lineEdit_5 = QLineEdit(self.page_database_login)
+        self.lineEdit_5.setObjectName(u"lineEdit_5")
+        sizePolicy1.setHeightForWidth(self.lineEdit_5.sizePolicy().hasHeightForWidth())
+        self.lineEdit_5.setSizePolicy(sizePolicy1)
+        self.lineEdit_5.setFont(font2)
+
+        self.verticalLayout_9.addWidget(self.lineEdit_5)
+
+
+        self.horizontalLayout_7.addLayout(self.verticalLayout_9)
+
+
+        self.verticalLayout_7.addLayout(self.horizontalLayout_7)
+
+        self.bn_databaselogin = QPushButton(self.page_database_login)
+        self.bn_databaselogin.setObjectName(u"bn_databaselogin")
+        self.bn_databaselogin.setFont(font1)
+        self.bn_databaselogin.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
-"	background-color: red;\n"
-"border-radius: 10px;\n"
+"	background-color: rgb(50,150,50);\n"
 "}\n"
-"\n"
 "QPushButton:hover {\n"
-"	background-color: rgb(85, 0, 0);\n"
-"}\n"
-"QPushButton:pressed {\n"
-"	background-color: rgb(170, 0, 0);\n"
+"	background-color: rgb(100,180,100);\n"
 "}\n"
 "")
 
-        self.gridLayout.addWidget(self.bn_first, 0, 0, 1, 1)
+        self.verticalLayout_7.addWidget(self.bn_databaselogin)
 
-        self.bn_second = QPushButton(self.widget)
-        self.bn_second.setObjectName(u"bn_second")
-        self.bn_second.setFont(font1)
-        self.bn_second.setStyleSheet(u"QPushButton {\n"
+
+        self.horizontalLayout_2.addLayout(self.verticalLayout_7)
+
+        self.stackedWidget.addWidget(self.page_database_login)
+        self.page_login = QWidget()
+        self.page_login.setObjectName(u"page_login")
+        self.horizontalLayout_6 = QHBoxLayout(self.page_login)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.verticalLayout_6 = QVBoxLayout()
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.label_5 = QLabel(self.page_login)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setFont(font2)
+        self.label_5.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_4.addWidget(self.label_5)
+
+        self.label_6 = QLabel(self.page_login)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setFont(font2)
+        self.label_6.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_4.addWidget(self.label_6)
+
+
+        self.horizontalLayout_5.addLayout(self.verticalLayout_4)
+
+        self.verticalLayout_5 = QVBoxLayout()
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.lineEdit = QLineEdit(self.page_login)
+        self.lineEdit.setObjectName(u"lineEdit")
+        sizePolicy1.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
+        self.lineEdit.setSizePolicy(sizePolicy1)
+        self.lineEdit.setFont(font2)
+        self.lineEdit.setMaxLength(20)
+
+        self.verticalLayout_5.addWidget(self.lineEdit)
+
+        self.lineEdit_2 = QLineEdit(self.page_login)
+        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        sizePolicy1.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
+        self.lineEdit_2.setSizePolicy(sizePolicy1)
+        self.lineEdit_2.setFont(font2)
+        self.lineEdit_2.setMaxLength(20)
+        self.lineEdit_2.setEchoMode(QLineEdit.Password)
+
+        self.verticalLayout_5.addWidget(self.lineEdit_2)
+
+
+        self.horizontalLayout_5.addLayout(self.verticalLayout_5)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_5)
+
+        self.bn_login = QPushButton(self.page_login)
+        self.bn_login.setObjectName(u"bn_login")
+        font3 = QFont()
+        font3.setFamily(u"Segoe UI")
+        font3.setPointSize(22)
+        self.bn_login.setFont(font3)
+        self.bn_login.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
-"	background-color:blue;\n"
-"border-radius: 10px;\n"
+"	background-color: rgb(50,150,50);\n"
 "}\n"
-"\n"
 "QPushButton:hover {\n"
-"	background-color:rgb(85, 0, 255);\n"
-"}\n"
-"QPushButton:pressed {\n"
-"	background-color: rgb(0, 0, 127);\n"
+"	background-color: rgb(100,180,100);\n"
 "}\n"
 "")
+        self.bn_login.setFlat(True)
 
-        self.gridLayout.addWidget(self.bn_second, 0, 1, 1, 1)
-
-        self.bn_third = QPushButton(self.widget)
-        self.bn_third.setObjectName(u"bn_third")
-        self.bn_third.setFont(font1)
-        self.bn_third.setStyleSheet(u"QPushButton {\n"
-"	border: none;\n"
-"	background-color: green;\n"
-"border-radius: 10px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"	background-color:rgb(0, 85, 0);\n"
-"}\n"
-"QPushButton:pressed {\n"
-"	background-color: rgb(85, 85, 0);\n"
-"}\n"
-"")
-
-        self.gridLayout.addWidget(self.bn_third, 0, 2, 1, 1)
+        self.verticalLayout_6.addWidget(self.bn_login)
 
 
-        self.horizontalLayout_3.addLayout(self.gridLayout)
+        self.horizontalLayout_6.addLayout(self.verticalLayout_6)
 
+        self.stackedWidget.addWidget(self.page_login)
 
-        self.horizontalLayout.addWidget(self.widget)
-
-
-        self.verticalLayout.addLayout(self.horizontalLayout)
-
-
-        self.verticalLayout_2.addLayout(self.verticalLayout)
+        self.verticalLayout_2.addWidget(self.stackedWidget)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 28))
-        font2 = QFont()
-        font2.setPointSize(14)
-        self.menubar.setFont(font2)
+        self.menubar.setGeometry(QRect(0, 0, 800, 33))
+        font4 = QFont()
+        font4.setPointSize(16)
+        self.menubar.setFont(font4)
         self.menubar.setStyleSheet(u"QMenuBar {\n"
 "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
 "                                      stop:0 lightgray, stop:1 darkgray);\n"
@@ -152,36 +345,73 @@ class Ui_MainWindow(object):
 "QMenuBar::item:pressed {\n"
 "    background: rgb(160,140,140);\n"
 "}")
-        self.menuZaloguj = QMenu(self.menubar)
-        self.menuZaloguj.setObjectName(u"menuZaloguj")
-        self.menuZaloguj.setFont(font2)
-        self.menuZaloguj.setStyleSheet(u"")
-        self.menuWyloguj = QMenu(self.menubar)
-        self.menuWyloguj.setObjectName(u"menuWyloguj")
-        self.menuOtw_rz_list = QMenu(self.menubar)
-        self.menuOtw_rz_list.setObjectName(u"menuOtw_rz_list")
+        self.menuBaza_danych = QMenu(self.menubar)
+        self.menuBaza_danych.setObjectName(u"menuBaza_danych")
+        self.menuUstawienia_sesji = QMenu(self.menubar)
+        self.menuUstawienia_sesji.setObjectName(u"menuUstawienia_sesji")
+        self.menuUstawienia = QMenu(self.menubar)
+        self.menuUstawienia.setObjectName(u"menuUstawienia")
+        self.menuStronaglowna = QMenu(self.menubar)
+        self.menuStronaglowna.setObjectName(u"menuStronaglowna")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.menubar.addAction(self.menuZaloguj.menuAction())
-        self.menubar.addAction(self.menuWyloguj.menuAction())
-        self.menubar.addAction(self.menuOtw_rz_list.menuAction())
+        self.menubar.addAction(self.menuStronaglowna.menuAction())
+        self.menubar.addAction(self.menuUstawienia_sesji.menuAction())
+        self.menubar.addAction(self.menuBaza_danych.menuAction())
+        self.menubar.addAction(self.menuUstawienia.menuAction())
+        self.menuBaza_danych.addAction(self.actionOtworzbazedanych)
+        self.menuBaza_danych.addSeparator()
+        self.menuBaza_danych.addAction(self.actionEdytujbazedanych)
+        self.menuUstawienia_sesji.addAction(self.actionZaloguj)
+        self.menuUstawienia_sesji.addAction(self.actionWyloguj)
+        self.menuUstawienia_sesji.addSeparator()
+        self.menuUstawienia_sesji.addSeparator()
+        self.menuUstawienia_sesji.addAction(self.actionConnectDatabase)
+        self.menuUstawienia_sesji.addAction(self.actionDisconnectDatabase)
+        self.menuUstawienia.addAction(self.actionUstawienia_globalne)
+        self.menuStronaglowna.addAction(self.actionBacktomain)
 
         self.retranslateUi(MainWindow)
+
+        self.stackedWidget.setCurrentIndex(2)
+
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle("")
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Zalogowano jako:", None))
-        self.bn_first.setText(QCoreApplication.translate("MainWindow", u"D", None))
-        self.bn_second.setText(QCoreApplication.translate("MainWindow", u"M", None))
-        self.bn_third.setText(QCoreApplication.translate("MainWindow", u"C", None))
-        self.menuZaloguj.setTitle(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
-        self.menuWyloguj.setTitle(QCoreApplication.translate("MainWindow", u"Wyloguj", None))
-        self.menuOtw_rz_list.setTitle(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz list\u0119", None))
+        self.actionZalohuj.setText(QCoreApplication.translate("MainWindow", u"Zalohuj", None))
+        self.actionZaloguj.setText(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
+        self.actionWyloguj.setText(QCoreApplication.translate("MainWindow", u"Wyloguj", None))
+        self.actionOtworzbazedanych.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz baz\u0119 danych", None))
+        self.actionEdytujbazedanych.setText(QCoreApplication.translate("MainWindow", u"Edytuj baz\u0119 danych", None))
+        self.actionUstawienia_globalne.setText(QCoreApplication.translate("MainWindow", u"Ustawienia globalne", None))
+        self.actionBacktomain.setText(QCoreApplication.translate("MainWindow", u"Wr\u00f3\u0107 do strony g\u0142\u00f3wnej", None))
+        self.actionConnectDatabase.setText(QCoreApplication.translate("MainWindow", u"Po\u0142\u0105cz z baz\u0105 danych", None))
+        self.actionDisconnectDatabase.setText(QCoreApplication.translate("MainWindow", u"Roz\u0142\u0105cz z baz\u0105 danych", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Zalogowano pomy\u015blnie jako:", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"{name}", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Do cz\u0119\u015bci {button} przydzielono numer: ", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"{num}", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Adres hosta:", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"U\u017cytkownik:", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Has\u0142o:", None))
+        self.lineEdit_3.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[127.0.0.1]", None))
+        self.lineEdit_4.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[root]", None))
+        self.lineEdit_5.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[password]", None))
+        self.bn_databaselogin.setText(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Login:", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Kod/Has\u0142o:", None))
+        self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[Imi\u0119 Nazwisko]", None))
+        self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[123456]", None))
+        self.bn_login.setText(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
+        self.menuBaza_danych.setTitle(QCoreApplication.translate("MainWindow", u"Baza danych", None))
+        self.menuUstawienia_sesji.setTitle(QCoreApplication.translate("MainWindow", u"Ustawienia sesji", None))
+        self.menuUstawienia.setTitle(QCoreApplication.translate("MainWindow", u"Ustawienia", None))
+        self.menuStronaglowna.setTitle(QCoreApplication.translate("MainWindow", u"Strona g\u0142\u00f3wna", None))
     # retranslateUi
 
