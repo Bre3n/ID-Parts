@@ -271,8 +271,8 @@ class MainWindow(QMainWindow):
             for row in myresult:
                 print(row)
                 values.append(row[0])
-                valuesmin.append(row[1])
-                valuesmax.append(row[2])
+                valuesmin.append(int(row[1]))
+                valuesmax.append(int(row[2]))
             print(values, valuesmin, valuesmax)
 
             # values = ["D", "M", "C", "G"]  # * << buttons in layout
@@ -577,10 +577,14 @@ class SettingsPage:
         else:
             global mydb
             mycursor = mydb.cursor(buffered=True)
-            mycursor.execute("SHOW TABLES")
-            if "global_settings" in mycursor == False:
+            mycursor.execute("SHOW TABLES LIKE 'global_settings'")
+            result = mycursor.fetchone()
+            if result:
+                pass
+            else:
+                print("asdasd")
                 mycursor.execute(
-                    "CREATE TABLE global_settings (letters TEXT, rangemin INTEGER, rangemax INTEGER)"
+                    "CREATE TABLE global_settings (letters TEXT, rangemin INTEGER, rangemax INTEGER, author TEXT, datetime TEXT)"
                 )
             selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_settings)
 
@@ -623,7 +627,7 @@ class SettingsPage:
 
     def letteradd(self, selfui):
         # * DODAWANIE LITEREK DO BAZY DANYCH
-        global letterlist
+        global letterlist, values, valuesmin, valuesmax
         if (
             selfui.ui.lineEdit_6.text() == ""
             or selfui.ui.lineEdit_7.text() == ""
@@ -639,17 +643,11 @@ class SettingsPage:
             msg.exec_()
             return None
         buforletter = {}
-        mycursor = mydb.cursor(buffered=True)
-        mycursor.execute("SELECT letters FROM global_settings")
-        myresult = mycursor.fetchall()
-        values = []
-        valuesmin = []
-        valuesmax = []
         buforbool = False
         bufor = selfui.ui.lineEdit_6.text()
         buformin = selfui.ui.lineEdit_7.text()
         buformax = selfui.ui.lineEdit_8.text()
-        if buformin.isnumeric() == False or buformax.isnumeric():
+        if buformin.isnumeric() == False or buformax.isnumeric() == False:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Error")
@@ -659,11 +657,28 @@ class SettingsPage:
             msg.setWindowTitle("Error")
             msg.exec_()
             return None
+        else:
+            buformin = int(buformin)
+            buformax = int(buformax)
+        if buformin >= buformax:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(
+                "Minimalny zakres nie może być większy bądź równy maksymalnemu!"
+            )
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
         i = 0
-        for row in myresult:
-            if bufor == row[i]:
-                buforbool = True
-        if buforbool:
+        mycursor = mydb.cursor(buffered=True)
+        mycursor.execute(
+            "SELECT letters, COUNT(*) FROM global_settings WHERE letters = %s GROUP BY letters",
+            (bufor,),
+        )
+        results = mycursor.fetchall()
+        row_count = mycursor.rowcount
+        if row_count > 0:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Error")
@@ -673,6 +688,30 @@ class SettingsPage:
             msg.setWindowTitle("Error")
             msg.exec_()
             return None
+        MainWindow.reloadButtons(selfui)
+        for i in range(len(values)):
+            if valuesmin[i] >= buformin or valuesmax[i] >= buformin:
+                if valuesmin[i] <= buformin <= valuesmax[i]:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+                    msg.setText("Error")
+                    msg.setInformativeText(
+                        f"Minimalny zakres jest w zakresie działania innej literki ({values[i]})"
+                    )
+                    msg.setWindowTitle("Error")
+                    msg.exec_()
+                    return None
+            if valuesmin[i] >= buformin or valuesmax[i] >= buformin:
+                if valuesmin[i] <= buformin <= valuesmax[i]:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+                    msg.setText("Error")
+                    msg.setInformativeText(
+                        f"Minimalny zakres jest w zakresie działania innej literki ({values[i]})"
+                    )
+                    msg.setWindowTitle("Error")
+                    msg.exec_()
+                    return None
 
 
 if __name__ == "__main__":
