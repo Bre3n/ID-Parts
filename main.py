@@ -10,6 +10,7 @@ import threading
 from multiprocessing import Process
 import time
 import mysql.connector
+import datetime
 
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
@@ -82,7 +83,7 @@ def crypto(message, var):
 
 def logintoall(self):
 
-    global userlogin, userpassword, databasehostname, databaseuser, databasepassword, database_connected, mydb
+    global userlogin, userpassword, databasehostname, databaseuser, databasepassword, database_connected, mydb, logged
 
     # * USER
     if path.exists(f"{inipath}/fileuserlogin.txt") == True:
@@ -113,8 +114,8 @@ def logintoall(self):
 
     if (
         path.exists(f"{inipath}/filedbhostname.txt") == True
-        or path.exists(f"{inipath}/filedbuser.txt") == True
-        or path.exists(f"{inipath}/filedbpassword.txt") == True
+        and path.exists(f"{inipath}/filedbuser.txt") == True
+        and path.exists(f"{inipath}/filedbpassword.txt") == True
     ):
         try:
             mydb = mysql.connector.connect(
@@ -123,26 +124,46 @@ def logintoall(self):
                 password=databasepassword,
                 database="partsid-database",
             )
-
-            mycursor = mydb.cursor(buffered=True)
-            mycursor.execute("SELECT * FROM password")
-            myresult = mycursor.fetchone()
-            database_connected = True
-            print("adsadsdas")
-            if userpassword == myresult[0]:
-                self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
-                logged = True
-                self.ui.label_4.setText(userlogin)
-            else:
+            if mydb.is_connected() == False:
+                self.ui.label_3.setText("Nie zalogowano do sesji!")
+                self.ui.label_4.setText("")
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
                 msg.setText("Error")
                 msg.setInformativeText(
-                    "Nie zalogowano do sesji. Ustawienia sesji -> Zaloguj"
+                    "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych "
                 )
                 msg.setWindowTitle("Error")
                 msg.exec_()
-        except Exception:
+            else:
+                self.ui.lineEdit_3.setPlaceholderText(databasehostname)
+                self.ui.lineEdit_4.setPlaceholderText(databaseuser)
+                self.ui.bn_databaselogin.setText("Połączono")
+                mycursor = mydb.cursor(buffered=True)
+                mycursor.execute("SELECT * FROM password")
+                myresult = mycursor.fetchone()
+                database_connected = True
+                if userpassword == myresult[0]:
+                    self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
+                    logged = True
+                    self.ui.bn_login.setText("Zalogowano")
+                    self.ui.lineEdit.setPlaceholderText(userlogin)
+                    self.ui.label_4.setText(userlogin)
+                else:
+                    self.ui.label_3.setText("Nie zalogowano do sesji!")
+                    self.ui.label_4.setText("")
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+                    msg.setText("Error")
+                    msg.setInformativeText(
+                        "Nie zalogowano do sesji. Ustawienia sesji -> Zaloguj"
+                    )
+                    msg.setWindowTitle("Error")
+                    msg.exec_()
+        except Exception as e:
+            print(e)
+            self.ui.label_3.setText("Nie zalogowano do sesji!")
+            self.ui.label_4.setText("")
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Error")
@@ -153,6 +174,8 @@ def logintoall(self):
             msg.exec_()
 
     else:
+        self.ui.label_3.setText("Nie zalogowano do sesji!")
+        self.ui.label_4.setText("")
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
         msg.setText("Error")
@@ -162,8 +185,6 @@ def logintoall(self):
         msg.setWindowTitle("Error")
         msg.exec_()
 
-    print(userlogin, userpassword)
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -172,9 +193,15 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword
-        logoutses, logout_database, database_connected = False, False, False
-        userlogin, userpassword, databasehostname, databaseuser, databasepassword = (
+        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mydb
+        logoutses, logout_database, database_connected, logged, switchEdit = (
+            False,
+            False,
+            False,
+            False,
+            False,
+        )
+        (userlogin, userpassword, databasehostname, databaseuser, databasepassword,) = (
             "",
             "",
             "",
@@ -182,12 +209,21 @@ class MainWindow(QMainWindow):
             "",
         )
 
+        self.ui.comboBox.setEnabled(False)
+        self.ui.lineEdit_6.setEnabled(False)
+        self.ui.lineEdit_7.setEnabled(False)
+        self.ui.lineEdit_8.setEnabled(False)
+        self.ui.bn_settadd.setEnabled(False)
+        self.ui.bn_settdel.setEnabled(False)
+        self.ui.bn_settsave.setEnabled(False)
+        self.ui.label_10.setEnabled(False)
+
+        print(datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"))
+
         user = os.getlogin()
         inipath = f"C:/Users/{user}/AppData/LocalLow/PartsID"
         if path.exists(f"{inipath}") == False:
             os.mkdir(f"{inipath}")
-
-        # self.createFiles()
 
         logintoall(self)
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
@@ -216,21 +252,47 @@ class MainWindow(QMainWindow):
         self.ui.actionDisconnectDatabase.triggered.connect(lambda: self.logout(2))
         # * Database
 
+        # * Settings
+        self.ui.actionUstawienia_globalne.triggered.connect(lambda: SettingsPage(self))
+
         #! connect to database first!!
-        values = ["D", "M", "C", "G"]  # * << buttons in layout
+        self.reloadButtons()
 
-        size = ((len(values) / 4) - 1) * 50
-        widthsize, heightsize = 700 + size, 350 + size
-        self.setMinimumSize(widthsize, heightsize)
+    def reloadButtons(self):
+        global values, valuesmin, valuesmax, mydb, widthsize, heightsize
+        if database_connected == True and logged == True:
+            mycursorr = mydb.cursor(buffered=True)
+            mycursorr.execute("SELECT * FROM global_settings")
+            myresult = mycursorr.fetchall()
+            values = []
+            valuesmin = []
+            valuesmax = []
 
-        for i in range(len(values)):
-            # * create buttons for len of values
-            position = positions[i]
-            self.createButton(values[i], position)
+            for row in myresult:
+                print(row)
+                values.append(row[0])
+                valuesmin.append(row[1])
+                valuesmax.append(row[2])
+            print(values, valuesmin, valuesmax)
+
+            # values = ["D", "M", "C", "G"]  # * << buttons in layout
+            for i in range(len(values)):
+                # * create buttons for len of values
+                position = positions[i]
+                self.createButton(values[i], position)
+
+                size = ((len(values) / 4) - 1) * 50
+                widthsize, heightsize = 700 + size, 350 + size
+                self.setMinimumSize(widthsize, heightsize)
+        else:
+            self.setMinimumSize(700, 350)
 
     def createButton(self, text, position):
         # * create button
         self.ui.buttons[text] = QPushButton("{}".format(text), self)
+
+        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KLIKACZE
+
         self.ui.buttons[text].clicked.connect(
             lambda: print("\nclicked===>> {}".format(self.ui.buttons[text].text()))
         )
@@ -264,10 +326,6 @@ class MainWindow(QMainWindow):
 
     def resizeText(self, event):
         defaultSize = 50
-        print((self.rect().width() * self.rect().height()) / 1000)
-        print(self.rect().width() // (defaultSize // 10) > defaultSize)
-        # * print width * height
-        # * print if True or False
 
         for i in range(len(values)):
             if self.rect().height() > heightsize + 100:
@@ -348,6 +406,10 @@ class MainWindow(QMainWindow):
 class UserLoginClass:
     def __init__(self, selfui):
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_login)
+        try:
+            selfui.ui.bn_login.clicked.disconnect()
+        except Exception:
+            pass
         selfui.ui.bn_login.clicked.connect(lambda: self.login(selfui))
 
     def login(self, selfui):
@@ -366,8 +428,8 @@ class UserLoginClass:
 
                 mycursorr = mydb.cursor(buffered=True)
                 mycursorr.execute("SELECT * FROM password")
-                myresultt = mycursorr.fetchone()
-                if userpassword == myresultt[0]:
+                myresult = mycursorr.fetchone()
+                if userpassword == myresult[0]:
                     fileUSER = open(f"{inipath}/fileuserlogin.txt", "wb")
                     fileUSER.write(crypto(userlogin, 0))
                     fileUSER.close()
@@ -375,7 +437,12 @@ class UserLoginClass:
                     fileUSER.write(crypto(userpassword, 0))
                     fileUSER.close()
                     logged = True
+                    selfui.ui.label_3.setText("Zalogowano pomyślnie jako:")
                     selfui.ui.label_4.setText(userlogin)
+                    selfui.ui.bn_login.setText("Zalogowano")
+                    selfui.ui.lineEdit.setPlaceholderText(userlogin)
+                    selfui.ui.lineEdit.setText("")
+                    selfui.ui.lineEdit_2.setText("")
                     msg = QMessageBox()
                     msg.setIcon(QMessageBox.Information)
                     msg.setText("Information")
@@ -383,6 +450,7 @@ class UserLoginClass:
                     msg.setWindowTitle("Information")
                     msg.exec_()
                 else:
+                    selfui.ui.lineEdit_2.setText("")
                     msg = QMessageBox()
                     msg.setIcon(QMessageBox.Critical)
                     msg.setText("Error")
@@ -392,6 +460,7 @@ class UserLoginClass:
                     msg.setWindowTitle("Error")
                     msg.exec_()
             else:
+                selfui.ui.lineEdit_2.setText("")
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
                 msg.setText("Error")
@@ -405,6 +474,10 @@ class UserLoginClass:
 class DatabaseLogin:
     def __init__(self, selfui):
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_database_login)
+        try:
+            selfui.ui.bn_databaselogin.clicked.disconnect()
+        except Exception:
+            pass
         selfui.ui.bn_databaselogin.clicked.connect(lambda: self.database_login(selfui))
 
     def database_login(self, selfui):
@@ -440,15 +513,39 @@ class DatabaseLogin:
                 fileDB.close()
 
                 mycursor = mydb.cursor(buffered=True)
+
+                mycursor.execute("SHOW TABLES LIKE 'global_settings'")
+                result = mycursor.fetchone()
+                if result:
+                    pass
+                else:
+                    print("asdasd")
+                    mycursor.execute(
+                        "CREATE TABLE global_settings (letters TEXT, rangemin INTEGER, rangemax INTEGER, author TEXT, datetime TEXT)"
+                    )
+                selfui.ui.lineEdit_3.setPlaceholderText(selfui.ui.lineEdit_3.text())
+                selfui.ui.lineEdit_3.setText("")
+                selfui.ui.lineEdit_4.setPlaceholderText(selfui.ui.lineEdit_4.text())
+                selfui.ui.lineEdit_4.setText("")
+                selfui.ui.lineEdit_5.setText("")
                 mycursor.execute("SELECT * FROM password")
                 myresult = mycursor.fetchone()
                 database_connected = True
+                selfui.ui.bn_databaselogin.setText("Połączono")
                 if userpassword == myresult[0]:
                     selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_main)
                 else:
-                    selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_login)
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+                    msg.setText("Error")
+                    msg.setInformativeText(
+                        "Nie zalogowano do sesji. Ustawienia sesji -> Zaloguj"
+                    )
+                    msg.setWindowTitle("Error")
+                    msg.exec_()
             except Exception as e:
                 print(e)
+                selfui.ui.lineEdit_5.setText("")
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
                 msg.setText("Error")
@@ -457,6 +554,125 @@ class DatabaseLogin:
                 )
                 msg.setWindowTitle("Error")
                 msg.exec_()
+
+
+class SettingsPage:
+    def __init__(self, selfui):
+        global logged, database_connected, switchEdit
+        try:
+            selfui.ui.bn_settswitch.clicked.disconnect()
+            selfui.ui.bn_settadd.clicked.disconnect()
+        except Exception:
+            pass
+        selfui.ui.bn_settswitch.clicked.connect(lambda: self.switchEdit(selfui))
+        selfui.ui.bn_settadd.clicked.connect(lambda: self.letteradd(selfui))
+        if logged == False or database_connected == False:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText("Musisz najpierw zalogować się do bazy i do sesji!")
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
+        else:
+            global mydb
+            mycursor = mydb.cursor(buffered=True)
+            mycursor.execute("SHOW TABLES")
+            if "global_settings" in mycursor == False:
+                mycursor.execute(
+                    "CREATE TABLE global_settings (letters TEXT, rangemin INTEGER, rangemax INTEGER)"
+                )
+            selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_settings)
+
+    def switchEdit(self, selfui):
+        # * PRZEŁĄCZANIE EDYTOWANIA settings_global
+        global switchEdit
+        if switchEdit == False:
+            selfui.ui.bn_settswitch.setStyleSheet(
+                "QPushButton {\nborder: none;background-color: rgb(150,150,50);}QPushButton:hover {background-color: rgb(150,180,100);}"
+            )
+            selfui.ui.bn_settsave.setStyleSheet(
+                "QPushButton {\nborder: none;background-color: rgb(190,60,60);}QPushButton:hover {background-color: rgb(220,70,70);}"
+            )
+            selfui.ui.comboBox.setEnabled(True)
+            selfui.ui.lineEdit_6.setEnabled(True)
+            selfui.ui.lineEdit_7.setEnabled(True)
+            selfui.ui.lineEdit_8.setEnabled(True)
+            selfui.ui.bn_settadd.setEnabled(True)
+            selfui.ui.bn_settdel.setEnabled(True)
+            selfui.ui.bn_settsave.setEnabled(True)
+            selfui.ui.label_10.setEnabled(True)
+            switchEdit = True
+
+        elif switchEdit == True:
+            selfui.ui.bn_settswitch.setStyleSheet(
+                "QPushButton {\nborder: none;background-color: rgb(50,150,50);}QPushButton:hover {background-color: rgb(100,180,100);}"
+            )
+            selfui.ui.bn_settsave.setStyleSheet(
+                "QPushButton {\nborder: none;background-color: rgb(50,150,50);}QPushButton:hover {background-color: rgb(100,180,100);}"
+            )
+            selfui.ui.comboBox.setEnabled(False)
+            selfui.ui.lineEdit_6.setEnabled(False)
+            selfui.ui.lineEdit_7.setEnabled(False)
+            selfui.ui.lineEdit_8.setEnabled(False)
+            selfui.ui.bn_settadd.setEnabled(False)
+            selfui.ui.bn_settdel.setEnabled(False)
+            selfui.ui.bn_settsave.setEnabled(False)
+            selfui.ui.label_10.setEnabled(False)
+            switchEdit = False
+
+    def letteradd(self, selfui):
+        # * DODAWANIE LITEREK DO BAZY DANYCH
+        global letterlist
+        if (
+            selfui.ui.lineEdit_6.text() == ""
+            or selfui.ui.lineEdit_7.text() == ""
+            or selfui.ui.lineEdit_8.text() == ""
+        ):
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(
+                "Litera, minimalny zakres albo maksymalny zakres jest pusty!"
+            )
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
+        buforletter = {}
+        mycursor = mydb.cursor(buffered=True)
+        mycursor.execute("SELECT letters FROM global_settings")
+        myresult = mycursor.fetchall()
+        values = []
+        valuesmin = []
+        valuesmax = []
+        buforbool = False
+        bufor = selfui.ui.lineEdit_6.text()
+        buformin = selfui.ui.lineEdit_7.text()
+        buformax = selfui.ui.lineEdit_8.text()
+        if buformin.isnumeric() == False or buformax.isnumeric():
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(
+                "Minimalny albo maksymalny zakres nie jest liczbą całkowitą!"
+            )
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
+        i = 0
+        for row in myresult:
+            if bufor == row[i]:
+                buforbool = True
+        if buforbool:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(
+                "taka litera już istnije! Jeśli chcesz ją edytować klinik w przycisk 'Edytuj'"
+            )
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
 
 
 if __name__ == "__main__":
