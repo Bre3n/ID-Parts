@@ -1,0 +1,28 @@
+partsid-database
+|---> password
+|     |---> password (global)
+|     |---> secret (pass to config)
+|
+|---> global_settings
+|     |---> letters
+|     |---> range min
+|     |---> range max
+|
+|---> data
+|     |---> number INT
+|     |---> letter TXT
+|     |---> name TXT
+|     |---> comment TXT
+|     |---> lrange TXT
+|     |---> author TXT
+|     |---> datatime TXT
+
+
+
+
+INSERT INTO `global_settings`(`letters`, `rangemin`, `rangemax`) VALUES ('A','102','499');
+INSERT INTO `global_settings`(`letters`, `rangemin`, `rangemax`) VALUES ('B','500','1099');
+INSERT INTO `global_settings`(`letters`, `rangemin`, `rangemax`) VALUES ('C','1100','2599');
+INSERT INTO `global_settings`(`letters`, `rangemin`, `rangemax`) VALUES ('D','2600','3599');
+INSERT INTO `global_settings`(`letters`, `rangemin`, `rangemax`) VALUES ('E','3600','5599');
+INSERT INTO `global_settings`(`letters`, `rangemin`, `rangemax`) VALUES ('F','3600','5599');

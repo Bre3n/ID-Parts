@@ -83,7 +83,7 @@ def crypto(message, var):
 
 def logintoall(self):
 
-    global userlogin, userpassword, databasehostname, databaseuser, databasepassword, database_connected, mycursor, logged, mydb
+    global userlogin, userpassword, databasehostname, databaseuser, databasepassword, database_connected, mydb, logged
 
     # * USER
     if path.exists(f"{inipath}/fileuserlogin.txt") == True:
@@ -148,19 +148,7 @@ def logintoall(self):
                     logged = True
                     self.ui.bn_login.setText("Zalogowano")
                     self.ui.lineEdit.setPlaceholderText(userlogin)
-                    self.ui.label_3.setText("Zalogowano pomyślnie jako:")
                     self.ui.label_4.setText(userlogin)
-
-                    sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                    val = (
-                        f"Logged to database",
-                        userlogin,
-                        datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-                    )
-                    mycursor.execute(sql, val)
-                    mydb.commit()
-
-                    ################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SET PROFILE #################################
                 else:
                     self.ui.label_3.setText("Nie zalogowano do sesji!")
                     self.ui.label_4.setText("")
@@ -205,7 +193,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile
+        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mydb
         logoutses, logout_database, database_connected, logged, switchEdit = (
             False,
             False,
@@ -221,6 +209,14 @@ class MainWindow(QMainWindow):
             "",
         )
 
+        self.ui.comboBox.setEnabled(False)
+        self.ui.lineEdit_6.setEnabled(False)
+        self.ui.lineEdit_7.setEnabled(False)
+        self.ui.lineEdit_8.setEnabled(False)
+        self.ui.bn_settadd.setEnabled(False)
+        self.ui.bn_settsave.setEnabled(False)
+        self.ui.label_10.setEnabled(False)
+
         print(datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"))
 
         user = os.getlogin()
@@ -229,20 +225,10 @@ class MainWindow(QMainWindow):
             os.mkdir(f"{inipath}")
 
         logintoall(self)
-
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PROFILE !!
-        #
-        # This############################
-        # This
-        #
-        # This################
-        # This################
-        # This################################
-        # This################################################################
-        # This################################################################################################
-        # This################################################################################################################################
-
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
+
+        self.resize(650, 400)
+        self.setMinimumSize(600, 300)
 
         self.setWindowTitle("Parts ID's")
         self.setStyleSheet("background:rgb(91,90,90);")
@@ -264,47 +250,41 @@ class MainWindow(QMainWindow):
         self.ui.actionConnectDatabase.triggered.connect(lambda: DatabaseLogin(self))
         self.ui.actionDisconnectDatabase.triggered.connect(lambda: self.logout(2))
         # * Database
-        self.ui.actionOtworzbazedanych.triggered.connect(lambda: ShowDatabase(self))
-        self.ui.actionEdytujbazedanych.triggered.connect(lambda: EditDatabase(self))
-        # * SettingsPage
-        self.ui.actionUstawienia_globalne_2.triggered.connect(
-            lambda: SettingsPage(self)
-        )
+
+        # * Settings
+        self.ui.actionUstawienia_globalne.triggered.connect(lambda: SettingsPage(self))
 
         #! connect to database first!!
         self.reloadButtons()
 
-        # * lineEdit
-        self.ui.lineEdit_6.clear()
-        self.ui.lineEdit_7.clear()
-
     def reloadButtons(self):
-        global values, valuesmin, valuesmax, mycursor, widthsize, heightsize, values_profiles, values_profiles_letters, values_profiles_min, values_profiles_max
-
-        """if database_connected == True and logged == True:
-            mycursor.execute("SELECT * FROM global_settings")
-            myresult = mycursor.fetchall()
+        global values, valuesmin, valuesmax, mydb, widthsize, heightsize
+        if database_connected == True and logged == True:
+            mycursorr = mydb.cursor(buffered=True)
+            mycursorr.execute("SELECT * FROM global_settings")
+            myresult = mycursorr.fetchall()
             values = []
             valuesmin = []
             valuesmax = []
 
             for row in myresult:
+                print(row)
                 values.append(row[0])
                 valuesmin.append(int(row[1]))
                 valuesmax.append(int(row[2]))
+            print(values, valuesmin, valuesmax)
 
+            # values = ["D", "M", "C", "G"]  # * << buttons in layout
             for i in range(len(values)):
                 # * create buttons for len of values
                 position = positions[i]
                 self.createButton(values[i], position)
 
                 size = ((len(values) / 4) - 1) * 50
-                widthsize, heightsize = 700 + size, 500 + size
+                widthsize, heightsize = 700 + size, 350 + size
                 self.setMinimumSize(widthsize, heightsize)
-                self.resize(widthsize, heightsize)
         else:
-            self.setMinimumSize(700, 500)
-            self.resize(700, 500)"""
+            self.setMinimumSize(700, 350)
 
     def createButton(self, text, position):
         # * create button
@@ -313,7 +293,7 @@ class MainWindow(QMainWindow):
         #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KLIKACZE
 
         self.ui.buttons[text].clicked.connect(
-            lambda: self.addItemtoDB(self.ui.buttons[text].text())
+            lambda: print("\nclicked===>> {}".format(self.ui.buttons[text].text()))
         )
         self.ui.buttons[text].setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding
@@ -367,7 +347,7 @@ class MainWindow(QMainWindow):
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
 
     def logout(self, var):
-        global logoutses, logout_database, logged, database_connected, mycursor, mydb
+        global logoutses, logout_database
         if var == 1:
             if logoutses == False:
                 msg = QMessageBox()
@@ -380,27 +360,13 @@ class MainWindow(QMainWindow):
                 threading.Thread(target=self.logout2, args=(var,)).start()
             else:
                 logoutses = False
-                logged = False
                 if path.exists(f"{inipath}/fileuserlogin.txt") == True:
                     os.remove(f"{inipath}/fileuserlogin.txt")
 
                 if path.exists(f"{inipath}/fileuserpassword.txt") == True:
                     os.remove(f"{inipath}/fileuserpassword.txt")
 
-                self.ui.label_3.setText("Nie zalogowano do sesji!")
-                self.ui.label_4.setText("")
-
-                for i in reversed(range(self.ui.gridLayout.count())):
-                    self.ui.gridLayout.itemAt(i).widget().setParent(None)
-
-                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                val = (
-                    f"Logout from session",
-                    userlogin,
-                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-                )
-                mycursor.execute(sql, val)
-                mydb.commit()
+                self.ui.label_4.setText("none")
         elif var == 2:
             if logout_database == False:
                 msg = QMessageBox()
@@ -424,22 +390,6 @@ class MainWindow(QMainWindow):
                 if path.exists(f"{inipath}/filedbpassword.txt") == True:
                     os.remove(f"{inipath}/filedbpassword.txt")
 
-                self.ui.label_3.setText("Nie zalogowano do bazy danych!")
-                self.ui.label_4.setText("")
-
-                for i in reversed(range(self.ui.gridLayout.count())):
-                    self.ui.gridLayout.itemAt(i).widget().setParent(None)
-
-                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                val = (
-                    f"Logout from database",
-                    userlogin,
-                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-                )
-                mycursor.execute(sql, val)
-                mydb.commit()
-            logintoall(self)
-
     def logout2(self, var):
         global logoutses, logout_database
         time.sleep(10)
@@ -448,30 +398,8 @@ class MainWindow(QMainWindow):
         elif var == 2:
             logout_database = False
 
-    def addItemtoDB(self, var):
-        print(var)
-        global values, valuesmin, valuesmax, mycursor, mydb
-        bufor = self.ui.lineEdit_6.text()
-        comment = self.ui.lineEdit_7.text()
-        if comment == "":
-            comment = " "
-        if bufor == "":
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText("Wymagana jest nazwa części!")
-            msg.setWindowTitle("Error")
-            msg.exec_()
-            return None
-        mycursor.execute(
-            f"SELECT * FROM `data` WHERE letter LIKE '{var}' AND name LIKE 'None' ORDER BY `number` ASC"
-        )
-        myresult = mycursor.fetchone()
-        date = datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S")
-        mycursor.execute(
-            f"UPDATE `data` SET `number`='{myresult[0]}',`letter`='{myresult[1]}',`name`='{bufor}',`comment`='{comment}',`lrange`='{myresult[4]}',`author`='{userlogin}',`datetime`='{date}' WHERE number = {myresult[0]}"
-        )
-        mydb.commit()
+    def openList(self):
+        pass
 
 
 class UserLoginClass:
@@ -484,7 +412,7 @@ class UserLoginClass:
         selfui.ui.bn_login.clicked.connect(lambda: self.login(selfui))
 
     def login(self, selfui):
-        global database_connected, mycursor, logged
+        global database_connected, mydb, logged
         if selfui.ui.lineEdit.text() == "" or selfui.ui.lineEdit_2.text() == "":
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
@@ -497,8 +425,9 @@ class UserLoginClass:
                 userlogin = (selfui.ui.lineEdit.text()).title()
                 userpassword = selfui.ui.lineEdit_2.text()
 
-                mycursor.execute("SELECT password FROM password")
-                myresult = mycursor.fetchone()
+                mycursorr = mydb.cursor(buffered=True)
+                mycursorr.execute("SELECT password FROM password")
+                myresult = mycursorr.fetchone()
                 if str(userpassword) == str(myresult[0]):
                     fileUSER = open(f"{inipath}/fileuserlogin.txt", "wb")
                     fileUSER.write(crypto(userlogin, 0))
@@ -520,8 +449,6 @@ class UserLoginClass:
                     msg.setInformativeText("Zalogowano pomyślnie!")
                     msg.setWindowTitle("Information")
                     msg.exec_()
-
-                    logintoall(selfui)
                 else:
                     selfui.ui.lineEdit_2.setText("")
                     msg = QMessageBox()
@@ -554,7 +481,7 @@ class DatabaseLogin:
         selfui.ui.bn_databaselogin.clicked.connect(lambda: self.database_login(selfui))
 
     def database_login(self, selfui):
-        global mycursor, database_connected
+        global mydb, database_connected
         if (
             selfui.ui.lineEdit_3.text() == ""
             or selfui.ui.lineEdit_4.text() == ""
@@ -593,27 +520,8 @@ class DatabaseLogin:
                     pass
                 else:
                     mycursor.execute(
-                        "CREATE TABLE global_settings (letter TEXT, rangemin INTEGER, rangemax INTEGER)"
+                        "CREATE TABLE global_settings (letters TEXT, rangemin INTEGER, rangemax INTEGER, author TEXT, datetime TEXT)"
                     )
-
-                mycursor.execute("SHOW TABLES LIKE 'data'")
-                result = mycursor.fetchone()
-                if result:
-                    pass
-                else:
-                    mycursor.execute(
-                        "CREATE TABLE data (number INTEGER, letter TEXT,name TEXT,comment TEXT, lrange TEXT, author TEXT, datetime TEXT)"
-                    )
-
-                mycursor.execute("SHOW TABLES LIKE 'logs'")
-                result = mycursor.fetchone()
-                if result:
-                    pass
-                else:
-                    mycursor.execute(
-                        "CREATE TABLE logs (action TEXT, author TEXT, datetime TEXT)"
-                    )
-
                 selfui.ui.lineEdit_3.setPlaceholderText(selfui.ui.lineEdit_3.text())
                 selfui.ui.lineEdit_3.setText("")
                 selfui.ui.lineEdit_4.setPlaceholderText(selfui.ui.lineEdit_4.text())
@@ -623,10 +531,9 @@ class DatabaseLogin:
                 myresult = mycursor.fetchone()
                 database_connected = True
                 selfui.ui.bn_databaselogin.setText("Połączono")
-                logintoall(selfui)
-                if logged == True:
-                    MainWindow.reloadButtons(selfui)
+                if str(userpassword) == str(myresult[0]):
                     selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_main)
+                    MainWindow.reloadButtons(selfui)
                 else:
                     msg = QMessageBox()
                     msg.setIcon(QMessageBox.Critical)
@@ -649,246 +556,198 @@ class DatabaseLogin:
                 msg.exec_()
 
 
-class EditDatabase:
+class SettingsPage:
     def __init__(self, selfui):
-        MainWindow.reloadButtons(selfui)
-        selfui.ui.bn_databaseInfo.setVisible(False)
-        selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_database)
-        selfui.ui.stackedWidget_2.setCurrentWidget(selfui.ui.page_database_edit)
-        global values, valuesmin, valuesmax
-        selfui.ui.comboBox_2.clear()
-        selfui.ui.comboBox_2.addItems(values)
+        global logged, database_connected, switchEdit
         try:
-            selfui.ui.bn_databaseSet.clicked.disconnect()
-            selfui.ui.bn_databaseDel.clicked.disconnect()
+            selfui.ui.bn_settswitch.clicked.disconnect()
+            selfui.ui.bn_settadd.clicked.disconnect()
+            selfui.ui.bn_settdel.clicked.disconnect()
         except Exception:
             pass
-        selfui.ui.bn_databaseSet.clicked.connect(lambda: self.databaseSet(selfui))
-        selfui.ui.bn_databaseDel.clicked.connect(lambda: self.databaseDel(selfui))
+        selfui.ui.bn_settswitch.clicked.connect(lambda: self.switchEdit(selfui))
+        selfui.ui.bn_settadd.clicked.connect(lambda: self.letteradd(selfui))
+        if logged == False or database_connected == False:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText("Musisz najpierw zalogować się do bazy i do sesji!")
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
+        else:
+            global mydb
+            mycursor = mydb.cursor(buffered=True)
+            mycursor.execute("SHOW TABLES LIKE 'global_settings'")
+            result = mycursor.fetchone()
+            if result:
+                pass
+            else:
+                mycursor.execute(
+                    "CREATE TABLE global_settings (letters TEXT, rangemin INTEGER, rangemax INTEGER, author TEXT, datetime TEXT)"
+                )
+            selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_settings)
 
-    def databaseSet(self, selfui):
-        global values, valuesmin, valuesmax, mycursor
-        bufor = selfui.ui.comboBox_2.currentText()
+    def switchEdit(self, selfui):
+        global values
+        MainWindow.reloadButtons(selfui)
+        # * PRZEŁĄCZANIE EDYTOWANIA settings_global
+        global switchEdit
+        if switchEdit == False:
+            selfui.ui.bn_settswitch.setStyleSheet(
+                "QPushButton {\nborder: none;background-color: rgb(150,150,50);}QPushButton:hover {background-color: rgb(150,180,100);}"
+            )
+            selfui.ui.bn_settsave.setStyleSheet(
+                "QPushButton {\nborder: none;background-color: rgb(190,60,60);}QPushButton:hover {background-color: rgb(220,70,70);}"
+            )
+            selfui.ui.comboBox.setEnabled(True)
+            selfui.ui.lineEdit_6.setEnabled(True)
+            selfui.ui.lineEdit_7.setEnabled(True)
+            selfui.ui.lineEdit_8.setEnabled(True)
+            selfui.ui.bn_settadd.setEnabled(True)
+            selfui.ui.bn_settsave.setEnabled(True)
+            selfui.ui.label_10.setEnabled(True)
+            self.reloadComboBox(selfui)
+            switchEdit = True
+
+        elif switchEdit == True:
+            selfui.ui.bn_settswitch.setStyleSheet(
+                "QPushButton {\nborder: none;background-color: rgb(50,150,50);}QPushButton:hover {background-color: rgb(100,180,100);}"
+            )
+            selfui.ui.bn_settsave.setStyleSheet(
+                "QPushButton {\nborder: none;background-color: rgb(50,150,50);}QPushButton:hover {background-color: rgb(100,180,100);}"
+            )
+            selfui.ui.comboBox.setEnabled(False)
+            selfui.ui.comboBox.clear()
+            selfui.ui.lineEdit_6.setEnabled(False)
+            selfui.ui.lineEdit_6.clear()
+            selfui.ui.lineEdit_7.setEnabled(False)
+            selfui.ui.lineEdit_7.clear()
+            selfui.ui.lineEdit_8.setEnabled(False)
+            selfui.ui.lineEdit_8.clear()
+            selfui.ui.bn_settadd.setEnabled(False)
+            selfui.ui.bn_settsave.setEnabled(False)
+            selfui.ui.label_10.setEnabled(False)
+            switchEdit = False
+
+    def reloadComboBox(self, selfui):
+        global values
         selfui.ui.comboBox.clear()
+        selfui.ui.comboBox.addItems(values)
 
+    def letteradd(self, selfui):
+        MainWindow.reloadButtons(selfui)
+        # * DODAWANIE LITEREK DO BAZY DANYCH
+        global letterlist, values, valuesmin, valuesmax, userlogin, mydb
+        if (
+            selfui.ui.lineEdit_6.text() == ""
+            or selfui.ui.lineEdit_7.text() == ""
+            or selfui.ui.lineEdit_8.text() == ""
+        ):
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(
+                "Litera, minimalny zakres albo maksymalny zakres jest pusty!"
+            )
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
+        buforletter = {}
+        buforbool = False
+        bufor = selfui.ui.lineEdit_6.text()
+        buformin = selfui.ui.lineEdit_7.text()
+        buformax = selfui.ui.lineEdit_8.text()
+        if buformin.isnumeric() == False or buformax.isnumeric() == False:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(
+                "Minimalny albo maksymalny zakres nie jest liczbą całkowitą!"
+            )
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
+        else:
+            buformin = int(buformin)
+            buformax = int(buformax)
+        if buformin >= buformax:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(
+                "Minimalny zakres nie może być większy bądź równy maksymalnemu!"
+            )
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
+        i = 0
+        mycursor = mydb.cursor(buffered=True)
         mycursor.execute(
-            f"SELECT * FROM `data` WHERE letter LIKE '{bufor}' AND name NOT LIKE 'None' ORDER BY `number` ASC"
+            "SELECT letters, COUNT(*) FROM global_settings WHERE letters = %s GROUP BY letters",
+            (bufor,),
         )
-        buforr = mycursor.fetchall()
-        dblist = []
-        for row in buforr:
-            dblist.append(bufor + " " + str(row[0]) + " " + str(row[2]))
-        selfui.ui.comboBox.addItems(dblist)
+        results = mycursor.fetchall()
+        row_count = mycursor.rowcount
+        if row_count > 0:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(
+                "taka litera już istnije! Jeśli chcesz ją edytować klinik w przycisk 'Edytuj'"
+            )
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return None
+        for i in range(len(values)):
+            if valuesmin[i] >= buformin or valuesmax[i] >= buformin:
+                if valuesmin[i] <= buformin <= valuesmax[i]:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+                    msg.setText("Error")
+                    msg.setInformativeText(
+                        f"Minimalny zakres jest w zakresie działania innej literki ({values[i]})"
+                    )
+                    msg.setWindowTitle("Error")
+                    msg.exec_()
+                    return None
+            if valuesmin[i] >= buformin or valuesmax[i] >= buformin:
+                if valuesmin[i] <= buformin <= valuesmax[i]:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+                    msg.setText("Error")
+                    msg.setInformativeText(
+                        f"Minimalny zakres jest w zakresie działania innej literki ({values[i]})"
+                    )
+                    msg.setWindowTitle("Error")
+                    msg.exec_()
+                    return None
+        lett = selfui.ui.lineEdit_6.text()
+        lettmin = selfui.ui.lineEdit_7.text()
+        lettmax = selfui.ui.lineEdit_8.text()
 
-    def databaseDel(self, selfui):
-        global values, valuesmin, valuesmax, mycursor, mydb
-        bufor = selfui.ui.comboBox.currentText()
-        splitted = bufor.split(" ")
-        splitted = int(splitted[1])
-        mycursor.execute(f"SELECT * FROM `data` WHERE number = {splitted}")
-        buforr = mycursor.fetchone()
-
-        mycursor.execute(
-            f"UPDATE `data` SET `number`='{buforr[0]}',`letter`='{buforr[1]}',`name`='None',`comment`='None',`lrange`='{buforr[4]}',`author`='None',`datetime`='None' WHERE number = {splitted}"
-        )
-        mydb.commit()
-        index = selfui.ui.comboBox.findText(bufor)
-        selfui.ui.comboBox.removeItem(index)
-        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO global_settings (letters, rangemin, rangemax, author, datetime) VALUES (%s, %s, %s, %s, %s)"
         val = (
-            f"Del '{bufor}'",
+            lett,
+            lettmin,
+            lettmax,
             userlogin,
             datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
         )
         mycursor.execute(sql, val)
         mydb.commit()
-
-
-class ShowDatabase:
-    def __init__(self, selfui):
-        MainWindow.reloadButtons(selfui)
-        selfui.ui.bn_databaseInfo.setVisible(True)
-        selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_database)
-        selfui.ui.stackedWidget_2.setCurrentWidget(selfui.ui.page_database_view)
-        global values, valuesmin, valuesmax
-        selfui.ui.comboBox_2.clear()
-        selfui.ui.comboBox_2.addItems(values)
-        try:
-            selfui.ui.bn_databaseSet.clicked.disconnect()
-        except Exception:
-            pass
-        selfui.ui.bn_databaseSet.clicked.connect(lambda: self.databaseSet(selfui))
-        selfui.ui.bn_databaseInfo.clicked.connect(lambda: self.databaseInfo(selfui))
-
-    def databaseSet(self, selfui):
-        global values, valuesmin, valuesmax, mycursor
-        bufor = selfui.ui.comboBox_2.currentText()
-        selfui.ui.comboBox.clear()
-
-        mycursor.execute(
-            f"SELECT * FROM `data` WHERE letter LIKE '{bufor}' AND name NOT LIKE 'None' ORDER BY `number` ASC"
-        )
-        buforr = mycursor.fetchall()
-        dblist = []
-        for row in buforr:
-            dblist.append(bufor + " " + str(row[0]) + " " + str(row[2]))
-        selfui.ui.comboBox.addItems(dblist)
-
-    def databaseInfo(self, selfui):
-        bufor = selfui.ui.comboBox.currentText()
-        if bufor != "":
-            splitted = bufor.split(" ")
-            splitted = int(splitted[1])
-            mycursor.execute(f"SELECT * FROM `data` WHERE number = {splitted}")
-            buforr = mycursor.fetchone()
-            selfui.ui.label_13.setText(f"{buforr[0]}")
-            selfui.ui.label_15.setText(f"{buforr[1]}")
-            selfui.ui.label_17.setText(f"{buforr[2]}")
-            selfui.ui.label_19.setText(f"{buforr[3]}")
-            selfui.ui.label_21.setText(f"{buforr[4]}")
-            selfui.ui.label_23.setText(f"{buforr[5]}")
-            selfui.ui.label_25.setText(f"{buforr[6]}")
-
-
-class SettingsPage:
-    def __init__(self, selfui):
-        global values_profiles, values_profiles_letters, values_profiles_min, values_profiles_max, mydb, mycursor
-        selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_settings)
-        try:
-            selfui.ui.bn_settings_set.clicked.disconnect()
-            selfui.ui.bn_settings_dell.clicked.disconnect()
-            selfui.ui.bn_settings_add.clicked.disconnect()
-        except Exception:
-            pass
-        selfui.ui.bn_settings_set.clicked.connect(lambda: self.setProfile(selfui))
-        selfui.ui.bn_settings_dell.clicked.connect(lambda: self.delLetter(selfui))
-        selfui.ui.bn_settings_add.clicked.connect(lambda: self.addLetter(selfui))
-        mycursor.execute("SELECT * FROM global_settings")
-        myresult = mycursor.fetchall()
-        values_profiles = []
-        values_profiles_letters = []
-        values_profiles_min = []
-        values_profiles_max = []
-
-        for row in myresult:
-            values_profiles.append(row[0])
-            values_profiles_letters.append(row[1])
-            values_profiles_min.append(row[2])
-            values_profiles_max.append(row[3])
-        selfui.ui.comboBox_3.clear()
-        selfui.ui.comboBox_3.addItems(values_profiles)
-
-    def setProfile(self, selfui):
-        global mydb, mycursor
-        bufor = selfui.ui.comboBox_3.currentText()
-        selfui.ui.comboBox_4.clear()
-        mycursor.execute(f"SELECT letters FROM global_settings WHERE name='{bufor}'")
-        myresult = mycursor.fetchone()
-        myresult = (
-            str(myresult)
-            .replace("(", "")
-            .replace(")", "")
-            .replace("'", "")
-            .replace(" ", "")
-        )
-        myresult = myresult.split(",")
-        for i in range(len(myresult)):
-            try:
-                myresult.remove("")
-            except Exception:
-                pass
-        print(myresult)
-        selfui.ui.comboBox_4.addItems(myresult)
-
-    def delLetter(self, selfui):
-        global mydb, mycursor
-        bufor = selfui.ui.comboBox_3.currentText()
-        bufor2 = selfui.ui.comboBox_4.currentText()
-        mycursor.execute(f"SELECT letters FROM global_settings WHERE name='{bufor}'")
-        myresult = mycursor.fetchone()
-        myresult = (
-            str(myresult)
-            .replace("(", "")
-            .replace(")", "")
-            .replace("'", "")
-            .replace(" ", "")
-        )
-        myresult = myresult.split(",")
-        for i in range(len(myresult)):
-            try:
-                myresult.remove("")
-            except Exception:
-                pass
-        myresult.remove(f"{bufor2}")
-        bufor3 = ""
-        for i in myresult:
-            bufor3 += f"{str(i)},"
-        mycursor.execute(
-            f"UPDATE `global_settings` SET `letters`='{bufor3}' WHERE name='{bufor}'"
-        )
-        mydb.commit()
-        self.setProfile(selfui)
+        selfui.ui.lineEdit_6.setText("")
+        selfui.ui.lineEdit_7.setText("")
+        selfui.ui.lineEdit_8.setText("")
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
         msg.setText("Information")
-        msg.setInformativeText(f"Usunięto literę '{bufor2}' z profilu '{bufor}'")
-        msg.setWindowTitle("Information")
-        msg.exec_()
-
-    def addLetter(self, selfui):
-        global mydb, mycursor
-        if (
-            selfui.ui.lineEdit_11 == ""
-            or selfui.ui.lineEdit_11.text().isalpha() == False
-        ):
-            return None
-        bufor = selfui.ui.comboBox_3.currentText()
-        bufor2 = selfui.ui.lineEdit_11.text()
-
-        mycursor.execute(f"SELECT letters FROM global_settings WHERE name='{bufor}'")
-        myresult = mycursor.fetchone()
-        myresult = (
-            str(myresult)
-            .replace("(", "")
-            .replace(")", "")
-            .replace("'", "")
-            .replace(" ", "")
+        msg.setInformativeText(
+            f"Dodano literkę '{lett}' o zakresie działania '{lettmin}-{lettmax}'"
         )
-        myresult = myresult.split(",")
-        for i in range(len(myresult)):
-            try:
-                myresult.remove("")
-            except Exception:
-                pass
-
-        if bufor2 in myresult:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText("Już istnieje taka litera")
-            msg.setWindowTitle("Error")
-            msg.exec_()
-            return None
-        bufor3 = ""
-        for i in myresult:
-            bufor3 += f"{str(i)},"
-        bufor3 += bufor2
-
-        mycursor.execute(
-            f"UPDATE `global_settings` SET `letters`='{bufor3}' WHERE name='{bufor}'"
-        )
-        mydb.commit()
-        selfui.ui.lineEdit_11.setText("")
-        self.setProfile(selfui)
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setText("Information")
-        msg.setInformativeText(f"Dodano literę '{bufor2}' do profilu '{bufor}'")
-        msg.setWindowTitle("Information")
+        msg.setWindowTitle("Error")
         msg.exec_()
-        
-    def SaveProfile(self, selfui):
-        pass
+        self.switchEdit(selfui)
 
 
 if __name__ == "__main__":
