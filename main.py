@@ -1,17 +1,16 @@
-# 2*x&FY
-
-
 import base64
+import datetime
 import os
-from os import path
 import random
 import sys
 import threading
-from multiprocessing import Process
 import time
-import mysql.connector
-import datetime
+import requests
+from multiprocessing import Process
+from os import path
+import ctypes
 
+import mysql.connector
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -51,6 +50,7 @@ from PySide2.QtGui import (
 )
 from PySide2.QtWidgets import *
 
+from ui_error import Ui_Error
 from ui_main import Ui_MainWindow
 
 
@@ -118,6 +118,14 @@ def logintoall(self):
         and path.exists(f"{inipath}/filedbpassword.txt") == True
     ):
         try:
+            request = requests.get(url, timeout=5)
+        except (requests.ConnectionError, requests.Timeout) as exception:
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
+            self.ui.label_36.setText("!")
+            self.ui.label_37.setText(
+                "Brak połączenia z internetem! Połącz się z siecią i zrestartuj program!"
+            )
+        try:
             mydb = mysql.connector.connect(
                 host=databasehostname,
                 user=databaseuser,
@@ -127,14 +135,11 @@ def logintoall(self):
             if mydb.is_connected() == False:
                 self.ui.label_3.setText("Nie zalogowano do sesji!")
                 self.ui.label_4.setText("")
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
-                msg.setText("Error")
-                msg.setInformativeText(
-                    "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych "
+                MainWindow.errorexec(
+                    self,
+                    "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych ",
+                    "Ok",
                 )
-                msg.setWindowTitle("Error")
-                msg.exec_()
             else:
                 self.ui.lineEdit_3.setPlaceholderText(databasehostname)
                 self.ui.lineEdit_4.setPlaceholderText(databaseuser)
@@ -144,7 +149,6 @@ def logintoall(self):
                 myresult = mycursor.fetchone()
                 database_connected = True
                 if str(userpassword) == str(myresult[0]):
-                    self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
                     logged = True
                     self.ui.bn_login.setText("Zalogowano")
                     self.ui.lineEdit.setPlaceholderText(userlogin)
@@ -160,42 +164,99 @@ def logintoall(self):
                     mycursor.execute(sql, val)
                     mydb.commit()
 
-                    ################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SET PROFILE #################################
                 else:
                     self.ui.label_3.setText("Nie zalogowano do sesji!")
                     self.ui.label_4.setText("")
-                    msg = QMessageBox()
-                    msg.setIcon(QMessageBox.Critical)
-                    msg.setText("Error")
-                    msg.setInformativeText(
-                        "Nie zalogowano do sesji. Ustawienia sesji -> Zaloguj"
+                    MainWindow.errorexec(
+                        self,
+                        "Nie zalogowano do sesji. Ustawienia sesji -> Zaloguj",
+                        "Ok",
                     )
-                    msg.setWindowTitle("Error")
-                    msg.exec_()
         except Exception as e:
             print(e)
             self.ui.label_3.setText("Nie zalogowano do sesji!")
             self.ui.label_4.setText("")
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText(
-                "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych "
+            MainWindow.errorexec(
+                self,
+                "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych ",
+                "Ok",
             )
-            msg.setWindowTitle("Error")
-            msg.exec_()
 
     else:
         self.ui.label_3.setText("Nie zalogowano do sesji!")
         self.ui.label_4.setText("")
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Critical)
-        msg.setText("Error")
-        msg.setInformativeText(
-            "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych "
+        MainWindow.errorexec(
+            self,
+            "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych ",
+            "Ok",
         )
-        msg.setWindowTitle("Error")
-        msg.exec_()
+
+
+def check_connection(self):
+    global checkinternetbool
+    while True:
+        try:
+            self.ui.label_36.setText(self.ui.label_36.text())
+        except Exception:
+            return None
+        try:
+            request = requests.get(url, timeout=5)
+            if self.ui.stackedWidget.currentIndex() == 6:
+                self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
+                self.ui.label_36.setText("")
+                self.ui.label_37.setText(
+                    "Połączono z intenetem! Wszystkie opcje odblokowane"
+                )
+            checkinternetbool = True
+        except (requests.ConnectionError, requests.Timeout) as exception:
+            if self.ui.stackedWidget.currentIndex() != 6:
+                self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
+                self.ui.label_36.setText("!")
+                self.ui.label_37.setText(
+                    "Brak połączenia z internetem! Połącz się z siecią"
+                )
+            checkinternetbool = False
+        time.sleep(5)
+
+
+class errorUi(QDialog):
+    def __init__(self, parent=None):
+
+        super(errorUi, self).__init__(parent)
+        self.e = Ui_Error()
+        self.e.setupUi(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        # -----> CLOSE APPLICATION FUNCTION BUTTON: CORRESPONDING TO THE bn_ok OF THE ERRORBOX
+        self.e.bn_ok.clicked.connect(lambda: self.close())
+
+        # SAME AD DESCRIBED IN COMMEND (C2)
+        # ---> MOVING THE WINDOW WHEN LEFT MOUSE PRESSED AND DRAGGED OVER ERRORBOX TOPBAR
+        self.dragPos = self.pos()  # INITIAL POSOTION OF THE ERRORBOX
+
+        def moveWindow(event):
+            # MOVE WINDOW
+            if event.buttons() == Qt.LeftButton:
+                self.move(self.pos() + event.globalPos() - self.dragPos)
+                self.dragPos = event.globalPos()
+                event.accept()
+
+        # WIDGET TO MOVE
+        self.e.frame_top.mouseMoveEvent = moveWindow  # CALLING THE FUNCTION TO CJANGE THE POSITION OF THE ERRORBOX DURING MOUSE DRAG
+        ################
+
+    # ----> FUNCTION TO CAPTURE THE INITIAL POSITION OF THE MOUSE
+    def mousePressEvent(self, event):
+        self.dragPos = event.globalPos()
+
+    #############################################
+
+    # SAME AS DESCRIBED IN COMMEND (C3)
+    # -------> SETTING THE ERRORBOX CONFIGRATION: TEXT IN BUTTON, LABEL, HEADING
+    def errorConstrict(self, heading, btnOk):
+        self.e.lab_heading.setText(heading)
+        self.e.bn_ok.setText(btnOk)
 
 
 class MainWindow(QMainWindow):
@@ -204,22 +265,46 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.error = errorUi()
 
-        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile
-        logoutses, logout_database, database_connected, logged, switchEdit = (
+        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+
+        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile, defaultSize, database_profile, iterablebool, checkinternetbool, url
+
+        (
+            logoutses,
+            logout_database,
+            database_connected,
+            logged,
+            switchEdit,
+            checkinternetbool,
+        ) = (
             False,
             False,
             False,
             False,
             False,
+            True,
         )
-        (userlogin, userpassword, databasehostname, databaseuser, databasepassword,) = (
+        (
+            userlogin,
+            userpassword,
+            databasehostname,
+            databaseuser,
+            databasepassword,
+            database_profile,
+            url,
+        ) = (
             "",
             "",
             "",
             "",
             "",
+            "",
+            "https://www.google.com",
         )
+
+        defaultSize = 50
 
         print(datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"))
 
@@ -229,28 +314,20 @@ class MainWindow(QMainWindow):
             os.mkdir(f"{inipath}")
 
         logintoall(self)
+        threading.Thread(target=check_connection, args=(self,)).start()
 
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PROFILE !!
-        #
-        # This############################
-        # This
-        #
-        # This################
-        # This################
-        # This################################
-        # This################################################################
-        # This################################################################################################
-        # This################################################################################################################################
-
-        self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
+        self.ui.buttons = {}
 
         self.setWindowTitle("Parts ID's")
         self.setStyleSheet("background:rgb(91,90,90);")
 
-        self.ui.buttons = {}
-
         self.setCentralWidget(self.ui.centralwidget)
         self.ui.centralwidget = QWidget()
+
+        self.ui.label.setVisible(False)
+        self.ui.label_2.setVisible(False)
+        self.ui.label_30.setVisible(False)
+        self.ui.label_31.setVisible(False)
 
         positions = [(r, c) for r in range(4) for c in range(4)]
         # * to split to 3
@@ -272,39 +349,135 @@ class MainWindow(QMainWindow):
         )
 
         #! connect to database first!!
-        self.reloadButtons()
+        self.reloadButtons2()
 
         # * lineEdit
         self.ui.lineEdit_6.clear()
         self.ui.lineEdit_7.clear()
 
-    def reloadButtons(self):
+    def reloadButtons2(self):
         global values, valuesmin, valuesmax, mycursor, widthsize, heightsize, values_profiles, values_profiles_letters, values_profiles_min, values_profiles_max
 
-        """if database_connected == True and logged == True:
+        for i in reversed(range(self.ui.gridLayout_3.count())):
+            self.ui.gridLayout_3.itemAt(i).widget().setParent(None)
+        self.ui.buttons2 = {}
+
+        self.ui.stackedWidget.setCurrentWidget(self.ui.page_profil)
+        positions2 = [(r, c) for r in range(3) for c in range(3)]
+        if database_connected == True and logged == True:
             mycursor.execute("SELECT * FROM global_settings")
             myresult = mycursor.fetchall()
-            values = []
+            values2 = []
             valuesmin = []
             valuesmax = []
 
             for row in myresult:
-                values.append(row[0])
-                valuesmin.append(int(row[1]))
-                valuesmax.append(int(row[2]))
+                values2.append(row[0])
+
+            for i in range(len(values2)):
+                # * create buttons for len of values
+                position2 = positions2[i]
+                self.createButton2(values2[i], position2)
+
+                size = ((len(values2) / 3) - 1) * 50
+                widthsize, heightsize = 800 + size, 500 + size
+                self.setMinimumSize(widthsize, heightsize)
+                self.resize(widthsize, heightsize)
+        else:
+            self.setMinimumSize(700, 500)
+            self.resize(700, 500)
+
+    def createButton2(self, text, position2):
+        # * create button
+        self.ui.buttons2[text] = QPushButton("{}".format(text), self)
+
+        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KLIKACZE
+
+        self.ui.buttons2[text].clicked.connect(
+            lambda: self.loginProfil(self.ui.buttons2[text].text())
+        )
+        self.ui.buttons2[text].setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding
+        )
+        f = QFont("Segoe UI", defaultSize / 2.5)
+        self.ui.buttons2[text].setFont(f)
+
+        color = ""
+        for i in range(2):
+            color += (str(random.randint(0, 150))) + ","
+        color += str(random.randint(0, 150))
+        QPushButtonStyle = (
+            f"border: none;background-color: rgb({color});border-radius: 10px;"
+        )
+        QPushButton_HoverStyle = f"background-color: rgb(85, 0, 0);"
+        QPushButton_PressedStyle = f"background-color: rgb(170, 0, 0);"
+
+        StyleSheet = (
+            "QPushButton {"
+            + QPushButtonStyle
+            + "} QPushButton:hover {"
+            + QPushButton_HoverStyle
+            + "} QPushButton:pressed {"
+            + QPushButton_PressedStyle
+            + "}"
+        )
+        self.ui.buttons2[text].setStyleSheet(StyleSheet)
+
+        self.ui.gridLayout_3.addWidget(self.ui.buttons2[text], *position2)
+
+    def loginProfil(self, btn):
+        global database_profile
+        database_profile = btn.lower()
+        self.ui.label_28.setText(database_profile)
+        self.reloadButtons(database_profile, 1)
+        self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
+
+    def reloadButtons(self, database_profile, var):
+        global values, valuesmin, valuesmax, mycursor, widthsize, heightsize, values_profiles, values_profiles_letters, values_profiles_min, values_profiles_max
+
+        for i in reversed(range(self.ui.gridLayout.count())):
+            self.ui.gridLayout.itemAt(i).widget().setParent(None)
+
+        self.ui.buttons = {}
+
+        if database_profile == "":
+            return None
+
+        if database_connected == True and logged == True:
+            mycursor.execute(
+                f"SELECT * FROM global_settings WHERE name LIKE '{database_profile}'"
+            )
+            myresult = mycursor.fetchall()
+            values = []
+            valuesb = []
+            valuesmin = []
+            valuesmax = []
+
+            for row in myresult:
+                valuesb = row[1]
+                valuesmin.append(int(row[2]))
+                valuesmax.append(int(row[3]))
+
+            values = valuesb.split(",")
+            for i in values:
+                try:
+                    values.remove("")
+                except Exception:
+                    pass
 
             for i in range(len(values)):
                 # * create buttons for len of values
                 position = positions[i]
                 self.createButton(values[i], position)
-
+            if var == 1:
                 size = ((len(values) / 4) - 1) * 50
-                widthsize, heightsize = 700 + size, 500 + size
+                widthsize, heightsize = 820 + size, 500 + size
                 self.setMinimumSize(widthsize, heightsize)
                 self.resize(widthsize, heightsize)
         else:
-            self.setMinimumSize(700, 500)
-            self.resize(700, 500)"""
+            if var == 1:
+                self.setMinimumSize(800, 500)
+                self.resize(800, 500)
 
     def createButton(self, text, position):
         # * create button
@@ -322,8 +495,8 @@ class MainWindow(QMainWindow):
 
         color = ""
         for i in range(2):
-            color += (str(random.randint(0, 200))) + ","
-        color += str(random.randint(0, 200))
+            color += (str(random.randint(0, 150))) + ","
+        color += str(random.randint(0, 150))
         QPushButtonStyle = (
             f"border: none;background-color: rgb({color});border-radius: 10px;"
         )
@@ -344,8 +517,6 @@ class MainWindow(QMainWindow):
         self.ui.gridLayout.addWidget(self.ui.buttons[text], *position)
 
     def resizeText(self, event):
-        defaultSize = 50
-
         for i in range(len(values)):
             if self.rect().height() > heightsize + 100:
                 if ((self.rect().width() * self.rect().height()) / 1000 * 0.2) > 60:
@@ -360,22 +531,30 @@ class MainWindow(QMainWindow):
 
             self.ui.buttons[values[i]].setFont(f)
 
-    def createFiles(self):
-        pass
-
     def main_page(self):
-        self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
+        global database_profile
+        if checkinternetbool == False:
+            return None
+        try:
+            self.resize(widthsize, heightsize)
+        except Exception:
+            self.resize(700, 500)
+        if database_profile == "":
+            self.reloadButtons2()
+        else:
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
+            try:
+                self.reloadButtons(self, database_profile, 1)
+            except Exception:
+                pass
 
     def logout(self, var):
         global logoutses, logout_database, logged, database_connected, mycursor, mydb
+        if checkinternetbool == False:
+            return None
         if var == 1:
             if logoutses == False:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setText("Information")
-                msg.setInformativeText("Kliknij raz jeszcze aby się wylogować")
-                msg.setWindowTitle("Error")
-                msg.exec_()
+                self.errorexec("Kliknij raz jeszcze aby się wylogować", "Ok")
                 logoutses = True
                 threading.Thread(target=self.logout2, args=(var,)).start()
             else:
@@ -403,14 +582,9 @@ class MainWindow(QMainWindow):
                 mydb.commit()
         elif var == 2:
             if logout_database == False:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setText("Information")
-                msg.setInformativeText(
-                    "Kliknij raz jeszcze aby wylogować się z bazy danych"
+                self.errorexec(
+                    "Kliknij raz jeszcze aby wylogować się z bazy danych", "Ok"
                 )
-                msg.setWindowTitle("Error")
-                msg.exec_()
                 logout_database = True
                 threading.Thread(target=self.logout2, args=(var,)).start()
             else:
@@ -449,33 +623,46 @@ class MainWindow(QMainWindow):
             logout_database = False
 
     def addItemtoDB(self, var):
-        print(var)
-        global values, valuesmin, valuesmax, mycursor, mydb
+        global values, valuesmin, valuesmax, mycursor, mydb, database_profile
         bufor = self.ui.lineEdit_6.text()
         comment = self.ui.lineEdit_7.text()
         if comment == "":
             comment = " "
         if bufor == "":
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText("Wymagana jest nazwa części!")
-            msg.setWindowTitle("Error")
-            msg.exec_()
+            self.errorexec("Wymagana jest nazwa części!", "Ok")
             return None
+        print(database_profile, var)
+        mycursor = mydb.cursor(buffered=True)
         mycursor.execute(
-            f"SELECT * FROM `data` WHERE letter LIKE '{var}' AND name LIKE 'None' ORDER BY `number` ASC"
+            f"SELECT * FROM `{database_profile}` WHERE `letter` LIKE '{var}' AND `name` LIKE 'None'"
         )
         myresult = mycursor.fetchone()
+        if myresult is None:
+            self.errorexec(f"Brak wolnych numerów dla '{var}'!", "Ok")
+            return None
         date = datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S")
+
         mycursor.execute(
-            f"UPDATE `data` SET `number`='{myresult[0]}',`letter`='{myresult[1]}',`name`='{bufor}',`comment`='{comment}',`lrange`='{myresult[4]}',`author`='{userlogin}',`datetime`='{date}' WHERE number = {myresult[0]}"
+            f"UPDATE `{database_profile}` SET `name`='{bufor}',`comment`='{comment}',`author`='{userlogin}',`datetime`='{date}' WHERE `letter` LIKE '{str(myresult[0])}' AND `number`='{int(myresult[1])}'"
         )
         mydb.commit()
+
+        self.ui.label.setVisible(True)
+        self.ui.label_2.setVisible(True)
+        self.ui.label_30.setVisible(True)
+        self.ui.label_31.setVisible(True)
+        self.ui.label_30.setText(bufor)
+        self.ui.label_2.setText(str(myresult[1]))
+
+    def errorexec(self, heading, btnOk):
+        errorUi.errorConstrict(self.error, heading, btnOk)
+        self.error.exec_()
 
 
 class UserLoginClass:
     def __init__(self, selfui):
+        if checkinternetbool == False:
+            return None
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_login)
         try:
             selfui.ui.bn_login.clicked.disconnect()
@@ -484,14 +671,9 @@ class UserLoginClass:
         selfui.ui.bn_login.clicked.connect(lambda: self.login(selfui))
 
     def login(self, selfui):
-        global database_connected, mycursor, logged
+        global database_connected, mycursor, logged, userlogin
         if selfui.ui.lineEdit.text() == "" or selfui.ui.lineEdit_2.text() == "":
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText("Login bądź kod dostępu jest pusty!")
-            msg.setWindowTitle("Error")
-            msg.exec_()
+            MainWindow.errorexec(selfui, "Login bądź kod dostępu jest pusty!", "Ok")
         else:
             if database_connected == True:
                 userlogin = (selfui.ui.lineEdit.text()).title()
@@ -513,39 +695,30 @@ class UserLoginClass:
                     selfui.ui.lineEdit.setPlaceholderText(userlogin)
                     selfui.ui.lineEdit.setText("")
                     selfui.ui.lineEdit_2.setText("")
-                    MainWindow.reloadButtons(selfui)
-                    msg = QMessageBox()
-                    msg.setIcon(QMessageBox.Information)
-                    msg.setText("Information")
-                    msg.setInformativeText("Zalogowano pomyślnie!")
-                    msg.setWindowTitle("Information")
-                    msg.exec_()
+                    MainWindow.reloadButtons(selfui, database_profile, 1)
+                    MainWindow.errorexec(selfui, "Zalogowano pomyślnie!", "Ok")
 
                     logintoall(selfui)
                 else:
                     selfui.ui.lineEdit_2.setText("")
-                    msg = QMessageBox()
-                    msg.setIcon(QMessageBox.Critical)
-                    msg.setText("Error")
-                    msg.setInformativeText(
-                        "Nie można się zalogować, nieprawidłowy kod dostępu!"
+                    MainWindow.errorexec(
+                        selfui,
+                        "Nie można się zalogować, nieprawidłowy kod dostępu!",
+                        "Ok",
                     )
-                    msg.setWindowTitle("Error")
-                    msg.exec_()
             else:
                 selfui.ui.lineEdit_2.setText("")
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
-                msg.setText("Error")
-                msg.setInformativeText(
-                    "Nie można się zalogować, nie jesteś połączony z bazą danych!"
+                MainWindow.errorexec(
+                    selfui,
+                    "Nie można się zalogować, nie jesteś połączony z bazą danych!",
+                    "Ok",
                 )
-                msg.setWindowTitle("Error")
-                msg.exec_()
 
 
 class DatabaseLogin:
     def __init__(self, selfui):
+        if checkinternetbool == False:
+            return None
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_database_login)
         try:
             selfui.ui.bn_databaselogin.clicked.disconnect()
@@ -560,12 +733,9 @@ class DatabaseLogin:
             or selfui.ui.lineEdit_4.text() == ""
             or selfui.ui.lineEdit_5.text() == ""
         ):
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText("Adres hosta, użytkownik bądź hasło jest puste!")
-            msg.setWindowTitle("Error")
-            msg.exec_()
+            MainWindow.errorexec(
+                selfui, "Adres hosta, użytkownik bądź hasło jest puste!", "Ok"
+            )
         else:
             try:
                 mydb = mysql.connector.connect(
@@ -593,16 +763,7 @@ class DatabaseLogin:
                     pass
                 else:
                     mycursor.execute(
-                        "CREATE TABLE global_settings (letter TEXT, rangemin INTEGER, rangemax INTEGER)"
-                    )
-
-                mycursor.execute("SHOW TABLES LIKE 'data'")
-                result = mycursor.fetchone()
-                if result:
-                    pass
-                else:
-                    mycursor.execute(
-                        "CREATE TABLE data (number INTEGER, letter TEXT,name TEXT,comment TEXT, lrange TEXT, author TEXT, datetime TEXT)"
+                        "CREATE TABLE global_settings (name TEXT, letters TEXT, rangemin INTEGER, rangemax INTEGER)"
                     )
 
                 mycursor.execute("SHOW TABLES LIKE 'logs'")
@@ -625,33 +786,31 @@ class DatabaseLogin:
                 selfui.ui.bn_databaselogin.setText("Połączono")
                 logintoall(selfui)
                 if logged == True:
-                    MainWindow.reloadButtons(selfui)
+                    MainWindow.reloadButtons(selfui, database_profile, 1)
                     selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_main)
                 else:
-                    msg = QMessageBox()
-                    msg.setIcon(QMessageBox.Critical)
-                    msg.setText("Error")
-                    msg.setInformativeText(
-                        "Nie zalogowano do sesji. Ustawienia sesji -> Zaloguj"
-                    )
-                    msg.setWindowTitle("Error")
-                    msg.exec_()
+                    pass
             except Exception as e:
                 print(e)
                 selfui.ui.lineEdit_5.setText("")
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
-                msg.setText("Error")
-                msg.setInformativeText(
-                    "Adres hosta, użytkownik bądź hasło jest nieprawidłowe!"
+                MainWindow.errorexec(
+                    selfui,
+                    "Adres hosta, użytkownik bądź hasło jest nieprawidłowe!",
+                    "Ok",
                 )
-                msg.setWindowTitle("Error")
-                msg.exec_()
 
 
 class EditDatabase:
     def __init__(self, selfui):
-        MainWindow.reloadButtons(selfui)
+        if checkinternetbool == False:
+            return None
+        if logged == False:
+            MainWindow.errorexec(selfui, f"Musisz się najpierw zalogować!", "Ok")
+            return None
+        if database_profile == "":
+            MainWindow.errorexec(selfui, f"Musisz najpierw wybrać profil!", "Ok")
+            return None
+        MainWindow.reloadButtons(selfui, database_profile, 0)
         selfui.ui.bn_databaseInfo.setVisible(False)
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_database)
         selfui.ui.stackedWidget_2.setCurrentWidget(selfui.ui.page_database_edit)
@@ -672,41 +831,46 @@ class EditDatabase:
         selfui.ui.comboBox.clear()
 
         mycursor.execute(
-            f"SELECT * FROM `data` WHERE letter LIKE '{bufor}' AND name NOT LIKE 'None' ORDER BY `number` ASC"
+            f"SELECT * FROM `{database_profile}` WHERE letter LIKE '{bufor}' AND name NOT LIKE 'None' ORDER BY `number` ASC"
         )
         buforr = mycursor.fetchall()
         dblist = []
         for row in buforr:
-            dblist.append(bufor + " " + str(row[0]) + " " + str(row[2]))
+            dblist.append(bufor + " " + str(row[1]) + " " + str(row[2]))
         selfui.ui.comboBox.addItems(dblist)
 
     def databaseDel(self, selfui):
         global values, valuesmin, valuesmax, mycursor, mydb
         bufor = selfui.ui.comboBox.currentText()
-        splitted = bufor.split(" ")
-        splitted = int(splitted[1])
-        mycursor.execute(f"SELECT * FROM `data` WHERE number = {splitted}")
-        buforr = mycursor.fetchone()
-
-        mycursor.execute(
-            f"UPDATE `data` SET `number`='{buforr[0]}',`letter`='{buforr[1]}',`name`='None',`comment`='None',`lrange`='{buforr[4]}',`author`='None',`datetime`='None' WHERE number = {splitted}"
-        )
-        mydb.commit()
-        index = selfui.ui.comboBox.findText(bufor)
-        selfui.ui.comboBox.removeItem(index)
-        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-        val = (
-            f"Del '{bufor}'",
-            userlogin,
-            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-        )
-        mycursor.execute(sql, val)
-        mydb.commit()
+        if bufor != "":
+            splitted = bufor.split(" ")
+            mycursor.execute(
+                f"UPDATE `{database_profile}` SET `name`='None',`comment`='None',`author`='None',`datetime`='None' WHERE `number` = {int(splitted[1])} AND `letter` LIKE '{splitted[0]}'"
+            )
+            mydb.commit()
+            index = selfui.ui.comboBox.findText(bufor)
+            selfui.ui.comboBox.removeItem(index)
+            sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+            val = (
+                f"Del '{bufor}'",
+                userlogin,
+                datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+            )
+            mycursor.execute(sql, val)
+            mydb.commit()
 
 
 class ShowDatabase:
     def __init__(self, selfui):
-        MainWindow.reloadButtons(selfui)
+        if checkinternetbool == False:
+            return None
+        if logged == False:
+            MainWindow.errorexec(selfui, f"Musisz się najpierw zalogować!", "Ok")
+            return None
+        if database_profile == "":
+            MainWindow.errorexec(selfui, f"Musisz najpierw wybrać profil!", "Ok")
+            return None
+        MainWindow.reloadButtons(selfui, database_profile, 0)
         selfui.ui.bn_databaseInfo.setVisible(True)
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_database)
         selfui.ui.stackedWidget_2.setCurrentWidget(selfui.ui.page_database_view)
@@ -726,43 +890,78 @@ class ShowDatabase:
         selfui.ui.comboBox.clear()
 
         mycursor.execute(
-            f"SELECT * FROM `data` WHERE letter LIKE '{bufor}' AND name NOT LIKE 'None' ORDER BY `number` ASC"
+            f"SELECT * FROM `{database_profile}` WHERE letter LIKE '{bufor}' AND name NOT LIKE 'None' ORDER BY `number` ASC"
         )
         buforr = mycursor.fetchall()
         dblist = []
         for row in buforr:
-            dblist.append(bufor + " " + str(row[0]) + " " + str(row[2]))
+            dblist.append(bufor + " " + str(row[1]) + " " + str(row[2]))
         selfui.ui.comboBox.addItems(dblist)
 
     def databaseInfo(self, selfui):
         bufor = selfui.ui.comboBox.currentText()
         if bufor != "":
             splitted = bufor.split(" ")
-            splitted = int(splitted[1])
-            mycursor.execute(f"SELECT * FROM `data` WHERE number = {splitted}")
+            mycursor.execute(
+                f"SELECT * FROM `{database_profile}` WHERE number = {splitted[1]} AND letter LIKE '{splitted[0]}'"
+            )
             buforr = mycursor.fetchone()
-            selfui.ui.label_13.setText(f"{buforr[0]}")
-            selfui.ui.label_15.setText(f"{buforr[1]}")
+            selfui.ui.label_13.setText(f"{buforr[1]}")
+            selfui.ui.label_15.setText(f"{buforr[0]}")
             selfui.ui.label_17.setText(f"{buforr[2]}")
             selfui.ui.label_19.setText(f"{buforr[3]}")
-            selfui.ui.label_21.setText(f"{buforr[4]}")
-            selfui.ui.label_23.setText(f"{buforr[5]}")
-            selfui.ui.label_25.setText(f"{buforr[6]}")
+            selfui.ui.label_21.setText(f"{buforr[4]}-{buforr[5]}")
+            selfui.ui.label_23.setText(f"{buforr[6]}")
+            selfui.ui.label_25.setText(f"{buforr[7]}")
 
 
 class SettingsPage:
     def __init__(self, selfui):
         global values_profiles, values_profiles_letters, values_profiles_min, values_profiles_max, mydb, mycursor
+        if logged == False:
+            MainWindow.errorexec(selfui, f"Musisz się najpierw zalogować!", "Ok")
+            return None
+        if checkinternetbool == False:
+            return None
+        selfui.resize(950, 500)
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_settings)
+        selfui.ui.stackedWidget_3.setCurrentWidget(selfui.ui.page_settings_login)
         try:
             selfui.ui.bn_settings_set.clicked.disconnect()
             selfui.ui.bn_settings_dell.clicked.disconnect()
             selfui.ui.bn_settings_add.clicked.disconnect()
+            selfui.ui.bn_settings_save.clicked.disconnect()
+            selfui.ui.bn_settings_delprofile.clicked.disconnect()
+            selfui.ui.bn_settings_login_bn.clicked.disconnect()
         except Exception:
             pass
         selfui.ui.bn_settings_set.clicked.connect(lambda: self.setProfile(selfui))
         selfui.ui.bn_settings_dell.clicked.connect(lambda: self.delLetter(selfui))
         selfui.ui.bn_settings_add.clicked.connect(lambda: self.addLetter(selfui))
+        selfui.ui.bn_settings_save.clicked.connect(lambda: self.SaveProfile(selfui))
+        selfui.ui.bn_settings_delprofile.clicked.connect(
+            lambda: self.delProfile(selfui)
+        )
+        selfui.ui.bn_settings_login_bn.clicked.connect(
+            lambda: self.settingslogin(selfui)
+        )
+
+        selfui.ui.comboBox_3.clear()
+        selfui.ui.comboBox_4.clear()
+        self.reloadCombo(selfui)
+
+    def settingslogin(self, selfui):
+        mycursor.execute("SELECT secret FROM password")
+        myresult = mycursor.fetchone()
+        if str(selfui.ui.lineEdit_12.text()) != str(myresult[0]):
+            MainWindow.errorexec(selfui, f"Niepoprawny kod dostępu!", "Ok")
+            return None
+        else:
+            selfui.ui.stackedWidget_3.setCurrentWidget(selfui.ui.page_settings_global)
+        selfui.ui.lineEdit_12.setText("")
+
+    def reloadCombo(self, selfui):
+        global values_profiles, values_profiles_letters, values_profiles_min, values_profiles_max, mydb, mycursor
         mycursor.execute("SELECT * FROM global_settings")
         myresult = mycursor.fetchall()
         values_profiles = []
@@ -797,7 +996,6 @@ class SettingsPage:
                 myresult.remove("")
             except Exception:
                 pass
-        print(myresult)
         selfui.ui.comboBox_4.addItems(myresult)
 
     def delLetter(self, selfui):
@@ -826,14 +1024,24 @@ class SettingsPage:
         mycursor.execute(
             f"UPDATE `global_settings` SET `letters`='{bufor3}' WHERE name='{bufor}'"
         )
+        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+        val = (
+            f"DELETE letter `{bufor2}` from `{bufor}`",
+            userlogin,
+            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+        )
+        mycursor.execute(sql, val)
+        date = datetime.datetime.now().strftime("m%m_d%d_h%H_s%S")
+        mycursor.execute(
+            f"UPDATE `{bufor}` SET letter='{date}_{bufor2}' WHERE letter='{bufor2}'"
+        )
         mydb.commit()
         self.setProfile(selfui)
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setText("Information")
-        msg.setInformativeText(f"Usunięto literę '{bufor2}' z profilu '{bufor}'")
-        msg.setWindowTitle("Information")
-        msg.exec_()
+        MainWindow.errorexec(
+            selfui, f"Usunięto literę '{bufor2}' z profilu '{bufor}'", "Ok"
+        )
+
+        MainWindow.reloadButtons(selfui, database_profile, 0)
 
     def addLetter(self, selfui):
         global mydb, mycursor
@@ -843,52 +1051,146 @@ class SettingsPage:
         ):
             return None
         bufor = selfui.ui.comboBox_3.currentText()
-        bufor2 = selfui.ui.lineEdit_11.text()
+        bufor2 = selfui.ui.lineEdit_11.text().upper()
 
-        mycursor.execute(f"SELECT letters FROM global_settings WHERE name='{bufor}'")
-        myresult = mycursor.fetchone()
-        myresult = (
-            str(myresult)
+        mycursor.execute(f"SELECT * FROM global_settings WHERE name='{bufor}'")
+        myresult = mycursor.fetchall()
+
+        valuesl = []
+        valueslmin = []
+        valueslmax = []
+
+        for row in myresult:
+            valuesl = row[1]
+            valueslmin = int(row[2])
+            valueslmax = int(row[3])
+        valuesl = (
+            str(valuesl)
             .replace("(", "")
             .replace(")", "")
             .replace("'", "")
             .replace(" ", "")
         )
-        myresult = myresult.split(",")
-        for i in range(len(myresult)):
+        valuesl = valuesl.split(",")
+        for i in range(len(valuesl)):
             try:
-                myresult.remove("")
+                valuesl.remove("")
             except Exception:
                 pass
 
-        if bufor2 in myresult:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText("Już istnieje taka litera")
-            msg.setWindowTitle("Error")
-            msg.exec_()
+        if bufor2 in valuesl:
+            MainWindow.errorexec(selfui, "Już istnieje taka litera", "Ok")
             return None
         bufor3 = ""
-        for i in myresult:
+        for i in valuesl:
             bufor3 += f"{str(i)},"
         bufor3 += bufor2
 
         mycursor.execute(
             f"UPDATE `global_settings` SET `letters`='{bufor3}' WHERE name='{bufor}'"
         )
-        mydb.commit()
         selfui.ui.lineEdit_11.setText("")
+
+        for i in range(valueslmin, valueslmax + 1):
+            sql = f"INSERT INTO {bufor} (letter,number, name, comment,rangemin,rangemax,author,datetime) VALUES (%s, %s, %s,%s,%s,%s,%s,%s)"
+            val = (
+                bufor2,
+                i,
+                "None",
+                "None",
+                valueslmin,
+                valueslmax,
+                "None",
+                "None",
+            )
+            print(valuesl, i, valueslmin, valueslmax)
+            mycursor.execute(sql, val)
+        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+        val = (
+            f"Add letter `{bufor2}` to `{bufor}` with {valueslmax-valueslmin} rows",
+            userlogin,
+            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+        )
+        mycursor.execute(sql, val)
+        mydb.commit()
+
         self.setProfile(selfui)
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setText("Information")
-        msg.setInformativeText(f"Dodano literę '{bufor2}' do profilu '{bufor}'")
-        msg.setWindowTitle("Information")
-        msg.exec_()
-        
+        MainWindow.errorexec(
+            selfui, f"Dodano literę '{bufor2}' do profilu '{bufor}'", "Ok"
+        )
+
+        MainWindow.reloadButtons(selfui, database_profile, 0)
+
     def SaveProfile(self, selfui):
-        pass
+        mycursor.execute(f"SELECT name FROM global_settings")
+        myresult = mycursor.fetchall()
+        bufor = selfui.ui.lineEdit_8.text()
+        for i in myresult:
+            if bufor in i:
+                MainWindow.errorexec(selfui, "Już istnieje taki profil", "Ok")
+        if (
+            selfui.ui.lineEdit_8.text() == ""
+            or selfui.ui.lineEdit_9.text() == ""
+            or selfui.ui.lineEdit_10.text() == ""
+            or selfui.ui.lineEdit_9.text().isnumeric() == False
+            or selfui.ui.lineEdit_10.text().isnumeric() == False
+        ):
+            MainWindow.errorexec(
+                selfui,
+                "Nazwa, zakres minimalny albo maksymalny jest pustym polem",
+                "Ok",
+            )
+            return None
+        if int(selfui.ui.lineEdit_10.text()) < int(selfui.ui.lineEdit_9.text()):
+            MainWindow.errorexec(
+                selfui,
+                "Maksymalny zakres nie może być mniejszy od minimalnego!",
+                "Ok",
+            )
+            return None
+        bufor = selfui.ui.lineEdit_8.text().replace(" ", "_")
+        mycursor.execute(
+            f"INSERT INTO `global_settings`(`name`, `letters`, `rangemin`, `rangemax`) VALUES ('{bufor}','','{selfui.ui.lineEdit_9.text()}','{selfui.ui.lineEdit_10.text()}')"
+        )
+        mycursor.execute(
+            f"CREATE TABLE {bufor} (letter TEXT, number INTEGER, name TEXT, comment TEXT, rangemin INTEGER, rangemax INTEGER, author TEXT, datetime TEXT)"
+        )
+        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+        val = (
+            f"Saved profile `{bufor}`",
+            userlogin,
+            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+        )
+        mycursor.execute(sql, val)
+        mydb.commit()
+
+        self.reloadCombo(selfui)
+        self.setProfile(selfui)
+        selfui.ui.lineEdit_8.setText("")
+        selfui.ui.lineEdit_9.setText("")
+        selfui.ui.lineEdit_10.setText("")
+        MainWindow.errorexec(selfui, f"Dodano profil {bufor}", "Ok")
+
+    def delProfile(self, selfui):
+        global database_profile
+        bufor = selfui.ui.comboBox_3.currentText()
+        mycursor.execute(f"DELETE FROM `global_settings` WHERE name='{bufor}'")
+        date = datetime.datetime.now().strftime("m%m_d%d_h%H_s%S")
+        mycursor.execute(f"RENAME TABLE {bufor} TO del_{date}_{bufor}")
+        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+        val = (
+            f"DELETE DATABASE `{bufor}`",
+            userlogin,
+            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+        )
+        mycursor.execute(sql, val)
+
+        mydb.commit()
+
+        database_profile = ""
+
+        self.reloadCombo(selfui)
+        self.setProfile(selfui)
 
 
 if __name__ == "__main__":
