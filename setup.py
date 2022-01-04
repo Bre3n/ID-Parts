@@ -109,7 +109,6 @@ def runAsAdmin(cmdLine=None, wait=True):
 if __name__ == "__main__":
     import configparser
     import datetime
-    import logging
     import math
     import os
     import shutil
@@ -235,16 +234,5 @@ if __name__ == "__main__":
                     os.remove(f"{sciezka}/{buforr}")
         if havetorestart == True:
             os.execv(sys.executable, ["python"] + sys.argv)
-
-        logging.shutdown()
-        desktop = winshell.desktop()
-        cwd = os.getcwd()
-        if path.exists(f"{desktop}/PartsID.lnk") == False:
-            path = os.path.join(desktop, "PartsID.lnk")
-            target = f"{sciezka}\\partsID_main.exe"
-            shell = win32com.client.Dispatch("WScript.Shell")
-            shortcut = shell.CreateShortCut(path)
-            shortcut.Targetpath = target
-            shortcut.save()
         os.chdir(f"{sciezka}/")
         os.system(f"{sciezka}/partsID_main.exe")
