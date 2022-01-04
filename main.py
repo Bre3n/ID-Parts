@@ -2,6 +2,7 @@ import base64
 import datetime
 import os
 import random
+import psutil
 import sys
 import threading
 import time
@@ -307,6 +308,12 @@ class MainWindow(QMainWindow):
         defaultSize = 50
 
         print(datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"))
+
+        PROCNAME = "partsID.exe"
+
+        for proc in psutil.process_iter():
+            if proc.name() == PROCNAME:
+                proc.kill()
 
         user = os.getlogin()
         inipath = f"C:/Users/{user}/AppData/LocalLow/PartsID"

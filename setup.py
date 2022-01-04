@@ -140,6 +140,14 @@ if __name__ == "__main__":
         runAsAdmin()
         exit()
 
+    import psutil
+
+    PROCNAME = "partsID_main.exe"
+
+    for proc in psutil.process_iter():
+        if proc.name() == PROCNAME:
+            proc.kill()
+
     now_date = str(datetime.date.today())
     user = os.getlogin()
     buffor = False
@@ -170,7 +178,7 @@ if __name__ == "__main__":
         f.close()
         onlyfiles = listdir(sciezka)
         for i in onlyfiles:
-            if i != "version.txt" and i != "main.exe":
+            if i != "version.txt" and i != "partsID_main.exe":
                 try:
                     os.remove(f"{sciezka}/{i}")
                 except OSError:
@@ -232,11 +240,11 @@ if __name__ == "__main__":
         desktop = winshell.desktop()
         cwd = os.getcwd()
         if path.exists(f"{desktop}/PartsID.lnk") == False:
-            path = os.path.join(desktop, "MLauncher.lnk")
-            target = f"{sciezka}\\main.exe"
+            path = os.path.join(desktop, "PartsID.lnk")
+            target = f"{sciezka}\\partsID_main.exe"
             shell = win32com.client.Dispatch("WScript.Shell")
             shortcut = shell.CreateShortCut(path)
             shortcut.Targetpath = target
             shortcut.save()
         os.chdir(f"{sciezka}/")
-        os.system(f"{sciezka}/main.exe")
+        os.system(f"{sciezka}/partsID_main.exe")
