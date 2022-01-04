@@ -641,18 +641,34 @@ class MainWindow(QMainWindow):
             self.errorexec(f"Brak wolnych numerów dla '{var}'!", "Ok")
             return None
         date = datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S")
-
-        mycursor.execute(
-            f"UPDATE `{database_profile}` SET `name`='{bufor}',`comment`='{comment}',`author`='{userlogin}',`datetime`='{date}' WHERE `letter` LIKE '{str(myresult[0])}' AND `number`='{int(myresult[1])}'"
-        )
-        mydb.commit()
-
-        self.ui.label.setVisible(True)
-        self.ui.label_2.setVisible(True)
-        self.ui.label_30.setVisible(True)
-        self.ui.label_31.setVisible(True)
-        self.ui.label_30.setText(bufor)
-        self.ui.label_2.setText(str(myresult[1]))
+        try:
+            mycursor.execute(
+                f"UPDATE `{database_profile}` SET `name`='{bufor}',`comment`='{comment}',`author`='{userlogin}',`datetime`='{date}' WHERE `letter` LIKE '{str(myresult[0])}' AND `number`='{int(myresult[1])}'"
+            )
+            mydb.commit()
+            mycursor.execute(
+                f"SELECT * FROM `{database_profile}` WHERE `name` LIKE '{bufor}' AND `comment` LIKE '{comment}' AND `datetime`='{date}'"
+            )
+            myresultt = mycursor.fetchone()
+            if myresultt:
+                self.ui.label.setVisible(True)
+                self.ui.label_2.setVisible(True)
+                self.ui.label_30.setVisible(True)
+                self.ui.label_31.setVisible(True)
+                self.ui.label_30.setText(bufor)
+                self.ui.label_2.setText(str(myresult[1]))
+            else:
+                self.ui.label.setVisible(False)
+                self.ui.label_2.setVisible(False)
+                self.ui.label_30.setVisible(True)
+                self.ui.label_31.setVisible(False)
+                self.ui.label_30.setText("Spróbuj jeszcze raz")
+        except Exception:
+            self.ui.label.setVisible(False)
+            self.ui.label_2.setVisible(False)
+            self.ui.label_30.setVisible(True)
+            self.ui.label_31.setVisible(False)
+            self.ui.label_30.setText("Spróbuj jeszcze raz")
 
     def errorexec(self, heading, btnOk):
         errorUi.errorConstrict(self.error, heading, btnOk)
