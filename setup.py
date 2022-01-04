@@ -1,6 +1,6 @@
 # autoinstaller and autoupdater all files of program
 
-filelink = "https://raw.githubusercontent.com/Bre3n/ID-Parts/master/links.txt?token=AJ2V6E543VHITVMFQJYZ673B2SZ32"
+filelink = "https://raw.githubusercontent.com/Bre3n/ID-Parts/master/links.txt"
 
 
 def downloader(url, path, var):
@@ -58,6 +58,54 @@ def pliki(sciezka):
             )
 
 
+def isUserAdmin():
+
+    if os.name == "nt":
+        import ctypes
+
+        try:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+        except:
+            traceback.print_exc()
+            print("Admin check failed, assuming not an admin.")
+            return False
+
+
+def runAsAdmin(cmdLine=None, wait=True):
+
+    import win32api, win32con, win32event, win32process
+    from win32com.shell.shell import ShellExecuteEx
+    from win32com.shell import shellcon
+
+    python_exe = sys.executable
+
+    if cmdLine is None:
+        cmdLine = [python_exe] + sys.argv
+    elif type(cmdLine) not in (types.TupleType, types.ListType):
+        raise ValueError
+    cmd = '"%s"' % (cmdLine[0],)
+    params = " ".join(['"%s"' % (x,) for x in cmdLine[1:]])
+    cmdDir = ""
+    showCmd = win32con.SW_SHOWNORMAL
+    lpVerb = "runas"
+    procInfo = ShellExecuteEx(
+        nShow=showCmd,
+        fMask=shellcon.SEE_MASK_NOCLOSEPROCESS,
+        lpVerb=lpVerb,
+        lpFile=cmd,
+        lpParameters=params,
+    )
+
+    if wait:
+        procHandle = procInfo["hProcess"]
+        obj = win32event.WaitForSingleObject(procHandle, win32event.INFINITE)
+        rc = win32process.GetExitCodeProcess(procHandle)
+    else:
+        rc = None
+
+    return rc
+
+
 if __name__ == "__main__":
     import configparser
     import datetime
@@ -73,6 +121,7 @@ if __name__ == "__main__":
     from os import listdir, path
     from os.path import isfile, join
     from tkinter import messagebox
+    import sys, os, traceback, types
 
     import coloredlogs
     import enlighten
@@ -87,6 +136,10 @@ if __name__ == "__main__":
 
     os.system("cls")
 
+    if not isUserAdmin():
+        runAsAdmin()
+        exit()
+
     now_date = str(datetime.date.today())
     user = os.getlogin()
     buffor = False
@@ -97,8 +150,6 @@ if __name__ == "__main__":
     txtFile = f"{sciezka}/ver.txt"
     if path.exists(sciezka) == False:
         os.mkdir(sciezka)
-    if path.exists(f"{sciezka}/bin") == False:
-        os.mkdir(f"{sciezka}/bin")
 
     havetorestart = False
     downloader(
@@ -130,8 +181,6 @@ if __name__ == "__main__":
             contentv = f.readlines()
             contentv = [x.strip() for x in contentv]
         if int(len(content) / 2) != int(len(contentv)):
-            print(int(len(content) / 2))
-            print(int(len(contentv)))
             f = open(f"{sciezka}/version.txt", "w")
             for i in range(int(len(content) / 2)):
                 f.write("None\n")
@@ -189,8 +238,5 @@ if __name__ == "__main__":
             shortcut = shell.CreateShortCut(path)
             shortcut.Targetpath = target
             shortcut.save()
-            f = open(f"{sciezka}/cache/shortcut.txt", "w")
-            f.write("Shortcut created")
-            f.close()
         os.chdir(f"{sciezka}/")
-        subprocess.call(["python", f"{sciezka}/main.py"])
+        os.system(f"{sciezka}/main.exe")
