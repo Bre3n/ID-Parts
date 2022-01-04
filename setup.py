@@ -1,6 +1,6 @@
 # autoinstaller and autoupdater all files of program
 
-filelink = "https://raw.githubusercontent.com/Bre3n/MLauncher/master/files/links.txt"
+filelink = "https://raw.githubusercontent.com/Bre3n/ID-Parts/master/links.txt?token=AJ2V6E543VHITVMFQJYZ673B2SZ32"
 
 
 def downloader(url, path, var):
