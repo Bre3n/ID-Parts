@@ -24,6 +24,9 @@ author = "Mateusz Goinda"
 html_context = {
     'display_github': False,
             }
+html_theme_options = {
+    'display_version': False}
+html_show_sourcelink = False
 
 # The full version, including alpha/beta/rc tags
 release = "1.0"
