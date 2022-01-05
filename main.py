@@ -355,6 +355,12 @@ class MainWindow(QMainWindow):
             lambda: SettingsPage(self)
         )
 
+        f = open(f"{inipath}/version.txt", "r")
+        bufor = f.read().replace(" ", "").split("==")
+        f.close()
+        bufor = bufor[1]
+        self.ui.actionversion.setText(f"v{bufor}")
+
         #! connect to database first!!
         self.reloadButtons2()
 
@@ -875,7 +881,7 @@ class EditDatabase:
             selfui.ui.comboBox.removeItem(index)
             sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
             val = (
-                f"Del '{bufor}'",
+                f"Del '{bufor}' from '{database_profile}'",
                 userlogin,
                 datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
             )
@@ -1126,7 +1132,6 @@ class SettingsPage:
                 "None",
                 "None",
             )
-            print(valuesl, i, valueslmin, valueslmax)
             mycursor.execute(sql, val)
         sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
         val = (
