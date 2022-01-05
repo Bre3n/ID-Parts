@@ -22,11 +22,10 @@ copyright = "2022, Mateusz Goinda"
 author = "Mateusz Goinda"
 
 html_context = {
-    'display_github': False,
-            }
-html_theme_options = {
-    'display_version': False}
-html_show_sourcelink = False
+"display_github": False, # Add 'Edit on Github' link instead of 'View page source'
+"last_updated": True,
+"commit": False,
+}
 
 # The full version, including alpha/beta/rc tags
 release = "1.0"
