@@ -21,6 +21,10 @@ project = "PartsID"
 copyright = "2022, Mateusz Goinda"
 author = "Mateusz Goinda"
 
+html_context = {
+    'display_github': False,
+            }
+
 # The full version, including alpha/beta/rc tags
 release = "1.0"
 
