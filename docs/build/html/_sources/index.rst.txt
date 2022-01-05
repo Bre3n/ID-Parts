@@ -1,15 +1,23 @@
-Witaj w dokumantacji PartsID!
-===================================
+Witaj w dokumentacji programu PartsID!
+==================================================
+
 
 .. toctree::
    :maxdepth: 2
-   :caption: Guide:
 
+   installation/index
+   runProgram/index
+   addingtodb
+   database/index
 
+Narzędzia administratora
 
-Indeksy i tabele
-==================
+.. toctree::
+   :maxdepth: 2
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   menage/index
+
+.. toctree::
+   :maxdepth: 2
+
+   changelog

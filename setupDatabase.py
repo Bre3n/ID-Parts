@@ -37,3 +37,4 @@ if __name__ == "__main__":
         a = input("")
     except mysql.connector.Error as err:
         print("Coś poszło nie tak, może są niepoprawne dane logowania ", err)
+        a = input("")
