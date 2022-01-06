@@ -10,6 +10,7 @@ import requests
 from multiprocessing import Process
 from os import path
 import ctypes
+import webbrowser
 
 import mysql.connector
 from cryptography.fernet import Fernet
@@ -360,6 +361,9 @@ class MainWindow(QMainWindow):
         f.close()
         bufor = bufor[1]
         self.ui.actionversion.setText(f"v{bufor}")
+        self.ui.actionversion.triggered.connect(
+            lambda: webbrowser.open("https://id-parts.readthedocs.io/pl/latest/")
+        )
 
         #! connect to database first!!
         self.reloadButtons2()

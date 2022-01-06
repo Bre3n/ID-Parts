@@ -1,3 +1,6 @@
+Zarządzanie bazą danych
+========================
+
 .. toctree::
    :maxdepth: 2
 

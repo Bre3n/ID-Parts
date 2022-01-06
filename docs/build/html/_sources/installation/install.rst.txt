@@ -3,7 +3,7 @@ Inicjacja bazy danych
 
 .. warning::
 
-   Inicjacje przeprowadza się tylko raz!
+   Inicjacje przeprowadza się tylko raz! Przed podłączeniem jakiegokolwiek użytkownika do bazy danych!
 
 * Aby zainicjować tworzenie niezbędnych katalogów i tabel należy włączyć "setupDatabase.exe"
 * Po włączeniu należy wpisać adres bazy danych, użytkowanika i hasło do bazy.

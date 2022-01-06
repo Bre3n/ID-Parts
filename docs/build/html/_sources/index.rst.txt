@@ -7,7 +7,7 @@ Witaj w dokumentacji programu PartsID!
 
    installation/index
    runProgram/index
-   addingtodb
+   addtodb/index
    database/index
 
 Narzędzia administratora

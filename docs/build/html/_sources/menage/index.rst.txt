@@ -1,7 +1,9 @@
 Zarządzanie profilami
 =====================
 
-| Zarządzać można tylko w przypadku posiadania uprawnień do tego
+.. warning::
+
+   Zarządzać można tylko w przypadku posiadania kodu dostępu administratora
 
 | Należy się zalogować a ukaże nam się interfejs zarządzania
 

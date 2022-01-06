@@ -13,6 +13,7 @@ Usuwanie wpisów z bazy danych
 .. figure:: /img/editdb3.png
 
 | Po wykonaniu danych kroków część zostanie usunięta z bazy danych
-| 
-| 
-| UWAGA: Część usunie się z bazy i z listy w zakładce "Baza danych" na komputerze na którym jest ona usuwana. Niestety na innych klientach będzie ona widoczna do momentu zrestartowania programu. Wszystko działa poprawnie mimo to, jedynie takie małe wprowadzenie użytkownika w błąd.
+
+.. warning::
+
+    UWAGA: Część usunie się z bazy i z listy w zakładce "Baza danych" na komputerze na którym jest ona usuwana. Niestety na innych klientach będzie ona widoczna do momentu zrestartowania programu. Wszystko działa poprawnie mimo to, jedynie takie małe wprowadzenie użytkownika w błąd.
