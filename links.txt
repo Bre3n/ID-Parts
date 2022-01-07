@@ -1,2 +1,2 @@
-partsID_main.exe == 1.1
-https://www.dropbox.com/s/abbrxwgbsxwc6v8/main.exe?dl=1
+partsID_main.exe == 1.1.1
+https://raw.githubusercontent.com/Bre3n/ID-Parts/master/dist/main.exe
