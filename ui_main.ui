@@ -422,7 +422,7 @@ border-top: 5px solid red;
                  </font>
                 </property>
                 <property name="text">
-                 <string>Adres hosta:</string>
+                 <string>Adres hosta: </string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -438,7 +438,7 @@ border-top: 5px solid red;
                  </font>
                 </property>
                 <property name="text">
-                 <string>Użytkownik:</string>
+                 <string>Użytkownik: </string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -454,7 +454,7 @@ border-top: 5px solid red;
                  </font>
                 </property>
                 <property name="text">
-                 <string>Hasło:</string>
+                 <string>Hasło: </string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -586,6 +586,7 @@ QLineEdit:disabled {
              <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(50,150,50);
+border-radius:5px;
 }
 QPushButton:hover {
 	background-color: rgb(100,180,100);
@@ -596,6 +597,9 @@ background-color: rgb(50,150,50);
             </property>
             <property name="text">
              <string>Zaloguj</string>
+            </property>
+            <property name="shortcut">
+             <string>Return</string>
             </property>
            </widget>
           </item>
@@ -609,6 +613,203 @@ background-color: rgb(50,150,50);
          <layout class="QHBoxLayout" name="horizontalLayout_12">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_12">
+            <item>
+             <widget class="QLabel" name="label_38">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Szukaj po pełnej nazwie, numerze, literze lub autorze</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_22">
+              <item>
+               <spacer name="horizontalSpacer_9">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="db_radiobox">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QRadioButton {
+    color:black;
+}
+
+QRadioButton::indicator {
+    width: 10px;
+    height: 10px;
+}
+
+QRadioButton::indicator:unchecked {
+    border:2px solid rgb(51,51,51);
+	background:rgb(91,90,90);
+}
+
+QCheckBox::indicator:unchecked:pressed {
+	border:2px solid rgb(51,51,51);
+   	background:rgb(0,143,170);
+}
+
+QRadioButton::indicator:checked {
+	background-color:rgb(0,143,170);
+    border: 2px solid rgb(51,51,51);
+}
+
+QRadioButton::indicator:checked:pressed {
+    border:2px solid rgb(51,51,51);
+	background:rgb(91,90,90);
+}
+</string>
+                </property>
+                <property name="text">
+                 <string>Część nazwy (gdy znamy tylko część nazwy)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_11">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_16">
+              <item>
+               <widget class="QPushButton" name="bn_database_back">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>18</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(200,66,66);
+	border-radius:5px;
+}
+QPushButton:hover {
+	background-color: rgb(230,80,80);
+}
+QPushButton:pressed {
+background-color: rgb(190,60,60);
+}</string>
+                </property>
+                <property name="text">
+                 <string>&lt;--</string>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>35</width>
+                  <height>35</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_13">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>16</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+	color:rgb(255,255,255);
+	border:2px solid rgb(51,51,51);
+	border-radius:4px;
+	background:rgb(51,51,51);
+}
+
+QLineEdit:disabled {
+	color:rgb(255,255,255);
+	border:2px solid rgb(112,112,112);
+	border-radius:4px;
+	background:rgb(112,112,112);
+}</string>
+                </property>
+                <property name="placeholderText">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="bn_database_search">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>16</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(50,150,50);
+border-radius:7px;
+}
+QPushButton:hover {
+	background-color: rgb(100,180,100);
+}
+QPushButton:pressed {
+background-color: rgb(50,150,50);
+}</string>
+                </property>
+                <property name="text">
+                 <string> Szukaj </string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_15">
               <item>
@@ -645,6 +846,7 @@ background-color: rgb(50,150,50);
                  <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(50,150,50);
+border-radius:7px;
 }
 QPushButton:hover {
 	background-color: rgb(100,180,100);
@@ -655,6 +857,9 @@ background-color: rgb(50,150,50);
                 </property>
                 <property name="text">
                  <string> Ustaw </string>
+                </property>
+                <property name="shortcut">
+                 <string>Return</string>
                 </property>
                </widget>
               </item>
@@ -677,7 +882,26 @@ background-color: rgb(50,150,50);
               <property name="maxVisibleItems">
                <number>50</number>
               </property>
+              <property name="placeholderText">
+               <string/>
+              </property>
              </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::MinimumExpanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
             <item>
              <spacer name="verticalSpacer">
@@ -712,6 +936,7 @@ background-color: rgb(50,150,50);
              <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(150,60,180);
+border-radius:5px;
 }
 QPushButton:hover {
 	background-color: rgb(180,70,210);
@@ -724,6 +949,9 @@ background-color: rgb(150,60,180);
              <string>&gt;
 &gt;
 &gt;</string>
+            </property>
+            <property name="shortcut">
+             <string>Return</string>
             </property>
            </widget>
           </item>
@@ -742,6 +970,22 @@ background-color: rgb(150,60,180);
               </property>
               <widget class="QWidget" name="page_database_view">
                <layout class="QVBoxLayout" name="verticalLayout_15">
+                <item>
+                 <spacer name="horizontalSpacer_10">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Expanding</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                 <item>
                  <layout class="QVBoxLayout" name="verticalLayout_14">
                   <item>
@@ -1036,7 +1280,51 @@ background-color: rgb(150,60,180);
                 <item>
                  <layout class="QVBoxLayout" name="verticalLayout_16">
                   <item>
+                   <spacer name="verticalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_39">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>20</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="wordWrap">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <widget class="QPushButton" name="bn_databaseDel">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="font">
                      <font>
                       <family>Segoe UI</family>
@@ -1047,6 +1335,7 @@ background-color: rgb(150,60,180);
                      <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(200,66,66);
+border-radius:5px;
 }
 QPushButton:hover {
 	background-color: rgb(230,80,80);
@@ -1059,6 +1348,32 @@ background-color: rgb(190,60,60);
                      <string>Usuń</string>
                     </property>
                    </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_8">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_2">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
                   </item>
                  </layout>
                 </item>
@@ -1089,7 +1404,7 @@ background-color: rgb(190,60,60);
                  </font>
                 </property>
                 <property name="text">
-                 <string>Login:</string>
+                 <string>Login: </string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1105,7 +1420,7 @@ background-color: rgb(190,60,60);
                  </font>
                 </property>
                 <property name="text">
-                 <string>Kod/Hasło:</string>
+                 <string>Kod dostępu: </string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1209,6 +1524,7 @@ QLineEdit:disabled {
              <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(50,150,50);
+border-radius:5px;
 }
 QPushButton:hover {
 	background-color: rgb(100,180,100);
@@ -1624,7 +1940,7 @@ background-color: rgb(50,150,50);
 }</string>
                     </property>
                     <property name="text">
-                     <string>Dodaj literę</string>
+                     <string> Dodaj literę </string>
                     </property>
                     <property name="flat">
                      <bool>true</bool>
@@ -1808,6 +2124,7 @@ QLineEdit:disabled {
                    <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(50,150,50);
+border-radius:5px;
 }
 QPushButton:hover {
 	background-color: rgb(100,180,100);
@@ -1817,7 +2134,10 @@ background-color: rgb(50,150,50);
 }</string>
                   </property>
                   <property name="text">
-                   <string>Wprowadź</string>
+                   <string> Wprowadź </string>
+                  </property>
+                  <property name="shortcut">
+                   <string>Return</string>
                   </property>
                  </widget>
                 </item>
@@ -1878,7 +2198,7 @@ background-color: rgb(50,150,50);
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>24</pointsize>
+              <pointsize>28</pointsize>
              </font>
             </property>
             <property name="text">

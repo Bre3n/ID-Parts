@@ -1,18 +1,17 @@
 import base64
+import ctypes
 import datetime
 import os
 import random
-import psutil
 import sys
 import threading
 import time
-import requests
+import webbrowser
 from multiprocessing import Process
 from os import path
-import ctypes
-import webbrowser
-
 import mysql.connector
+import psutil
+import requests
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -203,7 +202,11 @@ def check_connection(self):
             return None
         try:
             request = requests.get(url, timeout=5)
-            if self.ui.stackedWidget.currentIndex() == 6:
+            if (
+                self.ui.stackedWidget.currentIndex() == 6
+                and self.ui.label_37.text()
+                == "Brak połączenia z internetem! Połącz się z siecią"
+            ):
                 self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
                 self.ui.label_36.setText("")
                 self.ui.label_37.setText(
@@ -230,35 +233,31 @@ class errorUi(QDialog):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
-        # -----> CLOSE APPLICATION FUNCTION BUTTON: CORRESPONDING TO THE bn_ok OF THE ERRORBOX
         self.e.bn_ok.clicked.connect(lambda: self.close())
 
-        # SAME AD DESCRIBED IN COMMEND (C2)
-        # ---> MOVING THE WINDOW WHEN LEFT MOUSE PRESSED AND DRAGGED OVER ERRORBOX TOPBAR
-        self.dragPos = self.pos()  # INITIAL POSOTION OF THE ERRORBOX
+        self.dragPos = self.pos()
 
         def moveWindow(event):
-            # MOVE WINDOW
             if event.buttons() == Qt.LeftButton:
                 self.move(self.pos() + event.globalPos() - self.dragPos)
                 self.dragPos = event.globalPos()
                 event.accept()
 
-        # WIDGET TO MOVE
-        self.e.frame_top.mouseMoveEvent = moveWindow  # CALLING THE FUNCTION TO CJANGE THE POSITION OF THE ERRORBOX DURING MOUSE DRAG
-        ################
+        self.e.frame_top.mouseMoveEvent = moveWindow
 
-    # ----> FUNCTION TO CAPTURE THE INITIAL POSITION OF THE MOUSE
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
 
-    #############################################
-
-    # SAME AS DESCRIBED IN COMMEND (C3)
-    # -------> SETTING THE ERRORBOX CONFIGRATION: TEXT IN BUTTON, LABEL, HEADING
     def errorConstrict(self, heading, btnOk):
         self.e.lab_heading.setText(heading)
         self.e.bn_ok.setText(btnOk)
+
+
+def loginerror(self):
+    time.sleep(1)
+    self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
+    self.ui.label_36.setText("!")
+    self.ui.label_37.setText("Zaloguj się do bazy danych i profilu aby kontynuować")
 
 
 class MainWindow(QMainWindow):
@@ -323,6 +322,9 @@ class MainWindow(QMainWindow):
 
         logintoall(self)
         threading.Thread(target=check_connection, args=(self,)).start()
+
+        if logged == False:
+            threading.Thread(target=loginerror, args=(self,)).start()
 
         self.ui.buttons = {}
 
@@ -844,7 +846,6 @@ class EditDatabase:
             MainWindow.errorexec(selfui, f"Musisz najpierw wybrać profil!", "Ok")
             return None
         MainWindow.reloadButtons(selfui, database_profile, 0)
-        selfui.ui.bn_databaseInfo.setVisible(False)
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_database)
         selfui.ui.stackedWidget_2.setCurrentWidget(selfui.ui.page_database_edit)
         global values, valuesmin, valuesmax
@@ -853,13 +854,83 @@ class EditDatabase:
         try:
             selfui.ui.bn_databaseSet.clicked.disconnect()
             selfui.ui.bn_databaseDel.clicked.disconnect()
+            selfui.ui.bn_databaseInfo.clicked.disconnect()
+            selfui.ui.bn_database_search.clicked.disconnect()
+            selfui.ui.bn_database_back.clicked.disconnect()
         except Exception:
             pass
         selfui.ui.bn_databaseSet.clicked.connect(lambda: self.databaseSet(selfui))
         selfui.ui.bn_databaseDel.clicked.connect(lambda: self.databaseDel(selfui))
+        selfui.ui.bn_databaseInfo.clicked.connect(lambda: self.databaseInfo(selfui))
+        selfui.ui.bn_database_search.clicked.connect(
+            lambda: self.databaseSearch(selfui)
+        )
+        selfui.ui.bn_database_back.clicked.connect(
+            lambda: self.bn_database_backk(selfui)
+        )
+
+    def bn_database_backk(self, selfui):
+        selfui.ui.comboBox.clear()
+        selfui.ui.comboBox_2.clear()
+        selfui.ui.comboBox_2.addItems(values)
+        selfui.ui.lineEdit_13.clear()
+        selfui.ui.comboBox_2.setVisible(True)
+        selfui.ui.bn_databaseSet.setVisible(True)
+        selfui.ui.comboBox.clear()
+
+    def databaseSearch(self, selfui):
+        global mycursor
+        selfui.ui.bn_databaseSet.setVisible(False)
+        selfui.ui.comboBox_2.setVisible(False)
+        selfui.ui.comboBox.clear()
+        bufor = selfui.ui.lineEdit_13.text()
+        variables = ["name", "number", "letter", "author"]
+        if selfui.ui.db_radiobox.isChecked():
+            mycursor.execute(
+                f"SELECT *, LOCATE('{bufor}', name) AS IfExist FROM `{database_profile}` ORDER BY `number` ASC"
+            )
+            buforr = mycursor.fetchall()
+            dblist = []
+            for row in buforr:
+                if str(row[8]) == "1" and str(row[2]) != "None":
+                    dblist.append(str(row[0]) + " " + str(row[1]) + " " + str(row[2]))
+            selfui.ui.comboBox.addItems(dblist)
+            if selfui.ui.comboBox.count() != 0:
+                selfui.ui.comboBox.insertSeparator(selfui.ui.comboBox.count())
+        else:
+
+            for i in variables:
+                mycursor.execute(
+                    f"SELECT * FROM `{database_profile}` WHERE {i} LIKE '{bufor}'  AND name NOT LIKE 'None' ORDER BY `number` ASC"
+                )
+                buforr = mycursor.fetchall()
+                dblist = []
+                for row in buforr:
+                    text = f"{row[0]} {row[1]} {row[2]}"
+                    index = selfui.ui.comboBox.findText(text)
+                    if index == -1:
+                        dblist.append(text)
+                selfui.ui.comboBox.addItems(dblist)
+                if selfui.ui.comboBox.count() != 0:
+                    selfui.ui.comboBox.insertSeparator(selfui.ui.comboBox.count())
+        if selfui.ui.comboBox.count() == 0:
+            selfui.ui.comboBox.addItem("Nie znaleziono żadnych wyników")
+
+    def databaseInfo(self, selfui):
+        global mycursor
+        bufor = selfui.ui.comboBox.currentText()
+        if bufor != "" and bufor != "Nie znaleziono żadnych wyników":
+            splitted = bufor.split(" ")
+            mycursor.execute(
+                f"SELECT * FROM `{database_profile}` WHERE number = {splitted[1]} AND letter LIKE '{splitted[0]}'"
+            )
+            buforr = mycursor.fetchone()
+            selfui.ui.label_39.setText(
+                f"{buforr[0]} {buforr[1]}\n {buforr[2]} \n{buforr[6]}\n {buforr[7]}"
+            )
 
     def databaseSet(self, selfui):
-        global values, valuesmin, valuesmax, mycursor
+        global mycursor
         bufor = selfui.ui.comboBox_2.currentText()
         selfui.ui.comboBox.clear()
 
@@ -873,24 +944,29 @@ class EditDatabase:
         selfui.ui.comboBox.addItems(dblist)
 
     def databaseDel(self, selfui):
-        global values, valuesmin, valuesmax, mycursor, mydb
+        global mycursor, mydb
         bufor = selfui.ui.comboBox.currentText()
-        if bufor != "":
-            splitted = bufor.split(" ")
-            mycursor.execute(
-                f"UPDATE `{database_profile}` SET `name`='None',`comment`='None',`author`='None',`datetime`='None' WHERE `number` = {int(splitted[1])} AND `letter` LIKE '{splitted[0]}'"
-            )
-            mydb.commit()
-            index = selfui.ui.comboBox.findText(bufor)
-            selfui.ui.comboBox.removeItem(index)
-            sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-            val = (
-                f"Del '{bufor}' from '{database_profile}'",
-                userlogin,
-                datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-            )
-            mycursor.execute(sql, val)
-            mydb.commit()
+        if (
+            selfui.ui.label_39.text() != ""
+            and bufor != "Nie znaleziono żadnych wyników"
+        ):
+            if bufor != "":
+                splitted = bufor.split(" ")
+                mycursor.execute(
+                    f"UPDATE `{database_profile}` SET `name`='None',`comment`='None',`author`='None',`datetime`='None' WHERE `number` = {int(splitted[1])} AND `letter` LIKE '{splitted[0]}'"
+                )
+                mydb.commit()
+                index = selfui.ui.comboBox.findText(bufor)
+                selfui.ui.comboBox.removeItem(index)
+                selfui.ui.label_39.clear()
+                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+                val = (
+                    f"Del '{bufor}' from '{database_profile}'",
+                    userlogin,
+                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+                )
+                mycursor.execute(sql, val)
+                mydb.commit()
 
 
 class ShowDatabase:
@@ -904,7 +980,6 @@ class ShowDatabase:
             MainWindow.errorexec(selfui, f"Musisz najpierw wybrać profil!", "Ok")
             return None
         MainWindow.reloadButtons(selfui, database_profile, 0)
-        selfui.ui.bn_databaseInfo.setVisible(True)
         selfui.ui.stackedWidget.setCurrentWidget(selfui.ui.page_database)
         selfui.ui.stackedWidget_2.setCurrentWidget(selfui.ui.page_database_view)
         global values, valuesmin, valuesmax
@@ -912,10 +987,65 @@ class ShowDatabase:
         selfui.ui.comboBox_2.addItems(values)
         try:
             selfui.ui.bn_databaseSet.clicked.disconnect()
+            selfui.ui.bn_databaseInfo.clicked.disconnect()
+            selfui.ui.bn_database_back.clicked.disconnect()
+            selfui.ui.bn_database_search.clicked.disconnect()
         except Exception:
             pass
         selfui.ui.bn_databaseSet.clicked.connect(lambda: self.databaseSet(selfui))
         selfui.ui.bn_databaseInfo.clicked.connect(lambda: self.databaseInfo(selfui))
+        selfui.ui.bn_database_back.clicked.connect(
+            lambda: self.bn_database_backk(selfui)
+        )
+        selfui.ui.bn_database_search.clicked.connect(
+            lambda: self.databaseSearch(selfui)
+        )
+
+    def bn_database_backk(self, selfui):
+        selfui.ui.comboBox.clear()
+        selfui.ui.comboBox_2.clear()
+        selfui.ui.comboBox_2.addItems(values)
+        selfui.ui.lineEdit_13.clear()
+        selfui.ui.comboBox_2.setVisible(True)
+        selfui.ui.bn_databaseSet.setVisible(True)
+        selfui.ui.comboBox.clear()
+
+    def databaseSearch(self, selfui):
+        global mycursor
+        selfui.ui.bn_databaseSet.setVisible(False)
+        selfui.ui.comboBox_2.setVisible(False)
+        selfui.ui.comboBox.clear()
+        bufor = selfui.ui.lineEdit_13.text()
+        variables = ["name", "number", "letter", "author"]
+        if selfui.ui.db_radiobox.isChecked():
+            mycursor.execute(
+                f"SELECT *, LOCATE('{bufor}', name) AS IfExist FROM `{database_profile}` ORDER BY `number` ASC"
+            )
+            buforr = mycursor.fetchall()
+            dblist = []
+            for row in buforr:
+                if str(row[8]) == "1" and str(row[2]) != "None":
+                    dblist.append(str(row[0]) + " " + str(row[1]) + " " + str(row[2]))
+            selfui.ui.comboBox.addItems(dblist)
+            if selfui.ui.comboBox.count() != 0:
+                selfui.ui.comboBox.insertSeparator(selfui.ui.comboBox.count())
+        else:
+            for i in variables:
+                mycursor.execute(
+                    f"SELECT * FROM `{database_profile}` WHERE {i} LIKE '{bufor}'  AND name NOT LIKE 'None' ORDER BY `number` ASC"
+                )
+                buforr = mycursor.fetchall()
+                dblist = []
+                for row in buforr:
+                    text = f"{row[0]} {row[1]} {row[2]}"
+                    index = selfui.ui.comboBox.findText(text)
+                    if index == -1:
+                        dblist.append(text)
+                selfui.ui.comboBox.addItems(dblist)
+                if selfui.ui.comboBox.count() != 0:
+                    selfui.ui.comboBox.insertSeparator(selfui.ui.comboBox.count())
+        if selfui.ui.comboBox.count() == 0:
+            selfui.ui.comboBox.addItem("Nie znaleziono żadnych wyników")
 
     def databaseSet(self, selfui):
         global values, valuesmin, valuesmax, mycursor
@@ -932,8 +1062,9 @@ class ShowDatabase:
         selfui.ui.comboBox.addItems(dblist)
 
     def databaseInfo(self, selfui):
+        global mycursor
         bufor = selfui.ui.comboBox.currentText()
-        if bufor != "":
+        if bufor != "" and bufor != "Nie znaleziono żadnych wyników":
             splitted = bufor.split(" ")
             mycursor.execute(
                 f"SELECT * FROM `{database_profile}` WHERE number = {splitted[1]} AND letter LIKE '{splitted[0]}'"

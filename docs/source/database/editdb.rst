@@ -6,7 +6,7 @@ Usuwanie wpisów z bazy danych
 
 .. figure:: /img/editdb.png
 
-| Następnie należy wybrać literę z której chcemu usunąć wpis, wybrać część z listy i wcisnąć przycisk "Usuń"
+| Następnie należy wybrać literę z której chcemu usunąć wpis, wybrać część z listy lub ją wyszukać i wcisnąć przycisk "Usuń"
 
 .. figure:: /img/editdb2.png
 

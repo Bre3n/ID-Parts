@@ -391,6 +391,7 @@ class Ui_MainWindow(object):
         self.bn_databaselogin.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(50,150,50);\n"
+"border-radius:5px;\n"
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(100,180,100);\n"
@@ -413,15 +414,140 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
         self.verticalLayout_12 = QVBoxLayout()
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.label_38 = QLabel(self.page_database)
+        self.label_38.setObjectName(u"label_38")
+        self.label_38.setFont(font3)
+        self.label_38.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_12.addWidget(self.label_38)
+
+        self.horizontalLayout_22 = QHBoxLayout()
+        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
+        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_22.addItem(self.horizontalSpacer_9)
+
+        self.db_radiobox = QRadioButton(self.page_database)
+        self.db_radiobox.setObjectName(u"db_radiobox")
+        self.db_radiobox.setFont(font3)
+        self.db_radiobox.setStyleSheet(u"QRadioButton {\n"
+"    color:black;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {\n"
+"    width: 10px;\n"
+"    height: 10px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"    border:2px solid rgb(51,51,51);\n"
+"	background:rgb(91,90,90);\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:unchecked:pressed {\n"
+"	border:2px solid rgb(51,51,51);\n"
+"   	background:rgb(0,143,170);\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	background-color:rgb(0,143,170);\n"
+"    border: 2px solid rgb(51,51,51);\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked:pressed {\n"
+"    border:2px solid rgb(51,51,51);\n"
+"	background:rgb(91,90,90);\n"
+"}\n"
+"")
+
+        self.horizontalLayout_22.addWidget(self.db_radiobox)
+
+        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_22.addItem(self.horizontalSpacer_11)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_22)
+
+        self.horizontalLayout_16 = QHBoxLayout()
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.bn_database_back = QPushButton(self.page_database)
+        self.bn_database_back.setObjectName(u"bn_database_back")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.bn_database_back.sizePolicy().hasHeightForWidth())
+        self.bn_database_back.setSizePolicy(sizePolicy2)
+        font7 = QFont()
+        font7.setPointSize(18)
+        self.bn_database_back.setFont(font7)
+        self.bn_database_back.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background-color: rgb(200,66,66);\n"
+"	border-radius:5px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"	background-color: rgb(230,80,80);\n"
+"}\n"
+"QPushButton:pressed {\n"
+"background-color: rgb(190,60,60);\n"
+"}")
+        self.bn_database_back.setIconSize(QSize(35, 35))
+
+        self.horizontalLayout_16.addWidget(self.bn_database_back)
+
+        self.lineEdit_13 = QLineEdit(self.page_database)
+        self.lineEdit_13.setObjectName(u"lineEdit_13")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.lineEdit_13.sizePolicy().hasHeightForWidth())
+        self.lineEdit_13.setSizePolicy(sizePolicy3)
+        self.lineEdit_13.setFont(font5)
+        self.lineEdit_13.setStyleSheet(u"QLineEdit {\n"
+"	color:rgb(255,255,255);\n"
+"	border:2px solid rgb(51,51,51);\n"
+"	border-radius:4px;\n"
+"	background:rgb(51,51,51);\n"
+"}\n"
+"\n"
+"QLineEdit:disabled {\n"
+"	color:rgb(255,255,255);\n"
+"	border:2px solid rgb(112,112,112);\n"
+"	border-radius:4px;\n"
+"	background:rgb(112,112,112);\n"
+"}")
+
+        self.horizontalLayout_16.addWidget(self.lineEdit_13)
+
+        self.bn_database_search = QPushButton(self.page_database)
+        self.bn_database_search.setObjectName(u"bn_database_search")
+        sizePolicy2.setHeightForWidth(self.bn_database_search.sizePolicy().hasHeightForWidth())
+        self.bn_database_search.setSizePolicy(sizePolicy2)
+        self.bn_database_search.setFont(font5)
+        self.bn_database_search.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background-color: rgb(50,150,50);\n"
+"border-radius:7px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"	background-color: rgb(100,180,100);\n"
+"}\n"
+"QPushButton:pressed {\n"
+"background-color: rgb(50,150,50);\n"
+"}")
+
+        self.horizontalLayout_16.addWidget(self.bn_database_search)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_16)
+
         self.horizontalLayout_15 = QHBoxLayout()
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.comboBox_2 = QComboBox(self.page_database)
         self.comboBox_2.setObjectName(u"comboBox_2")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.comboBox_2.sizePolicy().hasHeightForWidth())
-        self.comboBox_2.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.comboBox_2.sizePolicy().hasHeightForWidth())
+        self.comboBox_2.setSizePolicy(sizePolicy3)
         self.comboBox_2.setFont(font2)
 
         self.horizontalLayout_15.addWidget(self.comboBox_2)
@@ -434,6 +560,7 @@ class Ui_MainWindow(object):
         self.bn_databaseSet.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(50,150,50);\n"
+"border-radius:7px;\n"
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(100,180,100);\n"
@@ -456,6 +583,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_12.addWidget(self.comboBox)
 
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
+
+        self.verticalLayout_12.addItem(self.horizontalSpacer_7)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_12.addItem(self.verticalSpacer)
@@ -465,15 +596,16 @@ class Ui_MainWindow(object):
 
         self.bn_databaseInfo = QPushButton(self.page_database)
         self.bn_databaseInfo.setObjectName(u"bn_databaseInfo")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.bn_databaseInfo.sizePolicy().hasHeightForWidth())
-        self.bn_databaseInfo.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.bn_databaseInfo.sizePolicy().hasHeightForWidth())
+        self.bn_databaseInfo.setSizePolicy(sizePolicy4)
         self.bn_databaseInfo.setFont(font2)
         self.bn_databaseInfo.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(150,60,180);\n"
+"border-radius:5px;\n"
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(180,70,210);\n"
@@ -488,15 +620,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.stackedWidget_2 = QStackedWidget(self.page_database)
         self.stackedWidget_2.setObjectName(u"stackedWidget_2")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.stackedWidget_2.sizePolicy().hasHeightForWidth())
-        self.stackedWidget_2.setSizePolicy(sizePolicy4)
+        sizePolicy2.setHeightForWidth(self.stackedWidget_2.sizePolicy().hasHeightForWidth())
+        self.stackedWidget_2.setSizePolicy(sizePolicy2)
         self.page_database_view = QWidget()
         self.page_database_view.setObjectName(u"page_database_view")
         self.verticalLayout_15 = QVBoxLayout(self.page_database_view)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.verticalLayout_15.addItem(self.horizontalSpacer_10)
+
         self.verticalLayout_14 = QVBoxLayout()
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.scrollArea = QScrollArea(self.page_database_view)
@@ -636,15 +769,35 @@ class Ui_MainWindow(object):
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.verticalLayout_16 = QVBoxLayout()
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_16.addItem(self.verticalSpacer_3)
+
+        self.label_39 = QLabel(self.page_database_edit)
+        self.label_39.setObjectName(u"label_39")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.label_39.sizePolicy().hasHeightForWidth())
+        self.label_39.setSizePolicy(sizePolicy5)
+        self.label_39.setFont(font2)
+        self.label_39.setAlignment(Qt.AlignCenter)
+        self.label_39.setWordWrap(True)
+
+        self.verticalLayout_16.addWidget(self.label_39)
+
         self.bn_databaseDel = QPushButton(self.page_database_edit)
         self.bn_databaseDel.setObjectName(u"bn_databaseDel")
-        font7 = QFont()
-        font7.setFamily(u"Segoe UI")
-        font7.setPointSize(26)
-        self.bn_databaseDel.setFont(font7)
+        sizePolicy3.setHeightForWidth(self.bn_databaseDel.sizePolicy().hasHeightForWidth())
+        self.bn_databaseDel.setSizePolicy(sizePolicy3)
+        font8 = QFont()
+        font8.setFamily(u"Segoe UI")
+        font8.setPointSize(26)
+        self.bn_databaseDel.setFont(font8)
         self.bn_databaseDel.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(200,66,66);\n"
+"border-radius:5px;\n"
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(230,80,80);\n"
@@ -654,6 +807,14 @@ class Ui_MainWindow(object):
 "}")
 
         self.verticalLayout_16.addWidget(self.bn_databaseDel)
+
+        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.verticalLayout_16.addItem(self.horizontalSpacer_8)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_16.addItem(self.verticalSpacer_2)
 
 
         self.verticalLayout_17.addLayout(self.verticalLayout_16)
@@ -751,13 +912,14 @@ class Ui_MainWindow(object):
 
         self.bn_login = QPushButton(self.page_login)
         self.bn_login.setObjectName(u"bn_login")
-        font8 = QFont()
-        font8.setFamily(u"Segoe UI")
-        font8.setPointSize(22)
-        self.bn_login.setFont(font8)
+        font9 = QFont()
+        font9.setFamily(u"Segoe UI")
+        font9.setPointSize(22)
+        self.bn_login.setFont(font9)
         self.bn_login.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(50,150,50);\n"
+"border-radius:5px;\n"
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(100,180,100);\n"
@@ -783,8 +945,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.label_26 = QLabel(self.page_profil)
         self.label_26.setObjectName(u"label_26")
-        sizePolicy4.setHeightForWidth(self.label_26.sizePolicy().hasHeightForWidth())
-        self.label_26.setSizePolicy(sizePolicy4)
+        sizePolicy2.setHeightForWidth(self.label_26.sizePolicy().hasHeightForWidth())
+        self.label_26.setSizePolicy(sizePolicy2)
         self.label_26.setMaximumSize(QSize(16777215, 50))
         self.label_26.setFont(font2)
         self.label_26.setAlignment(Qt.AlignCenter)
@@ -857,8 +1019,8 @@ class Ui_MainWindow(object):
 
         self.comboBox_4 = QComboBox(self.page_settings_global)
         self.comboBox_4.setObjectName(u"comboBox_4")
-        sizePolicy3.setHeightForWidth(self.comboBox_4.sizePolicy().hasHeightForWidth())
-        self.comboBox_4.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.comboBox_4.sizePolicy().hasHeightForWidth())
+        self.comboBox_4.setSizePolicy(sizePolicy4)
         self.comboBox_4.setFont(font5)
 
         self.horizontalLayout_18.addWidget(self.comboBox_4)
@@ -874,11 +1036,11 @@ class Ui_MainWindow(object):
 
         self.label_32 = QLabel(self.page_settings_global)
         self.label_32.setObjectName(u"label_32")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.label_32.sizePolicy().hasHeightForWidth())
-        self.label_32.setSizePolicy(sizePolicy5)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.label_32.sizePolicy().hasHeightForWidth())
+        self.label_32.setSizePolicy(sizePolicy6)
         self.label_32.setFont(font2)
         self.label_32.setAlignment(Qt.AlignCenter)
 
@@ -906,8 +1068,8 @@ class Ui_MainWindow(object):
 
         self.label_33 = QLabel(self.page_settings_global)
         self.label_33.setObjectName(u"label_33")
-        sizePolicy5.setHeightForWidth(self.label_33.sizePolicy().hasHeightForWidth())
-        self.label_33.setSizePolicy(sizePolicy5)
+        sizePolicy6.setHeightForWidth(self.label_33.sizePolicy().hasHeightForWidth())
+        self.label_33.setSizePolicy(sizePolicy6)
         self.label_33.setFont(font2)
         self.label_33.setAlignment(Qt.AlignCenter)
 
@@ -935,8 +1097,8 @@ class Ui_MainWindow(object):
 
         self.label_34 = QLabel(self.page_settings_global)
         self.label_34.setObjectName(u"label_34")
-        sizePolicy5.setHeightForWidth(self.label_34.sizePolicy().hasHeightForWidth())
-        self.label_34.setSizePolicy(sizePolicy5)
+        sizePolicy6.setHeightForWidth(self.label_34.sizePolicy().hasHeightForWidth())
+        self.label_34.setSizePolicy(sizePolicy6)
         self.label_34.setFont(font2)
         self.label_34.setAlignment(Qt.AlignCenter)
 
@@ -1093,10 +1255,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_26.setObjectName(u"verticalLayout_26")
         self.label_35 = QLabel(self.page_settings_login)
         self.label_35.setObjectName(u"label_35")
-        font9 = QFont()
-        font9.setFamily(u"Segoe UI")
-        font9.setPointSize(32)
-        self.label_35.setFont(font9)
+        font10 = QFont()
+        font10.setFamily(u"Segoe UI")
+        font10.setPointSize(32)
+        self.label_35.setFont(font10)
         self.label_35.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_26.addWidget(self.label_35)
@@ -1130,6 +1292,7 @@ class Ui_MainWindow(object):
         self.bn_settings_login_bn.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(50,150,50);\n"
+"border-radius:5px;\n"
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(100,180,100);\n"
@@ -1163,15 +1326,15 @@ class Ui_MainWindow(object):
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
         self.label_36 = QLabel(self.page_error)
         self.label_36.setObjectName(u"label_36")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.label_36.sizePolicy().hasHeightForWidth())
-        self.label_36.setSizePolicy(sizePolicy6)
-        font10 = QFont()
-        font10.setFamily(u"Segoe UI")
-        font10.setPointSize(100)
-        self.label_36.setFont(font10)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.label_36.sizePolicy().hasHeightForWidth())
+        self.label_36.setSizePolicy(sizePolicy7)
+        font11 = QFont()
+        font11.setFamily(u"Segoe UI")
+        font11.setPointSize(100)
+        self.label_36.setFont(font11)
         self.label_36.setStyleSheet(u"")
         self.label_36.setAlignment(Qt.AlignCenter)
 
@@ -1179,10 +1342,10 @@ class Ui_MainWindow(object):
 
         self.label_37 = QLabel(self.page_error)
         self.label_37.setObjectName(u"label_37")
-        font11 = QFont()
-        font11.setFamily(u"Segoe UI")
-        font11.setPointSize(24)
-        self.label_37.setFont(font11)
+        font12 = QFont()
+        font12.setFamily(u"Segoe UI")
+        font12.setPointSize(28)
+        self.label_37.setFont(font12)
         self.label_37.setScaledContents(False)
         self.label_37.setAlignment(Qt.AlignCenter)
         self.label_37.setWordWrap(True)
@@ -1200,9 +1363,9 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 866, 33))
-        font12 = QFont()
-        font12.setPointSize(16)
-        self.menubar.setFont(font12)
+        font13 = QFont()
+        font13.setPointSize(16)
+        self.menubar.setFont(font13)
         self.menubar.setStyleSheet(u"QMenuBar {\n"
 "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
 "                                      stop:0 lightgray, stop:1 darkgray);\n"
@@ -1289,17 +1452,32 @@ class Ui_MainWindow(object):
         self.label_30.setText(QCoreApplication.translate("MainWindow", u"{czesc}", None))
         self.label_31.setText(QCoreApplication.translate("MainWindow", u" przydzielono numer: ", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"{num}", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Adres hosta:", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"U\u017cytkownik:", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Has\u0142o:", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Adres hosta: ", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"U\u017cytkownik: ", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Has\u0142o: ", None))
         self.lineEdit_3.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[127.0.0.1]", None))
         self.lineEdit_4.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[root]", None))
         self.lineEdit_5.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[password]", None))
         self.bn_databaselogin.setText(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
+#if QT_CONFIG(shortcut)
+        self.bn_databaselogin.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
+#endif // QT_CONFIG(shortcut)
+        self.label_38.setText(QCoreApplication.translate("MainWindow", u"Szukaj po pe\u0142nej nazwie, numerze, literze lub autorze", None))
+        self.db_radiobox.setText(QCoreApplication.translate("MainWindow", u"Cz\u0119\u015b\u0107 nazwy (gdy znamy tylko cz\u0119\u015b\u0107 nazwy)", None))
+        self.bn_database_back.setText(QCoreApplication.translate("MainWindow", u"<--", None))
+        self.lineEdit_13.setPlaceholderText("")
+        self.bn_database_search.setText(QCoreApplication.translate("MainWindow", u" Szukaj ", None))
         self.bn_databaseSet.setText(QCoreApplication.translate("MainWindow", u" Ustaw ", None))
+#if QT_CONFIG(shortcut)
+        self.bn_databaseSet.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
+#endif // QT_CONFIG(shortcut)
+        self.comboBox.setPlaceholderText("")
         self.bn_databaseInfo.setText(QCoreApplication.translate("MainWindow", u">\n"
 ">\n"
 ">", None))
+#if QT_CONFIG(shortcut)
+        self.bn_databaseInfo.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
+#endif // QT_CONFIG(shortcut)
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Numer:", None))
         self.label_13.setText("")
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Litera:", None))
@@ -1314,9 +1492,10 @@ class Ui_MainWindow(object):
         self.label_23.setText("")
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"Sygnatura czasowa:", None))
         self.label_25.setText("")
+        self.label_39.setText("")
         self.bn_databaseDel.setText(QCoreApplication.translate("MainWindow", u"Usu\u0144", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Login:", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Kod/Has\u0142o:", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Login: ", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Kod dost\u0119pu: ", None))
         self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[Imi\u0119 Nazwisko]", None))
         self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[1234]", None))
         self.bn_login.setText(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
@@ -1325,12 +1504,15 @@ class Ui_MainWindow(object):
         self.label_32.setText(QCoreApplication.translate("MainWindow", u"Nazwa profilu", None))
         self.label_33.setText(QCoreApplication.translate("MainWindow", u"Minimalny zakres numeracji", None))
         self.label_34.setText(QCoreApplication.translate("MainWindow", u"Maksymalny zakres numeracji", None))
-        self.bn_settings_add.setText(QCoreApplication.translate("MainWindow", u"Dodaj liter\u0119", None))
+        self.bn_settings_add.setText(QCoreApplication.translate("MainWindow", u" Dodaj liter\u0119 ", None))
         self.bn_settings_dell.setText(QCoreApplication.translate("MainWindow", u"Usu\u0144 liter\u0119", None))
         self.bn_settings_save.setText(QCoreApplication.translate("MainWindow", u"Zapisz profil", None))
         self.bn_settings_delprofile.setText(QCoreApplication.translate("MainWindow", u"Usu\u0144 profil", None))
         self.label_35.setText(QCoreApplication.translate("MainWindow", u"Podaj kod dost\u0119pu do zmiany ustawie\u0144", None))
-        self.bn_settings_login_bn.setText(QCoreApplication.translate("MainWindow", u"Wprowad\u017a", None))
+        self.bn_settings_login_bn.setText(QCoreApplication.translate("MainWindow", u" Wprowad\u017a ", None))
+#if QT_CONFIG(shortcut)
+        self.bn_settings_login_bn.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
+#endif // QT_CONFIG(shortcut)
         self.label_36.setText(QCoreApplication.translate("MainWindow", u"!", None))
         self.label_37.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.menuBaza_danych.setTitle(QCoreApplication.translate("MainWindow", u"Baza danych", None))

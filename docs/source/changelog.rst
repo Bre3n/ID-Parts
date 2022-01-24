@@ -1,5 +1,11 @@
 Changelog
 =========
+-------------------------
+1.3
+-------------------------
+- Dodano wyszukiwarkę
+- Zmiany kosmetyczne
+- Lekkie zmiany w działaniu strony z błędami
 
 -------------------------
 1.1
