@@ -193,37 +193,6 @@ def logintoall(self):
         )
 
 
-def check_connection(self):
-    global checkinternetbool
-    while True:
-        try:
-            self.ui.label_36.setText(self.ui.label_36.text())
-        except Exception:
-            return None
-        try:
-            request = requests.get(url, timeout=5)
-            if (
-                self.ui.stackedWidget.currentIndex() == 6
-                and self.ui.label_37.text()
-                == "Brak połączenia z internetem! Połącz się z siecią"
-            ):
-                self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
-                self.ui.label_36.setText("")
-                self.ui.label_37.setText(
-                    "Połączono z intenetem! Wszystkie opcje odblokowane"
-                )
-            checkinternetbool = True
-        except (requests.ConnectionError, requests.Timeout) as exception:
-            if self.ui.stackedWidget.currentIndex() != 6:
-                self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
-                self.ui.label_36.setText("!")
-                self.ui.label_37.setText(
-                    "Brak połączenia z internetem! Połącz się z siecią"
-                )
-            checkinternetbool = False
-        time.sleep(5)
-
-
 class errorUi(QDialog):
     def __init__(self, parent=None):
 
@@ -321,7 +290,6 @@ class MainWindow(QMainWindow):
             os.mkdir(f"{inipath}")
 
         logintoall(self)
-        threading.Thread(target=check_connection, args=(self,)).start()
 
         if logged == False:
             threading.Thread(target=loginerror, args=(self,)).start()
