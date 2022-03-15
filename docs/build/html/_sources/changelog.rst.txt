@@ -1,5 +1,17 @@
 Changelog
 =========
+-------------------------
+1.4
+-------------------------
+- Ogólna naprawa
+- Strona partsid.cba.pl
+
+-------------------------
+1.3
+-------------------------
+- Dodano wyszukiwarkę
+- Zmiany kosmetyczne
+- Lekkie zmiany w działaniu strony z błędami
 
 -------------------------
 1.1

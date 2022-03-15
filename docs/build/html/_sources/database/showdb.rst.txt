@@ -6,7 +6,7 @@ Wyświetlanie wpisów w bazie danych
 
 .. figure:: /img/showdb.png
 
-| Następnie należy wybrać z górnej listy literę w której jest dana część, kliknąć przcisk "Ustaw", wybrać z dolnej listy część jaka nas interesuje i ostatecznie kliknąć fioletowy przycisk znajdujący się w centralnej części ekranu
+| Następnie należy wybrać z górnej listy literę w której jest dana część (lub wyszukać), kliknąć przcisk "Ustaw", wybrać z dolnej listy część jaka nas interesuje i ostatecznie kliknąć fioletowy przycisk znajdujący się w centralnej części ekranu
 
 .. figure:: /img/showdb2.png
 

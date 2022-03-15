@@ -1,1 +1,1 @@
-pyinstaller --onefile main.py --hidden-import pkg_resources
+pyinstaller --onefile main.py --hidden-import pkg_resources -d bootloader
