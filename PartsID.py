@@ -135,9 +135,9 @@ if __name__ == "__main__":
 
     os.system("cls")
 
-    if not isUserAdmin():
+    """if not isUserAdmin():
         runAsAdmin()
-        exit()
+        exit()"""
 
     import psutil
 

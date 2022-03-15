@@ -17,8 +17,8 @@ if __name__ == "__main__":
         )
         print("Zalogowano do bazy")
         mycursor = mydb.cursor(buffered=True)
-        mycursor.execute("CREATE DATABASE `partsid-database`")
-        mycursor.execute("USE `partsid-database`")
+        #mycursor.execute("CREATE DATABASE `viktor123`")
+        mycursor.execute("USE `viktor123`")
         mycursor.execute("CREATE table password (password TEXT, secret TEXT)")
         userpass = getpass.getpass(
             "Podaj jakim hasłem mają się logować użytkownicy do sesji (np. 1234): "

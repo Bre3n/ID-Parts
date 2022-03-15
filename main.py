@@ -54,10 +54,12 @@ from PySide2.QtWidgets import *
 from ui_error import Ui_Error
 from ui_main import Ui_MainWindow
 
+database_name = "viktor123"
+
 
 def crypto(message, var):
     # * get global key
-    password_provided = "-5Z#h)7a!_s=x9yT"
+    password_provided = "HCw1){n9ZC]!sl`]lkCk^hhL/t_7`G"
     password = password_provided.encode()
     salt = b"\xe1&z\x7f\xad\xf0\xb4\xb6\xa8\xc0\xc5\xd9\xcea\xe6\xdb"
     kdf = PBKDF2HMAC(
@@ -131,7 +133,7 @@ def logintoall(self):
                 host=databasehostname,
                 user=databaseuser,
                 password=databasepassword,
-                database="partsid-database",
+                database=database_name,
             )
             if mydb.is_connected() == False:
                 self.ui.label_3.setText("Nie zalogowano do sesji!")
@@ -414,7 +416,7 @@ class MainWindow(QMainWindow):
 
     def loginProfil(self, btn):
         global database_profile
-        database_profile = btn.lower()
+        database_profile = btn
         self.ui.label_28.setText(database_profile)
         self.reloadButtons(database_profile, 1)
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
@@ -644,6 +646,14 @@ class MainWindow(QMainWindow):
                 self.ui.label_31.setVisible(True)
                 self.ui.label_30.setText(bufor)
                 self.ui.label_2.setText(str(myresult[1]))
+                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+                val = (
+                    f"Add part `{str(myresult[0])}.{myresult[1]}.{bufor}` to `{database_profile}`",
+                    userlogin,
+                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+                )
+                mycursor.execute(sql, val)
+                mydb.commit()
             else:
                 self.ui.label.setVisible(False)
                 self.ui.label_2.setVisible(False)
@@ -745,7 +755,7 @@ class DatabaseLogin:
                     host=f"{str(selfui.ui.lineEdit_3.text())}",
                     user=f"{str(selfui.ui.lineEdit_4.text())}",
                     password=f"{str(selfui.ui.lineEdit_5.text())}",
-                    database="partsid-database",
+                    database=database_name,
                 )
 
                 fileDB = open(f"{inipath}/filedbhostname.txt", "wb")
