@@ -1,6 +1,6 @@
 # autoinstaller and autoupdater all files of program
 
-filelink = "https://raw.githubusercontent.com/Bre3n/ID-Parts/master/links.txt"
+filelink = "https://raw.githubusercontent.com/Bre3n/ID-Parts/master/files/links.txt"
 
 
 def downloader(url, path, var):
