@@ -374,8 +374,8 @@ class MainWindow(QMainWindow):
                 self.setMinimumSize(widthsize, heightsize)
                 self.resize(widthsize, heightsize)
         else:
-            self.setMinimumSize(700, 500)
-            self.resize(700, 500)
+            self.setMinimumSize(800, 500)
+            self.resize(800, 500)
 
     def createButton2(self, text, position2):
         # * create button

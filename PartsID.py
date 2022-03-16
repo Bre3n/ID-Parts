@@ -5,7 +5,6 @@ filelink = "https://raw.githubusercontent.com/Bre3n/ID-Parts/master/files/links.
 
 def downloader(url, path, var):
     if var == 1:
-        print(url)
         MANAGER = enlighten.get_manager()
         r = requests.get(url, stream=True)
         assert r.status_code == 200, r.status_code
@@ -176,12 +175,14 @@ if __name__ == "__main__":
         for i in range(int(len(content) / 2)):
             f.write(f"{content[i]}\n")
         f.close()
+        print("asd")
         onlyfiles = listdir(sciezka)
         for i in onlyfiles:
-            try:
-                os.remove(f"{sciezka}/{i}")
-            except OSError:
-                shutil.rmtree(f"{sciezka}/{i}")
+            if i != "version.txt" and i != "partsID_main.exe":
+                try:
+                    os.remove(f"{sciezka}/{i}")
+                except OSError:
+                    shutil.rmtree(f"{sciezka}/{i}")
         os.execv(sys.executable, ["python"] + sys.argv)
     else:
         with open(f"{sciezka}/version.txt") as f:
