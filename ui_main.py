@@ -385,6 +385,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_7.addLayout(self.horizontalLayout_7)
 
+        self.label_40 = QLabel(self.page_database_login)
+        self.label_40.setObjectName(u"label_40")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.label_40.sizePolicy().hasHeightForWidth())
+        self.label_40.setSizePolicy(sizePolicy2)
+        font7 = QFont()
+        font7.setFamily(u"Courier New")
+        self.label_40.setFont(font7)
+        self.label_40.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_7.addWidget(self.label_40)
+
         self.bn_databaselogin = QPushButton(self.page_database_login)
         self.bn_databaselogin.setObjectName(u"bn_databaselogin")
         self.bn_databaselogin.setFont(font2)
@@ -473,14 +487,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
         self.bn_database_back = QPushButton(self.page_database)
         self.bn_database_back.setObjectName(u"bn_database_back")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.bn_database_back.sizePolicy().hasHeightForWidth())
-        self.bn_database_back.setSizePolicy(sizePolicy2)
-        font7 = QFont()
-        font7.setPointSize(18)
-        self.bn_database_back.setFont(font7)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.bn_database_back.sizePolicy().hasHeightForWidth())
+        self.bn_database_back.setSizePolicy(sizePolicy3)
+        font8 = QFont()
+        font8.setPointSize(18)
+        self.bn_database_back.setFont(font8)
         self.bn_database_back.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(200,66,66);\n"
@@ -498,11 +512,11 @@ class Ui_MainWindow(object):
 
         self.lineEdit_13 = QLineEdit(self.page_database)
         self.lineEdit_13.setObjectName(u"lineEdit_13")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.lineEdit_13.sizePolicy().hasHeightForWidth())
-        self.lineEdit_13.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.lineEdit_13.sizePolicy().hasHeightForWidth())
+        self.lineEdit_13.setSizePolicy(sizePolicy4)
         self.lineEdit_13.setFont(font5)
         self.lineEdit_13.setStyleSheet(u"QLineEdit {\n"
 "	color:rgb(255,255,255);\n"
@@ -522,8 +536,8 @@ class Ui_MainWindow(object):
 
         self.bn_database_search = QPushButton(self.page_database)
         self.bn_database_search.setObjectName(u"bn_database_search")
-        sizePolicy2.setHeightForWidth(self.bn_database_search.sizePolicy().hasHeightForWidth())
-        self.bn_database_search.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.bn_database_search.sizePolicy().hasHeightForWidth())
+        self.bn_database_search.setSizePolicy(sizePolicy3)
         self.bn_database_search.setFont(font5)
         self.bn_database_search.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
@@ -546,8 +560,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.comboBox_2 = QComboBox(self.page_database)
         self.comboBox_2.setObjectName(u"comboBox_2")
-        sizePolicy3.setHeightForWidth(self.comboBox_2.sizePolicy().hasHeightForWidth())
-        self.comboBox_2.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.comboBox_2.sizePolicy().hasHeightForWidth())
+        self.comboBox_2.setSizePolicy(sizePolicy4)
         self.comboBox_2.setFont(font2)
 
         self.horizontalLayout_15.addWidget(self.comboBox_2)
@@ -596,11 +610,11 @@ class Ui_MainWindow(object):
 
         self.bn_databaseInfo = QPushButton(self.page_database)
         self.bn_databaseInfo.setObjectName(u"bn_databaseInfo")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.bn_databaseInfo.sizePolicy().hasHeightForWidth())
-        self.bn_databaseInfo.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.bn_databaseInfo.sizePolicy().hasHeightForWidth())
+        self.bn_databaseInfo.setSizePolicy(sizePolicy5)
         self.bn_databaseInfo.setFont(font2)
         self.bn_databaseInfo.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
@@ -620,8 +634,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.stackedWidget_2 = QStackedWidget(self.page_database)
         self.stackedWidget_2.setObjectName(u"stackedWidget_2")
-        sizePolicy2.setHeightForWidth(self.stackedWidget_2.sizePolicy().hasHeightForWidth())
-        self.stackedWidget_2.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.stackedWidget_2.sizePolicy().hasHeightForWidth())
+        self.stackedWidget_2.setSizePolicy(sizePolicy3)
         self.page_database_view = QWidget()
         self.page_database_view.setObjectName(u"page_database_view")
         self.verticalLayout_15 = QVBoxLayout(self.page_database_view)
@@ -775,11 +789,11 @@ class Ui_MainWindow(object):
 
         self.label_39 = QLabel(self.page_database_edit)
         self.label_39.setObjectName(u"label_39")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.label_39.sizePolicy().hasHeightForWidth())
-        self.label_39.setSizePolicy(sizePolicy5)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.label_39.sizePolicy().hasHeightForWidth())
+        self.label_39.setSizePolicy(sizePolicy6)
         self.label_39.setFont(font2)
         self.label_39.setAlignment(Qt.AlignCenter)
         self.label_39.setWordWrap(True)
@@ -788,12 +802,12 @@ class Ui_MainWindow(object):
 
         self.bn_databaseDel = QPushButton(self.page_database_edit)
         self.bn_databaseDel.setObjectName(u"bn_databaseDel")
-        sizePolicy3.setHeightForWidth(self.bn_databaseDel.sizePolicy().hasHeightForWidth())
-        self.bn_databaseDel.setSizePolicy(sizePolicy3)
-        font8 = QFont()
-        font8.setFamily(u"Segoe UI")
-        font8.setPointSize(26)
-        self.bn_databaseDel.setFont(font8)
+        sizePolicy4.setHeightForWidth(self.bn_databaseDel.sizePolicy().hasHeightForWidth())
+        self.bn_databaseDel.setSizePolicy(sizePolicy4)
+        font9 = QFont()
+        font9.setFamily(u"Segoe UI")
+        font9.setPointSize(26)
+        self.bn_databaseDel.setFont(font9)
         self.bn_databaseDel.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(200,66,66);\n"
@@ -912,10 +926,10 @@ class Ui_MainWindow(object):
 
         self.bn_login = QPushButton(self.page_login)
         self.bn_login.setObjectName(u"bn_login")
-        font9 = QFont()
-        font9.setFamily(u"Segoe UI")
-        font9.setPointSize(22)
-        self.bn_login.setFont(font9)
+        font10 = QFont()
+        font10.setFamily(u"Segoe UI")
+        font10.setPointSize(22)
+        self.bn_login.setFont(font10)
         self.bn_login.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(50,150,50);\n"
@@ -945,8 +959,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.label_26 = QLabel(self.page_profil)
         self.label_26.setObjectName(u"label_26")
-        sizePolicy2.setHeightForWidth(self.label_26.sizePolicy().hasHeightForWidth())
-        self.label_26.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.label_26.sizePolicy().hasHeightForWidth())
+        self.label_26.setSizePolicy(sizePolicy3)
         self.label_26.setMaximumSize(QSize(16777215, 50))
         self.label_26.setFont(font2)
         self.label_26.setAlignment(Qt.AlignCenter)
@@ -1019,8 +1033,8 @@ class Ui_MainWindow(object):
 
         self.comboBox_4 = QComboBox(self.page_settings_global)
         self.comboBox_4.setObjectName(u"comboBox_4")
-        sizePolicy4.setHeightForWidth(self.comboBox_4.sizePolicy().hasHeightForWidth())
-        self.comboBox_4.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.comboBox_4.sizePolicy().hasHeightForWidth())
+        self.comboBox_4.setSizePolicy(sizePolicy5)
         self.comboBox_4.setFont(font5)
 
         self.horizontalLayout_18.addWidget(self.comboBox_4)
@@ -1036,11 +1050,8 @@ class Ui_MainWindow(object):
 
         self.label_32 = QLabel(self.page_settings_global)
         self.label_32.setObjectName(u"label_32")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.label_32.sizePolicy().hasHeightForWidth())
-        self.label_32.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_32.sizePolicy().hasHeightForWidth())
+        self.label_32.setSizePolicy(sizePolicy2)
         self.label_32.setFont(font2)
         self.label_32.setAlignment(Qt.AlignCenter)
 
@@ -1068,8 +1079,8 @@ class Ui_MainWindow(object):
 
         self.label_33 = QLabel(self.page_settings_global)
         self.label_33.setObjectName(u"label_33")
-        sizePolicy6.setHeightForWidth(self.label_33.sizePolicy().hasHeightForWidth())
-        self.label_33.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_33.sizePolicy().hasHeightForWidth())
+        self.label_33.setSizePolicy(sizePolicy2)
         self.label_33.setFont(font2)
         self.label_33.setAlignment(Qt.AlignCenter)
 
@@ -1097,8 +1108,8 @@ class Ui_MainWindow(object):
 
         self.label_34 = QLabel(self.page_settings_global)
         self.label_34.setObjectName(u"label_34")
-        sizePolicy6.setHeightForWidth(self.label_34.sizePolicy().hasHeightForWidth())
-        self.label_34.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_34.sizePolicy().hasHeightForWidth())
+        self.label_34.setSizePolicy(sizePolicy2)
         self.label_34.setFont(font2)
         self.label_34.setAlignment(Qt.AlignCenter)
 
@@ -1255,10 +1266,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_26.setObjectName(u"verticalLayout_26")
         self.label_35 = QLabel(self.page_settings_login)
         self.label_35.setObjectName(u"label_35")
-        font10 = QFont()
-        font10.setFamily(u"Segoe UI")
-        font10.setPointSize(32)
-        self.label_35.setFont(font10)
+        font11 = QFont()
+        font11.setFamily(u"Segoe UI")
+        font11.setPointSize(32)
+        self.label_35.setFont(font11)
         self.label_35.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_26.addWidget(self.label_35)
@@ -1331,10 +1342,10 @@ class Ui_MainWindow(object):
         sizePolicy7.setVerticalStretch(0)
         sizePolicy7.setHeightForWidth(self.label_36.sizePolicy().hasHeightForWidth())
         self.label_36.setSizePolicy(sizePolicy7)
-        font11 = QFont()
-        font11.setFamily(u"Segoe UI")
-        font11.setPointSize(100)
-        self.label_36.setFont(font11)
+        font12 = QFont()
+        font12.setFamily(u"Segoe UI")
+        font12.setPointSize(100)
+        self.label_36.setFont(font12)
         self.label_36.setStyleSheet(u"")
         self.label_36.setAlignment(Qt.AlignCenter)
 
@@ -1342,10 +1353,10 @@ class Ui_MainWindow(object):
 
         self.label_37 = QLabel(self.page_error)
         self.label_37.setObjectName(u"label_37")
-        font12 = QFont()
-        font12.setFamily(u"Segoe UI")
-        font12.setPointSize(28)
-        self.label_37.setFont(font12)
+        font13 = QFont()
+        font13.setFamily(u"Segoe UI")
+        font13.setPointSize(28)
+        self.label_37.setFont(font13)
         self.label_37.setScaledContents(False)
         self.label_37.setAlignment(Qt.AlignCenter)
         self.label_37.setWordWrap(True)
@@ -1363,9 +1374,9 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 866, 33))
-        font13 = QFont()
-        font13.setPointSize(16)
-        self.menubar.setFont(font13)
+        font14 = QFont()
+        font14.setPointSize(16)
+        self.menubar.setFont(font14)
         self.menubar.setStyleSheet(u"QMenuBar {\n"
 "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
 "                                      stop:0 lightgray, stop:1 darkgray);\n"
@@ -1418,7 +1429,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(1)
         self.stackedWidget_2.setCurrentIndex(0)
         self.stackedWidget_3.setCurrentIndex(1)
 
@@ -1458,6 +1469,7 @@ class Ui_MainWindow(object):
         self.lineEdit_3.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[127.0.0.1]", None))
         self.lineEdit_4.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[root]", None))
         self.lineEdit_5.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[password]", None))
+        self.label_40.setText(QCoreApplication.translate("MainWindow", u"O ile nie roz\u0142\u0105czono z baz\u0105 danych nie trzeba wpisywa\u0107 has\u0142a (czyli przy pierwszym uruchomieniu nie trzeba)", None))
         self.bn_databaselogin.setText(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
 #if QT_CONFIG(shortcut)
         self.bn_databaselogin.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))

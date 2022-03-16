@@ -328,9 +328,10 @@ class MainWindow(QMainWindow):
             lambda: SettingsPage(self)
         )
 
-        f = open(f"{inipath}/version.txt", "r")
-        bufor = f.read().replace(" ", "").split("==")
-        f.close()
+        with open(f"{inipath}/version.txt") as f:
+            content = f.readlines()
+            content = [x.strip() for x in content]
+        bufor = content[0].replace(" ", "").split("==")
         bufor = bufor[1]
         self.ui.actionversion.setText(f"v{bufor}")
         self.ui.actionversion.triggered.connect(
@@ -741,6 +742,9 @@ class DatabaseLogin:
 
     def database_login(self, selfui):
         global mycursor, database_connected
+        if selfui.ui.lineEdit_5.text() == "":
+            if databasepassword != "":
+                selfui.ui.lineEdit_5.setText(databasepassword)
         if (
             selfui.ui.lineEdit_3.text() == ""
             or selfui.ui.lineEdit_4.text() == ""
