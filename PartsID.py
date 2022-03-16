@@ -150,8 +150,7 @@ if __name__ == "__main__":
     now_date = str(datetime.date.today())
     user = os.getlogin()
     buffor = False
-    sciezka = f"C:/Users/{user}/AppData/LocalLow/PartsID"
-    temp = f"C:/Users/{user}/AppData/Local/Temp"
+    sciezka = f"C:/Users/{user}/AppData/Roaming/PartsID"
     havetorestart = False
 
     txtFile = f"{sciezka}/ver.txt"

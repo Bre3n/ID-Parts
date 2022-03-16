@@ -287,7 +287,7 @@ class MainWindow(QMainWindow):
                 proc.kill()
 
         user = os.getlogin()
-        inipath = f"C:/Users/{user}/AppData/LocalLow/PartsID"
+        inipath = f"C:/Users/{user}/AppData/Roaming/PartsID"
         if path.exists(f"{inipath}") == False:
             os.mkdir(f"{inipath}")
 
