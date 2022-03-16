@@ -335,7 +335,7 @@ class MainWindow(QMainWindow):
         bufor = bufor[1]
         self.ui.actionversion.setText(f"v{bufor}")
         self.ui.actionversion.triggered.connect(
-            lambda: webbrowser.open("https://id-parts.readthedocs.io/pl/latest/")
+            lambda: webbrowser.open("http://partsid.cba.pl")
         )
 
         #! connect to database first!!
