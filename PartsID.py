@@ -135,10 +135,6 @@ if __name__ == "__main__":
 
     os.system("cls")
 
-    """if not isUserAdmin():
-        runAsAdmin()
-        exit()"""
-
     import psutil
 
     PROCNAME = "partsID_main.exe"
