@@ -35,77 +35,6 @@ def downloader(url, path, var):
                     f.write(data)
 
 
-def pliki(sciezka):
-    i = 0
-    pathh = f"{sciezka}/logs-setup"
-
-    # * LOGS
-    if path.exists(pathh) == False:
-        os.mkdir(pathh)
-    if path.exists(f"{pathh}/.SORT_BY_MODIFICATION_TIME.txt") == False:
-        open(f"{pathh}/.SORT_BY_MODIFICATION_TIME.txt", "w").close()
-    if path.exists(f"{pathh}/{now_date}-9.log") == True:
-        os.remove(f"{pathh}/{now_date}-9.log")
-    if path.exists(f"{pathh}/{now_date}.log") == True:
-        while path.exists(f"{pathh}/{now_date}-{i}.log") == True:
-            i = i + 1
-        os.rename(f"{pathh}/{now_date}.log", f"{pathh}/{now_date}-{i}.log")
-    else:
-        if path.exists(f"{pathh}/latest.log") == True:
-            os.rename(
-                f"{pathh}/latest.log",
-                f"{pathh}/{now_date}.log",
-            )
-
-
-def isUserAdmin():
-
-    if os.name == "nt":
-        import ctypes
-
-        try:
-            return ctypes.windll.shell32.IsUserAnAdmin()
-        except:
-            traceback.print_exc()
-            print("Admin check failed, assuming not an admin.")
-            return False
-
-
-def runAsAdmin(cmdLine=None, wait=True):
-
-    import win32api, win32con, win32event, win32process
-    from win32com.shell.shell import ShellExecuteEx
-    from win32com.shell import shellcon
-
-    python_exe = sys.executable
-
-    if cmdLine is None:
-        cmdLine = [python_exe] + sys.argv
-    elif type(cmdLine) not in (types.TupleType, types.ListType):
-        raise ValueError
-    cmd = '"%s"' % (cmdLine[0],)
-    params = " ".join(['"%s"' % (x,) for x in cmdLine[1:]])
-    cmdDir = ""
-    showCmd = win32con.SW_SHOWNORMAL
-    lpVerb = "runas"
-    procInfo = ShellExecuteEx(
-        nShow=showCmd,
-        fMask=shellcon.SEE_MASK_NOCLOSEPROCESS,
-        lpVerb=lpVerb,
-        lpFile=cmd,
-        lpParameters=params,
-    )
-
-    if wait:
-        procHandle = procInfo["hProcess"]
-        obj = win32event.WaitForSingleObject(procHandle, win32event.INFINITE)
-        rc = win32process.GetExitCodeProcess(procHandle)
-    else:
-        rc = None
-
-    return rc
-
-
 if __name__ == "__main__":
     import configparser
     import datetime
@@ -145,8 +74,9 @@ if __name__ == "__main__":
 
     now_date = str(datetime.date.today())
     user = os.getlogin()
+    roaming = os.getenv("APPDATA")
     buffor = False
-    sciezka = f"C:/Users/{user}/AppData/Roaming/PartsID"
+    sciezka = f"{roaming}/PartsID"
     havetorestart = False
 
     txtFile = f"{sciezka}/ver.txt"

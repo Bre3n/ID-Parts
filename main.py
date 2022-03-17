@@ -286,8 +286,8 @@ class MainWindow(QMainWindow):
             if proc.name() == PROCNAME:
                 proc.kill()
 
-        user = os.getlogin()
-        inipath = f"C:/Users/{user}/AppData/Roaming/PartsID"
+        roaming = os.getenv("APPDATA")
+        inipath = f"{roaming}/PartsID"
         if path.exists(f"{inipath}") == False:
             os.mkdir(f"{inipath}")
 
