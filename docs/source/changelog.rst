@@ -1,6 +1,13 @@
 Changelog
 =========
 -------------------------
+1.4.5
+-------------------------
+- Zmiana systemy plików
+- Strona do zgłaszania
+- Zmiana szyfrowania
+
+-------------------------
 1.4
 -------------------------
 - Ogólna naprawa

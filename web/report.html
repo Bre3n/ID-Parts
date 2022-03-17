@@ -10,7 +10,7 @@
 <body
     style="background: rgb(227,224,207);background: linear-gradient(90deg, rgba(227,224,207,1) 0%, rgba(227,224,207,1) 50%, rgba(255,255,255,1) 100%);">
     <div id="container">
-        <h1 id="main_name">PART'S ID</h1>
+        <h1 id="main_name">PARTS ID</h1>
         <div>
             <div id="home_button" class="buttons">
                 <a href="index.html">
@@ -27,11 +27,25 @@
             </div>
         </div>
         <div id="report">
-            
+            <form id="form">
+                <label for="email">Twój email:</label><br>
+                <input type="text" name="email" id="email" placeholder="jankowalski@mail.com"><br>
+                <label for="message">Treść zgłoszenia:</label><br>
+                <textarea name="message" id="message" placeholder="Treść wiadomości"
+                    style="width: 40%;height: 100%;"></textarea><br>
+                <button name="submit" id="submit" class="b_buttons"
+                    style="width: 40%;margin-top: 3%;background-color: #B5C4BA;border: 2px solid #74C4BD;color:black;">Wyślij</button>
+                <br>
+                <label id="loader"></label>
+                <label id="info"></label>
+            </form>
+
         </div>
 
 
     </div>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="main.js"></script>
 </body>
 
 </html>

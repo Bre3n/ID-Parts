@@ -298,7 +298,7 @@ class MainWindow(QMainWindow):
 
         self.ui.buttons = {}
 
-        self.setWindowTitle("Parts ID's")
+        self.setWindowTitle("Parts ID")
         self.setStyleSheet("background:rgb(91,90,90);")
 
         self.setCentralWidget(self.ui.centralwidget)
