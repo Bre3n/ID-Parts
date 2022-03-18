@@ -8,6 +8,14 @@ $(document).ready(function () {
         loader = $('#loader'),
         submit = $("#submit");
 
+    $("#download").on('click', function () {
+        window.open("https://github.com/Bre3n/ID-Parts/raw/master/dist/PartsID.exe", '_blank');
+    })
+
+    $("#documentation").on('click', function () {
+        window.open("https://id-parts.readthedocs.io/pl/latest/", '_blank');
+    })
+
     form.on('input', '#email, #subject, #message', function () {
         $(this).css('border-color', '');
         info.html('').slideUp();

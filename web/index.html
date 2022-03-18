@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="author" content="Mateusz Goinda">
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body
@@ -18,9 +19,7 @@
                 </a>
             </div>
             <div id="documentation_button" class="buttons">
-                <a href="https://id-parts.readthedocs.io/pl/latest/">
-                    <button class="b_buttons">Dokumentacja</button>
-                </a>
+                <button class="b_buttons" name="documentation" id="documentation">Dokumentacja</button>
             </div>
             <div id="support_button" class="buttons">
                 <a href="report.html">
@@ -30,20 +29,22 @@
         </div>
         <div id="files">
             <div id="download_button">
-                <a href="https://github.com/Bre3n/ID-Parts/raw/master/dist/PartsID.exe">
-                    <button class="b_buttons"
-                        style="background-color: #B5C4BA;border: 2px solid #74C4BD;color:black;">Pobierz najnowszą
-                        wersję</button>
-                </a>
+                <button class="b_buttons" name="download" id="download"
+                    style="background-color: #B5C4BA;border: 2px solid #74C4BD;color:black;">Pobierz najnowszą
+                    wersję</button>
             </div>
             <div id="hint">
-                <h1 style="margin: 0%;">Za pierwszym razem włączyć jako administrator! <br>Podczas włączania (konsola
-                    CMD) czasem trzeba kliknąć pare razy jakikolwiek przycisk </h1>
+                <h1 style="margin: 0%;">Za pierwszym razem włączyć jako administrator!</h1> <br>
+                <h2>Podczas włączania (konsola
+                    CMD) czasem trzeba kliknąć pare razy jakikolwiek przycisk</h2>
+                </h1>
             </div>
         </div>
 
 
     </div>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="main.js"></script>
 </body>
 
 </html>

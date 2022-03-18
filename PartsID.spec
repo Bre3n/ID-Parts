@@ -4,7 +4,7 @@
 block_cipher = None
 
 
-a = Analysis(['PartsID.py'],
+a = Analysis(['partsid.py'],
              pathex=[],
              binaries=[],
              datas=[],
@@ -26,7 +26,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,  
           [],
-          name='PartsID',
+          name='partsid',
           debug=True,
           bootloader_ignore_signals=False,
           strip=False,

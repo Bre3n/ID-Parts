@@ -161,4 +161,4 @@ if __name__ == "__main__":
         if havetorestart == True:
             os.execv(sys.executable, ["python"] + sys.argv)
         os.chdir(f"{sciezka}/")
-        os.system(f"{sciezka}/partsID_main.exe")
+        os.system(f'"{sciezka}/partsID_main.exe"')
