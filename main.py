@@ -161,7 +161,7 @@ def logintoall(self):
                     sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
                     val = (
                         f"Logged to database",
-                        userlogin,
+                        f"{userlogin}/{desktophostname}",
                         datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
                     )
                     mycursor.execute(sql, val)
@@ -241,7 +241,7 @@ class MainWindow(QMainWindow):
 
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
-        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile, defaultSize, database_profile, iterablebool, checkinternetbool, url
+        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile, defaultSize, database_profile, iterablebool, checkinternetbool, url, desktophostname
 
         (
             logoutses,
@@ -266,6 +266,7 @@ class MainWindow(QMainWindow):
             databasepassword,
             database_profile,
             url,
+            desktophostname,
         ) = (
             "",
             "",
@@ -274,6 +275,7 @@ class MainWindow(QMainWindow):
             "",
             "",
             "https://www.google.com",
+            os.getlogin(),
         )
 
         defaultSize = 50
@@ -565,7 +567,7 @@ class MainWindow(QMainWindow):
                 sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
                 val = (
                     f"Logout from session",
-                    userlogin,
+                    f"{userlogin}/{desktophostname}",
                     datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
                 )
                 mycursor.execute(sql, val)
@@ -597,7 +599,7 @@ class MainWindow(QMainWindow):
                 sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
                 val = (
                     f"Logout from database",
-                    userlogin,
+                    f"{userlogin}/{desktophostname}",
                     datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
                 )
                 mycursor.execute(sql, val)
@@ -633,7 +635,7 @@ class MainWindow(QMainWindow):
         date = datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S")
         try:
             mycursor.execute(
-                f"UPDATE `{database_profile}` SET `name`='{bufor}',`comment`='{comment}',`author`='{userlogin}',`datetime`='{date}' WHERE `letter` LIKE '{str(myresult[0])}' AND `number`='{int(myresult[1])}'"
+                f"UPDATE `{database_profile}` SET `name`='{bufor}',`comment`='{comment}',`author`='{userlogin}/{desktophostname}',`datetime`='{date}' WHERE `letter` LIKE '{str(myresult[0])}' AND `number`='{int(myresult[1])}'"
             )
             mydb.commit()
             mycursor.execute(
@@ -650,7 +652,7 @@ class MainWindow(QMainWindow):
                 sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
                 val = (
                     f"Add part `{str(myresult[0])}.{myresult[1]}.{bufor}` to `{database_profile}`",
-                    userlogin,
+                    f"{userlogin}/{desktophostname}",
                     datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
                 )
                 mycursor.execute(sql, val)
@@ -789,7 +791,7 @@ class DatabaseLogin:
                     pass
                 else:
                     mycursor.execute(
-                        "CREATE TABLE logs (action TEXT, author TEXT, datetime TEXT)"
+                        "CREATE TABLE logs (action TEXT, author TEXT, datetime TEXT, hostname TEXT)"
                     )
 
                 selfui.ui.lineEdit_3.setPlaceholderText(selfui.ui.lineEdit_3.text())
@@ -944,7 +946,7 @@ class EditDatabase:
                 sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
                 val = (
                     f"Del '{bufor}' from '{database_profile}'",
-                    userlogin,
+                    f"{userlogin}/{desktophostname}",
                     datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
                 )
                 mycursor.execute(sql, val)
@@ -1173,7 +1175,7 @@ class SettingsPage:
         sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
         val = (
             f"DELETE letter `{bufor2}` from `{bufor}`",
-            userlogin,
+            f"{userlogin}/{desktophostname}",
             datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
         )
         mycursor.execute(sql, val)
@@ -1253,7 +1255,7 @@ class SettingsPage:
         sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
         val = (
             f"Add letter `{bufor2}` to `{bufor}` with {valueslmax-valueslmin} rows",
-            userlogin,
+            f"{userlogin}/{desktophostname}",
             datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
         )
         mycursor.execute(sql, val)
@@ -1303,7 +1305,7 @@ class SettingsPage:
         sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
         val = (
             f"Saved profile `{bufor}`",
-            userlogin,
+            f"{userlogin}/{desktophostname}",
             datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
         )
         mycursor.execute(sql, val)
@@ -1325,7 +1327,7 @@ class SettingsPage:
         sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
         val = (
             f"DELETE DATABASE `{bufor}`",
-            userlogin,
+            f"{userlogin}/{desktophostname}",
             datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
         )
         mycursor.execute(sql, val)
