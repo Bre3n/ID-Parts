@@ -75,6 +75,9 @@ class Ui_MainWindow(object):
         font1.setFamilies([u"Segoe UI"])
         font1.setPointSize(12)
         self.actionversion.setFont(font1)
+        self.actionWybierz_profil = QAction(MainWindow)
+        self.actionWybierz_profil.setObjectName(u"actionWybierz_profil")
+        self.actionWybierz_profil.setFont(font)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
@@ -410,17 +413,20 @@ class Ui_MainWindow(object):
 
         self.bn_databaselogin = QPushButton(self.page_database_login)
         self.bn_databaselogin.setObjectName(u"bn_databaselogin")
-        self.bn_databaselogin.setFont(font2)
+        font8 = QFont()
+        font8.setFamilies([u"Segoe UI"])
+        font8.setPointSize(22)
+        self.bn_databaselogin.setFont(font8)
         self.bn_databaselogin.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
-"	background-color: rgb(50,150,50);\n"
+"	background-color: #FF6F61;\n"
 "border-radius:5px;\n"
 "}\n"
 "QPushButton:hover {\n"
-"	background-color: rgb(100,180,100);\n"
+"	background-color: #FF958A;\n"
 "}\n"
 "QPushButton:pressed {\n"
-"background-color: rgb(50,150,50);\n"
+"background-color: #FF6F61;\n"
 "}")
 
         self.verticalLayout_7.addWidget(self.bn_databaselogin)
@@ -501,9 +507,9 @@ class Ui_MainWindow(object):
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.bn_database_back.sizePolicy().hasHeightForWidth())
         self.bn_database_back.setSizePolicy(sizePolicy3)
-        font8 = QFont()
-        font8.setPointSize(18)
-        self.bn_database_back.setFont(font8)
+        font9 = QFont()
+        font9.setPointSize(18)
+        self.bn_database_back.setFont(font9)
         self.bn_database_back.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(200,66,66);\n"
@@ -813,10 +819,10 @@ class Ui_MainWindow(object):
         self.bn_databaseDel.setObjectName(u"bn_databaseDel")
         sizePolicy4.setHeightForWidth(self.bn_databaseDel.sizePolicy().hasHeightForWidth())
         self.bn_databaseDel.setSizePolicy(sizePolicy4)
-        font9 = QFont()
-        font9.setFamilies([u"Segoe UI"])
-        font9.setPointSize(26)
-        self.bn_databaseDel.setFont(font9)
+        font10 = QFont()
+        font10.setFamilies([u"Segoe UI"])
+        font10.setPointSize(26)
+        self.bn_databaseDel.setFont(font10)
         self.bn_databaseDel.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	background-color: rgb(200,66,66);\n"
@@ -935,20 +941,17 @@ class Ui_MainWindow(object):
 
         self.bn_login = QPushButton(self.page_login)
         self.bn_login.setObjectName(u"bn_login")
-        font10 = QFont()
-        font10.setFamilies([u"Segoe UI"])
-        font10.setPointSize(22)
-        self.bn_login.setFont(font10)
+        self.bn_login.setFont(font8)
         self.bn_login.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
-"	background-color: rgb(50,150,50);\n"
+"	background-color: #FF6F61;\n"
 "border-radius:5px;\n"
 "}\n"
 "QPushButton:hover {\n"
-"	background-color: rgb(100,180,100);\n"
+"	background-color: #FF958A;\n"
 "}\n"
 "QPushButton:pressed {\n"
-"background-color: rgb(50,150,50);\n"
+"background-color: #FF6F61;\n"
 "}")
         self.bn_login.setFlat(True)
 
@@ -1432,6 +1435,7 @@ class Ui_MainWindow(object):
         self.menuUstawienia_sesji.addAction(self.actionConnectDatabase)
         self.menuUstawienia_sesji.addAction(self.actionDisconnectDatabase)
         self.menuStronaglowna.addAction(self.actionBacktomain)
+        self.menuStronaglowna.addAction(self.actionWybierz_profil)
         self.menuUstawienia.addAction(self.actionUstawienia_globalne_2)
         self.menuUstawienia.addSeparator()
         self.menuUstawienia.addAction(self.actionversion)
@@ -1459,6 +1463,7 @@ class Ui_MainWindow(object):
         self.actionDisconnectDatabase.setText(QCoreApplication.translate("MainWindow", u"Roz\u0142\u0105cz z baz\u0105 danych", None))
         self.actionUstawienia_globalne_2.setText(QCoreApplication.translate("MainWindow", u"Ustawienia globalne", None))
         self.actionversion.setText(QCoreApplication.translate("MainWindow", u"version", None))
+        self.actionWybierz_profil.setText(QCoreApplication.translate("MainWindow", u"Wybierz profil", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Zalogowano jako:", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"{name}", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"|", None))
@@ -1479,7 +1484,7 @@ class Ui_MainWindow(object):
         self.lineEdit_4.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[root]", None))
         self.lineEdit_5.setPlaceholderText(QCoreApplication.translate("MainWindow", u"[password]", None))
         self.label_40.setText(QCoreApplication.translate("MainWindow", u"O ile nie roz\u0142\u0105czono z baz\u0105 danych nie trzeba wpisywa\u0107 has\u0142a (czyli przy pierwszym uruchomieniu nie trzeba)", None))
-        self.bn_databaselogin.setText(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
+        self.bn_databaselogin.setText(QCoreApplication.translate("MainWindow", u"Po\u0142\u0105cz", None))
 #if QT_CONFIG(shortcut)
         self.bn_databaselogin.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
 #endif // QT_CONFIG(shortcut)

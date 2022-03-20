@@ -73,7 +73,6 @@ if __name__ == "__main__":
             proc.kill()
 
     now_date = str(datetime.date.today())
-    user = os.getlogin()
     roaming = os.getenv("APPDATA")
     buffor = False
     sciezka = f"{roaming}/PartsID"

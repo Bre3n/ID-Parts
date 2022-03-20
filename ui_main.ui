@@ -600,24 +600,24 @@ QLineEdit:disabled {
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>20</pointsize>
+              <pointsize>22</pointsize>
              </font>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
 	border: none;
-	background-color: rgb(50,150,50);
+	background-color: #FF6F61;
 border-radius:5px;
 }
 QPushButton:hover {
-	background-color: rgb(100,180,100);
+	background-color: #FF958A;
 }
 QPushButton:pressed {
-background-color: rgb(50,150,50);
+background-color: #FF6F61;
 }</string>
             </property>
             <property name="text">
-             <string>Zaloguj</string>
+             <string>Połącz</string>
             </property>
             <property name="shortcut">
              <string>Return</string>
@@ -1544,14 +1544,14 @@ QLineEdit:disabled {
             <property name="styleSheet">
              <string notr="true">QPushButton {
 	border: none;
-	background-color: rgb(50,150,50);
+	background-color: #FF6F61;
 border-radius:5px;
 }
 QPushButton:hover {
-	background-color: rgb(100,180,100);
+	background-color: #FF958A;
 }
 QPushButton:pressed {
-background-color: rgb(50,150,50);
+background-color: #FF6F61;
 }</string>
             </property>
             <property name="text">
@@ -2303,6 +2303,7 @@ QMenuBar::item:pressed {
      <string>Strona główna</string>
     </property>
     <addaction name="actionBacktomain"/>
+    <addaction name="actionWybierz_profil"/>
    </widget>
    <widget class="QMenu" name="menuUstawienia">
     <property name="title">
@@ -2430,6 +2431,17 @@ QMenuBar::item:pressed {
     <font>
      <family>Segoe UI</family>
      <pointsize>12</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionWybierz_profil">
+   <property name="text">
+    <string>Wybierz profil</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>14</pointsize>
     </font>
    </property>
   </action>

@@ -85,6 +85,7 @@ def crypto(message, var):
 
 
 def logintoall(self):
+    print("logging")
 
     global userlogin, userpassword, databasehostname, databaseuser, databasepassword, database_connected, mycursor, logged, mydb
 
@@ -115,77 +116,79 @@ def logintoall(self):
         databasepassword = crypto(fileDB.read(), 1)
         fileDB.close()
 
-    if (
-        path.exists(f"{inipath}/filedbhostname.txt") == True
-        and path.exists(f"{inipath}/filedbuser.txt") == True
-        and path.exists(f"{inipath}/filedbpassword.txt") == True
-    ):
-        try:
-            request = requests.get(url, timeout=5)
-        except (requests.ConnectionError, requests.Timeout) as exception:
-            self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
-            self.ui.label_36.setText("!")
-            self.ui.label_37.setText(
-                "Brak połączenia z internetem! Połącz się z siecią i zrestartuj program!"
-            )
-        try:
-            mydb = mysql.connector.connect(
-                host=databasehostname,
-                user=databaseuser,
-                password=databasepassword,
-                database=database_name,
-            )
-            if mydb.is_connected() == False:
-                self.ui.label_3.setText("Nie zalogowano do sesji!")
-                self.ui.label_4.setText("")
-                MainWindow.errorexec(
-                    self,
-                    "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych ",
-                    "Ok",
-                )
-            else:
-                self.ui.lineEdit_3.setPlaceholderText(databasehostname)
-                self.ui.lineEdit_4.setPlaceholderText(databaseuser)
-                self.ui.bn_databaselogin.setText("Połączono")
-                mycursor = mydb.cursor(buffered=True)
-                mycursor.execute("SELECT * FROM password")
-                myresult = mycursor.fetchone()
-                database_connected = True
-                if str(userpassword) == str(myresult[0]):
-                    logged = True
-                    self.ui.bn_login.setText("Zalogowano")
-                    self.ui.lineEdit.setPlaceholderText(userlogin)
-                    self.ui.label_3.setText("Zalogowano pomyślnie jako:")
-                    self.ui.label_4.setText(userlogin)
-
-                    sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                    val = (
-                        f"Logged to database",
-                        f"{userlogin}/{desktophostname}",
-                        datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-                    )
-                    mycursor.execute(sql, val)
-                    mydb.commit()
-
-                else:
-                    self.ui.label_3.setText("Nie zalogowano do sesji!")
-                    self.ui.label_4.setText("")
-                    MainWindow.errorexec(
-                        self,
-                        "Nie zalogowano do sesji. Ustawienia sesji -> Zaloguj",
-                        "Ok",
-                    )
-        except Exception as e:
-            print(e)
-            self.ui.label_3.setText("Nie zalogowano do sesji!")
+    try:
+        request = requests.get(url, timeout=5)
+    except (requests.ConnectionError, requests.Timeout) as exception:
+        self.ui.stackedWidget.setCurrentWidget(self.ui.page_error)
+        self.ui.label_36.setText("!")
+        self.ui.label_37.setText(
+            "Brak połączenia z internetem! Połącz się z siecią i zrestartuj program!"
+        )
+    try:
+        mydb = mysql.connector.connect(
+            host=databasehostname,
+            user=databaseuser,
+            password=databasepassword,
+            database=database_name,
+        )
+        if mydb.is_connected() == False:
+            self.ui.label_3.setText("Nie zalogowano!")
             self.ui.label_4.setText("")
             MainWindow.errorexec(
                 self,
                 "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych ",
                 "Ok",
             )
+            self.ui.bn_databaselogin.setStyleSheet(
+                "QPushButton {\n	border: none;\n	background-color: #FF6F61;\nborder-radius:5px;\n}\nQPushButton:hover {\n	background-color: #FF958A;\n}\nQPushButton:pressed {\nbackground-color: #FF6F61;\n}"
+            )
+            self.ui.bn_databaselogin.setText("Połącz")
+            print("database logout")
+        else:
+            self.ui.lineEdit_3.setPlaceholderText(databasehostname)
+            self.ui.lineEdit_4.setPlaceholderText(databaseuser)
+            self.ui.bn_databaselogin.setText("Połączono")
+            self.ui.bn_databaselogin.setStyleSheet(
+                "QPushButton{border: none;background-color: rgb(50,150,50);border-radius:5px;}QPushButton:hover {background-color: rgb(100,180,100);}QPushButton:pressed {background-color: rgb(50,150,50);}"
+            )
+            mycursor = mydb.cursor(buffered=True)
+            mycursor.execute("SELECT * FROM password")
+            myresult = mycursor.fetchone()
+            database_connected = True
+            if str(userpassword) == str(myresult[0]):
+                logged = True
+                self.ui.bn_login.setText("Zalogowano")
+                self.ui.bn_login.setStyleSheet(
+                    "QPushButton{border: none;background-color: rgb(50,150,50);border-radius:5px;}QPushButton:hover {background-color: rgb(100,180,100);}QPushButton:pressed {background-color: rgb(50,150,50);}"
+                )
+                self.ui.lineEdit.setPlaceholderText(userlogin)
+                self.ui.label_3.setText("Zalogowano pomyślnie jako:")
+                self.ui.label_4.setText(userlogin)
 
-    else:
+                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
+                val = (
+                    f"Logged to database",
+                    f"{userlogin}/{desktophostname}",
+                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+                )
+                mycursor.execute(sql, val)
+                mydb.commit()
+
+            else:
+                self.ui.label_3.setText("Nie zalogowano!")
+                self.ui.label_4.setText("")
+                self.ui.bn_login.setStyleSheet(
+                    "QPushButton {\n	border: none;\n	background-color: #FF6F61;\nborder-radius:5px;\n}\nQPushButton:hover {\n	background-color: #FF958A;\n}\nQPushButton:pressed {\nbackground-color: #FF6F61;\n}"
+                )
+                self.ui.bn_login.setText("Zaloguj")
+                MainWindow.errorexec(
+                    self,
+                    "Nie zalogowano do sesji. Ustawienia sesji -> Zaloguj",
+                    "Ok",
+                )
+                print("sesion logout")
+    except Exception as e:
+        print(e)
         self.ui.label_3.setText("Nie zalogowano do sesji!")
         self.ui.label_4.setText("")
         MainWindow.errorexec(
@@ -193,6 +196,11 @@ def logintoall(self):
             "Nie zalogowano do bazy danych. Ustawienia sesji -> Połącz z bazą danych ",
             "Ok",
         )
+        self.ui.bn_databaselogin.setStyleSheet(
+            "QPushButton {\n	border: none;\n	background-color: #FF6F61;\nborder-radius:5px;\n}\nQPushButton:hover {\n	background-color: #FF958A;\n}\nQPushButton:pressed {\nbackground-color: #FF6F61;\n}"
+        )
+        self.ui.bn_databaselogin.setText("Połącz")
+        print("database logout")
 
 
 class errorUi(QDialog):
@@ -317,6 +325,9 @@ class MainWindow(QMainWindow):
         # * actionBar
         # * Back to main page
         self.ui.actionBacktomain.triggered.connect(self.main_page)
+        self.ui.actionWybierz_profil.triggered.connect(
+            lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_profil)
+        )
         # * Session
         self.ui.actionZaloguj.triggered.connect(lambda: UserLoginClass(self))
         self.ui.actionWyloguj.triggered.connect(lambda: self.logout(1))
@@ -396,8 +407,8 @@ class MainWindow(QMainWindow):
 
         color = ""
         for i in range(2):
-            color += (str(random.randint(0, 150))) + ","
-        color += str(random.randint(0, 150))
+            color += (str(random.randint(50, 150))) + ","
+        color += str(random.randint(50, 150))
         QPushButtonStyle = (
             f"border: none;background-color: rgb({color});border-radius: 10px;"
         )
@@ -487,8 +498,8 @@ class MainWindow(QMainWindow):
 
         color = ""
         for i in range(2):
-            color += (str(random.randint(0, 150))) + ","
-        color += str(random.randint(0, 150))
+            color += (str(random.randint(50, 150))) + ","
+        color += str(random.randint(50, 150))
         QPushButtonStyle = (
             f"border: none;background-color: rgb({color});border-radius: 10px;"
         )
@@ -541,7 +552,7 @@ class MainWindow(QMainWindow):
                 pass
 
     def logout(self, var):
-        global logoutses, logout_database, logged, database_connected, mycursor, mydb
+        global logoutses, logout_database, logged, database_connected, mycursor, mydb, userlogin, userpassword, databasehostname, databaseuser, databasepassword
         if checkinternetbool == False:
             return None
         if var == 1:
@@ -572,6 +583,8 @@ class MainWindow(QMainWindow):
                 )
                 mycursor.execute(sql, val)
                 mydb.commit()
+                userlogin, userpassword, logged = "", "", False
+                logintoall(self)
         elif var == 2:
             if logout_database == False:
                 self.errorexec(
@@ -604,7 +617,13 @@ class MainWindow(QMainWindow):
                 )
                 mycursor.execute(sql, val)
                 mydb.commit()
-            logintoall(self)
+                databasehostname, databaseuser, databasepassword, database_connected = (
+                    "",
+                    "",
+                    "",
+                    False,
+                )
+                logintoall(self)
 
     def logout2(self, var):
         global logoutses, logout_database
@@ -1271,10 +1290,11 @@ class SettingsPage:
     def SaveProfile(self, selfui):
         mycursor.execute(f"SELECT name FROM global_settings")
         myresult = mycursor.fetchall()
-        bufor = selfui.ui.lineEdit_8.text()
+        bufor = selfui.ui.lineEdit_8.text().replace(" ", "_")
         for i in myresult:
             if bufor in i:
-                MainWindow.errorexec(selfui, "Już istnieje taki profil", "Ok")
+                MainWindow.errorexec(selfui, f"Profil `{bufor}` już istnieje!", "Ok")
+                return None
         if (
             selfui.ui.lineEdit_8.text() == ""
             or selfui.ui.lineEdit_9.text() == ""
@@ -1295,7 +1315,6 @@ class SettingsPage:
                 "Ok",
             )
             return None
-        bufor = selfui.ui.lineEdit_8.text().replace(" ", "_")
         mycursor.execute(
             f"INSERT INTO `global_settings`(`name`, `letters`, `rangemin`, `rangemax`) VALUES ('{bufor}','','{selfui.ui.lineEdit_9.text()}','{selfui.ui.lineEdit_10.text()}')"
         )
