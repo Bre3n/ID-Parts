@@ -1043,13 +1043,32 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_18.addLayout(self.verticalLayout_23)
 
+        self.verticalLayout_20 = QVBoxLayout()
+        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
+        self.label_41 = QLabel(self.page_settings_global)
+        self.label_41.setObjectName(u"label_41")
+        sizePolicy7 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.label_41.sizePolicy().hasHeightForWidth())
+        self.label_41.setSizePolicy(sizePolicy7)
+        self.label_41.setMinimumSize(QSize(100, 37))
+        self.label_41.setMaximumSize(QSize(100, 16777215))
+        self.label_41.setFont(font)
+        self.label_41.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_20.addWidget(self.label_41)
+
         self.comboBox_4 = QComboBox(self.page_settings_global)
         self.comboBox_4.setObjectName(u"comboBox_4")
         sizePolicy5.setHeightForWidth(self.comboBox_4.sizePolicy().hasHeightForWidth())
         self.comboBox_4.setSizePolicy(sizePolicy5)
         self.comboBox_4.setFont(font5)
 
-        self.horizontalLayout_18.addWidget(self.comboBox_4)
+        self.verticalLayout_20.addWidget(self.comboBox_4)
+
+
+        self.horizontalLayout_18.addLayout(self.verticalLayout_20)
 
 
         self.horizontalLayout_17.addLayout(self.horizontalLayout_18)
@@ -1062,15 +1081,19 @@ class Ui_MainWindow(object):
 
         self.label_32 = QLabel(self.page_settings_global)
         self.label_32.setObjectName(u"label_32")
-        sizePolicy2.setHeightForWidth(self.label_32.sizePolicy().hasHeightForWidth())
-        self.label_32.setSizePolicy(sizePolicy2)
-        self.label_32.setFont(font2)
+        sizePolicy4.setHeightForWidth(self.label_32.sizePolicy().hasHeightForWidth())
+        self.label_32.setSizePolicy(sizePolicy4)
+        self.label_32.setMaximumSize(QSize(300, 16777215))
+        self.label_32.setFont(font4)
         self.label_32.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_24.addWidget(self.label_32)
 
         self.lineEdit_8 = QLineEdit(self.page_settings_global)
         self.lineEdit_8.setObjectName(u"lineEdit_8")
+        sizePolicy2.setHeightForWidth(self.lineEdit_8.sizePolicy().hasHeightForWidth())
+        self.lineEdit_8.setSizePolicy(sizePolicy2)
+        self.lineEdit_8.setMaximumSize(QSize(300, 16777215))
         self.lineEdit_8.setFont(font2)
         self.lineEdit_8.setStyleSheet(u"QLineEdit {\n"
 "	color:rgb(255,255,255);\n"
@@ -1093,13 +1116,17 @@ class Ui_MainWindow(object):
         self.label_33.setObjectName(u"label_33")
         sizePolicy2.setHeightForWidth(self.label_33.sizePolicy().hasHeightForWidth())
         self.label_33.setSizePolicy(sizePolicy2)
-        self.label_33.setFont(font2)
+        self.label_33.setMaximumSize(QSize(300, 16777215))
+        self.label_33.setFont(font4)
         self.label_33.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_24.addWidget(self.label_33)
 
         self.lineEdit_9 = QLineEdit(self.page_settings_global)
         self.lineEdit_9.setObjectName(u"lineEdit_9")
+        sizePolicy2.setHeightForWidth(self.lineEdit_9.sizePolicy().hasHeightForWidth())
+        self.lineEdit_9.setSizePolicy(sizePolicy2)
+        self.lineEdit_9.setMaximumSize(QSize(300, 16777215))
         self.lineEdit_9.setFont(font2)
         self.lineEdit_9.setStyleSheet(u"QLineEdit {\n"
 "	color:rgb(255,255,255);\n"
@@ -1122,13 +1149,17 @@ class Ui_MainWindow(object):
         self.label_34.setObjectName(u"label_34")
         sizePolicy2.setHeightForWidth(self.label_34.sizePolicy().hasHeightForWidth())
         self.label_34.setSizePolicy(sizePolicy2)
-        self.label_34.setFont(font2)
+        self.label_34.setMaximumSize(QSize(300, 16777215))
+        self.label_34.setFont(font4)
         self.label_34.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_24.addWidget(self.label_34)
 
         self.lineEdit_10 = QLineEdit(self.page_settings_global)
         self.lineEdit_10.setObjectName(u"lineEdit_10")
+        sizePolicy2.setHeightForWidth(self.lineEdit_10.sizePolicy().hasHeightForWidth())
+        self.lineEdit_10.setSizePolicy(sizePolicy2)
+        self.lineEdit_10.setMaximumSize(QSize(300, 16777215))
         self.lineEdit_10.setFont(font2)
         self.lineEdit_10.setStyleSheet(u"QLineEdit {\n"
 "	color:rgb(255,255,255);\n"
@@ -1166,7 +1197,7 @@ class Ui_MainWindow(object):
         self.lineEdit_11.setObjectName(u"lineEdit_11")
         sizePolicy.setHeightForWidth(self.lineEdit_11.sizePolicy().hasHeightForWidth())
         self.lineEdit_11.setSizePolicy(sizePolicy)
-        self.lineEdit_11.setMaximumSize(QSize(40, 16777215))
+        self.lineEdit_11.setMaximumSize(QSize(80, 16777215))
         self.lineEdit_11.setFont(font5)
         self.lineEdit_11.setStyleSheet(u"QLineEdit {\n"
 "	color:rgb(255,255,255);\n"
@@ -1181,7 +1212,7 @@ class Ui_MainWindow(object):
 "	border-radius:4px;\n"
 "	background:rgb(112,112,112);\n"
 "}")
-        self.lineEdit_11.setMaxLength(1)
+        self.lineEdit_11.setMaxLength(10)
         self.lineEdit_11.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_19.addWidget(self.lineEdit_11)
@@ -1205,6 +1236,14 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_25.addLayout(self.horizontalLayout_19)
+
+        self.label_42 = QLabel(self.page_settings_global)
+        self.label_42.setObjectName(u"label_42")
+        font11 = QFont()
+        font11.setFamilies([u"Segoe UI"])
+        self.label_42.setFont(font11)
+
+        self.verticalLayout_25.addWidget(self.label_42)
 
         self.bn_settings_dell = QPushButton(self.page_settings_global)
         self.bn_settings_dell.setObjectName(u"bn_settings_dell")
@@ -1278,10 +1317,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_26.setObjectName(u"verticalLayout_26")
         self.label_35 = QLabel(self.page_settings_login)
         self.label_35.setObjectName(u"label_35")
-        font11 = QFont()
-        font11.setFamilies([u"Segoe UI"])
-        font11.setPointSize(32)
-        self.label_35.setFont(font11)
+        font12 = QFont()
+        font12.setFamilies([u"Segoe UI"])
+        font12.setPointSize(32)
+        self.label_35.setFont(font12)
         self.label_35.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_26.addWidget(self.label_35)
@@ -1349,15 +1388,15 @@ class Ui_MainWindow(object):
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
         self.label_36 = QLabel(self.page_error)
         self.label_36.setObjectName(u"label_36")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy7.setHorizontalStretch(0)
-        sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(self.label_36.sizePolicy().hasHeightForWidth())
-        self.label_36.setSizePolicy(sizePolicy7)
-        font12 = QFont()
-        font12.setFamilies([u"Segoe UI"])
-        font12.setPointSize(100)
-        self.label_36.setFont(font12)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(self.label_36.sizePolicy().hasHeightForWidth())
+        self.label_36.setSizePolicy(sizePolicy8)
+        font13 = QFont()
+        font13.setFamilies([u"Segoe UI"])
+        font13.setPointSize(100)
+        self.label_36.setFont(font13)
         self.label_36.setStyleSheet(u"")
         self.label_36.setAlignment(Qt.AlignCenter)
 
@@ -1365,10 +1404,10 @@ class Ui_MainWindow(object):
 
         self.label_37 = QLabel(self.page_error)
         self.label_37.setObjectName(u"label_37")
-        font13 = QFont()
-        font13.setFamilies([u"Segoe UI"])
-        font13.setPointSize(28)
-        self.label_37.setFont(font13)
+        font14 = QFont()
+        font14.setFamilies([u"Segoe UI"])
+        font14.setPointSize(28)
+        self.label_37.setFont(font14)
         self.label_37.setScaledContents(False)
         self.label_37.setAlignment(Qt.AlignCenter)
         self.label_37.setWordWrap(True)
@@ -1386,9 +1425,9 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 866, 33))
-        font14 = QFont()
-        font14.setPointSize(16)
-        self.menubar.setFont(font14)
+        font15 = QFont()
+        font15.setPointSize(16)
+        self.menubar.setFont(font15)
         self.menubar.setStyleSheet(u"QMenuBar {\n"
 "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
 "                                      stop:0 lightgray, stop:1 darkgray);\n"
@@ -1442,9 +1481,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(5)
         self.stackedWidget_2.setCurrentIndex(0)
-        self.stackedWidget_3.setCurrentIndex(1)
+        self.stackedWidget_3.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1527,10 +1566,13 @@ class Ui_MainWindow(object):
         self.bn_login.setText(QCoreApplication.translate("MainWindow", u"Zaloguj", None))
         self.label_26.setText(QCoreApplication.translate("MainWindow", u"Wybierz profil", None))
         self.bn_settings_set.setText(QCoreApplication.translate("MainWindow", u"Ustaw", None))
+        self.label_41.setText("")
         self.label_32.setText(QCoreApplication.translate("MainWindow", u"Nazwa profilu", None))
-        self.label_33.setText(QCoreApplication.translate("MainWindow", u"Minimalny zakres numeracji", None))
-        self.label_34.setText(QCoreApplication.translate("MainWindow", u"Maksymalny zakres numeracji", None))
+        self.label_33.setText(QCoreApplication.translate("MainWindow", u"Min. zakres numeracji", None))
+        self.label_34.setText(QCoreApplication.translate("MainWindow", u"Max. zakres numeracji", None))
         self.bn_settings_add.setText(QCoreApplication.translate("MainWindow", u" Dodaj liter\u0119 ", None))
+        self.label_42.setText(QCoreApplication.translate("MainWindow", u"^Dozwolone^ przecinki np. \"a,b,c\" max.5 liter\n"
+"*Chwil\u0119 to potrwa, nie wy\u0142acza\u0107 programu!", None))
         self.bn_settings_dell.setText(QCoreApplication.translate("MainWindow", u"Usu\u0144 liter\u0119", None))
         self.bn_settings_save.setText(QCoreApplication.translate("MainWindow", u"Zapisz profil", None))
         self.bn_settings_delprofile.setText(QCoreApplication.translate("MainWindow", u"Usu\u0144 profil", None))

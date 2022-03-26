@@ -54,7 +54,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="page_main">
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1620,7 +1620,7 @@ background-color: #FF6F61;
         <item>
          <widget class="QStackedWidget" name="stackedWidget_3">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="page_settings_global">
            <layout class="QHBoxLayout" name="horizontalLayout_20">
@@ -1683,20 +1683,58 @@ background-color: rgb(50,150,50);
                  </layout>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="comboBox_4">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <family>Segoe UI</family>
-                    <pointsize>16</pointsize>
-                   </font>
-                  </property>
-                 </widget>
+                 <layout class="QVBoxLayout" name="verticalLayout_20">
+                  <item>
+                   <widget class="QLabel" name="label_41">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>37</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>14</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_4">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>16</pointsize>
+                     </font>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </item>
@@ -1718,15 +1756,21 @@ background-color: rgb(50,150,50);
                 <item>
                  <widget class="QLabel" name="label_32">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
-                    <pointsize>20</pointsize>
+                    <pointsize>18</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -1739,6 +1783,18 @@ background-color: rgb(50,150,50);
                 </item>
                 <item>
                  <widget class="QLineEdit" name="lineEdit_8">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
@@ -1773,14 +1829,20 @@ QLineEdit:disabled {
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
-                    <pointsize>20</pointsize>
+                    <pointsize>18</pointsize>
                    </font>
                   </property>
                   <property name="text">
-                   <string>Minimalny zakres numeracji</string>
+                   <string>Min. zakres numeracji</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1789,6 +1851,18 @@ QLineEdit:disabled {
                 </item>
                 <item>
                  <widget class="QLineEdit" name="lineEdit_9">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
@@ -1823,14 +1897,20 @@ QLineEdit:disabled {
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
-                    <pointsize>20</pointsize>
+                    <pointsize>18</pointsize>
                    </font>
                   </property>
                   <property name="text">
-                   <string>Maksymalny zakres numeracji</string>
+                   <string>Max. zakres numeracji</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1839,6 +1919,18 @@ QLineEdit:disabled {
                 </item>
                 <item>
                  <widget class="QLineEdit" name="lineEdit_10">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
@@ -1887,6 +1979,9 @@ QLineEdit:disabled {
                   <property name="orientation">
                    <enum>Qt::Vertical</enum>
                   </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Expanding</enum>
+                  </property>
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
@@ -1907,7 +2002,7 @@ QLineEdit:disabled {
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>40</width>
+                      <width>80</width>
                       <height>16777215</height>
                      </size>
                     </property>
@@ -1933,7 +2028,7 @@ QLineEdit:disabled {
 }</string>
                     </property>
                     <property name="maxLength">
-                     <number>1</number>
+                     <number>10</number>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -1969,6 +2064,19 @@ background-color: rgb(50,150,50);
                    </widget>
                   </item>
                  </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_42">
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>^Dozwolone^ przecinki np. &quot;a,b,c&quot; max.5 liter
+*Chwilę to potrwa, nie wyłaczać programu!</string>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <widget class="QPushButton" name="bn_settings_dell">

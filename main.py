@@ -1163,11 +1163,15 @@ class SettingsPage:
                 myresult.remove("")
             except Exception:
                 pass
+        selfui.ui.label_41.setText(bufor)
         selfui.ui.comboBox_4.addItems(myresult)
 
     def delLetter(self, selfui):
         global mydb, mycursor
-        bufor = selfui.ui.comboBox_3.currentText()
+        bufor = selfui.ui.label_41.text()
+        if bufor == "":
+            MainWindow.errorexec(selfui, f"Najpierw ustaw profil!", "Ok")
+            return
         bufor2 = selfui.ui.comboBox_4.currentText()
         mycursor.execute(f"SELECT letters FROM global_settings WHERE name='{bufor}'")
         myresult = mycursor.fetchone()
@@ -1212,80 +1216,104 @@ class SettingsPage:
 
     def addLetter(self, selfui):
         global mydb, mycursor
-        if (
-            selfui.ui.lineEdit_11 == ""
-            or selfui.ui.lineEdit_11.text().isalpha() == False
-        ):
-            return None
-        bufor = selfui.ui.comboBox_3.currentText()
-        bufor2 = selfui.ui.lineEdit_11.text().upper()
+        buforlett = selfui.ui.lineEdit_11.text().upper()
+        buforlet = []
+        added = False
 
-        mycursor.execute(f"SELECT * FROM global_settings WHERE name='{bufor}'")
-        myresult = mycursor.fetchall()
+        bufor = selfui.ui.label_41.text()
+        if bufor == "":
+            MainWindow.errorexec(selfui, f"Najpierw ustaw profil!", "Ok")
+            return
 
-        valuesl = []
-        valueslmin = []
-        valueslmax = []
+        if "," in buforlett:
+            buforlet = buforlett.split(",")
+        else:
+            if buforlett.isalpha() == False:
+                MainWindow.errorexec(selfui, f"Dane muszą być literą!", "Ok")
+            else:
+                buforlet.append(buforlett)
 
-        for row in myresult:
-            valuesl = row[1]
-            valueslmin = int(row[2])
-            valueslmax = int(row[3])
-        valuesl = (
-            str(valuesl)
-            .replace("(", "")
-            .replace(")", "")
-            .replace("'", "")
-            .replace(" ", "")
-        )
-        valuesl = valuesl.split(",")
-        for i in range(len(valuesl)):
-            try:
-                valuesl.remove("")
-            except Exception:
-                pass
+        for i in range(len(buforlet)):
+            bufor2 = buforlet[i]
 
-        if bufor2 in valuesl:
-            MainWindow.errorexec(selfui, "Już istnieje taka litera", "Ok")
-            return None
-        bufor3 = ""
-        for i in valuesl:
-            bufor3 += f"{str(i)},"
-        bufor3 += bufor2
+            if bufor2.isalpha() == False:
+                MainWindow.errorexec(
+                    selfui, f"`{bufor2}` nie jest literą! (Pomijam)", "Ok"
+                )
+            else:
 
-        mycursor.execute(
-            f"UPDATE `global_settings` SET `letters`='{bufor3}' WHERE name='{bufor}'"
-        )
-        selfui.ui.lineEdit_11.setText("")
+                mycursor.execute(f"SELECT * FROM global_settings WHERE name='{bufor}'")
+                myresult = mycursor.fetchall()
 
-        for i in range(valueslmin, valueslmax + 1):
-            sql = f"INSERT INTO {bufor} (letter,number, name, comment,rangemin,rangemax,author,datetime) VALUES (%s, %s, %s,%s,%s,%s,%s,%s)"
+                valuesl = []
+                valueslmin = []
+                valueslmax = []
+
+                for row in myresult:
+                    valuesl = row[1]
+                    valueslmin = int(row[2])
+                    valueslmax = int(row[3])
+                valuesl = (
+                    str(valuesl)
+                    .replace("(", "")
+                    .replace(")", "")
+                    .replace("'", "")
+                    .replace(" ", "")
+                )
+                valuesl = valuesl.split(",")
+                for i in range(len(valuesl)):
+                    try:
+                        valuesl.remove("")
+                    except Exception:
+                        pass
+
+                if bufor2 in valuesl:
+                    MainWindow.errorexec(
+                        selfui,
+                        f"Litera `{bufor2}` w profilu `{bufor}` już istnieje! (Pomijam)",
+                        "Ok",
+                    )
+                else:
+                    bufor3 = ""
+                    for i in valuesl:
+                        bufor3 += f"{str(i)},"
+                    bufor3 += bufor2
+
+                    mycursor.execute(
+                        f"UPDATE `global_settings` SET `letters`='{bufor3}' WHERE name='{bufor}'"
+                    )
+                    selfui.ui.lineEdit_11.setText("")
+
+                    for i in range(valueslmin, valueslmax + 1):
+                        sql = f"INSERT INTO {bufor} (letter,number, name, comment,rangemin,rangemax,author,datetime) VALUES (%s, %s, %s,%s,%s,%s,%s,%s)"
+                        val = (
+                            bufor2,
+                            i,
+                            "None",
+                            "None",
+                            valueslmin,
+                            valueslmax,
+                            "None",
+                            "None",
+                        )
+                        mycursor.execute(sql, val)
+
+                    self.setProfile(selfui)
+                    MainWindow.errorexec(
+                        selfui, f"Dodano literę '{bufor2}' do profilu '{bufor}'", "Ok"
+                    )
+
+                    MainWindow.reloadButtons(selfui, database_profile, 0)
+                    added = True
+        if added == True:
+            sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
             val = (
-                bufor2,
-                i,
-                "None",
-                "None",
-                valueslmin,
-                valueslmax,
-                "None",
-                "None",
+                f"Add letter `{buforlet}` to `{bufor}` with {valueslmax-valueslmin} rows",
+                f"{userlogin}/{desktophostname}",
+                datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
             )
             mycursor.execute(sql, val)
-        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-        val = (
-            f"Add letter `{bufor2}` to `{bufor}` with {valueslmax-valueslmin} rows",
-            f"{userlogin}/{desktophostname}",
-            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-        )
-        mycursor.execute(sql, val)
-        mydb.commit()
-
-        self.setProfile(selfui)
-        MainWindow.errorexec(
-            selfui, f"Dodano literę '{bufor2}' do profilu '{bufor}'", "Ok"
-        )
-
-        MainWindow.reloadButtons(selfui, database_profile, 0)
+            mydb.commit()
 
     def SaveProfile(self, selfui):
         mycursor.execute(f"SELECT name FROM global_settings")
@@ -1339,7 +1367,10 @@ class SettingsPage:
 
     def delProfile(self, selfui):
         global database_profile
-        bufor = selfui.ui.comboBox_3.currentText()
+        bufor = selfui.ui.label_41.text()
+        if bufor == "":
+            MainWindow.errorexec(selfui, f"Najpierw ustaw profil!", "Ok")
+            return
         mycursor.execute(f"DELETE FROM `global_settings` WHERE name='{bufor}'")
         date = datetime.datetime.now().strftime("m%m_d%d_h%H_s%S")
         mycursor.execute(f"RENAME TABLE {bufor} TO del_{date}_{bufor}")
@@ -1357,6 +1388,7 @@ class SettingsPage:
 
         self.reloadCombo(selfui)
         self.setProfile(selfui)
+        MainWindow.errorexec(selfui, f"Usunięto profil {bufor}", "Ok")
 
 
 if __name__ == "__main__":
