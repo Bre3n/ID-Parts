@@ -1108,6 +1108,7 @@ class Ui_MainWindow(object):
 "	border-radius:4px;\n"
 "	background:rgb(112,112,112);\n"
 "}")
+        self.lineEdit_8.setMaxLength(63)
         self.lineEdit_8.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_24.addWidget(self.lineEdit_8)

@@ -392,7 +392,17 @@ class MainWindow(QMainWindow):
 
     def createButton2(self, text, position2):
         # * create button
-        self.ui.buttons2[text] = QPushButton("{}".format(text), self)
+
+        if "_" in text:
+            text_buforr = text.split("_")
+            text_bufor = text_buforr[0]
+            for i in range(len(text_buforr) - 1):
+                i += 1
+                text_bufor += f"\n{text_buforr[i]}"
+        else:
+            text_bufor = text
+
+        self.ui.buttons2[text] = QPushButton("{}".format(text_bufor), self)
 
         #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KLIKACZE
 
@@ -484,7 +494,17 @@ class MainWindow(QMainWindow):
 
     def createButton(self, text, position):
         # * create button
-        self.ui.buttons[text] = QPushButton("{}".format(text), self)
+
+        if "_" in text:
+            text_buforr = text.split("_")
+            text_bufor = text_buforr[0]
+            for i in range(len(text_buforr) - 1):
+                i += 1
+                text_bufor += f"\n{text_buforr[i]}"
+        else:
+            text_bufor = text
+
+        self.ui.buttons[text] = QPushButton("{}".format(text_bufor), self)
 
         #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KLIKACZE
 

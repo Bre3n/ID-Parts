@@ -1816,6 +1816,9 @@ QLineEdit:disabled {
 	background:rgb(112,112,112);
 }</string>
                   </property>
+                  <property name="maxLength">
+                   <number>63</number>
+                  </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
                   </property>
