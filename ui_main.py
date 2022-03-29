@@ -657,7 +657,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 358, 504))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -211, 358, 504))
         self.scrollAreaWidgetContents_2.setStyleSheet(u"")
         self.verticalLayout_19 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
@@ -995,6 +995,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.stackedWidget_3 = QStackedWidget(self.page_settings)
         self.stackedWidget_3.setObjectName(u"stackedWidget_3")
+        self.stackedWidget_3.setStyleSheet(u"")
         self.page_settings_global = QWidget()
         self.page_settings_global.setObjectName(u"page_settings_global")
         self.horizontalLayout_20 = QHBoxLayout(self.page_settings_global)
@@ -1363,6 +1364,54 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_27.addLayout(self.verticalLayout_26)
 
+        self.horizontalLayout_23 = QHBoxLayout()
+        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
+        self.horizontalSpacer_12 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_23.addItem(self.horizontalSpacer_12)
+
+        self.checkBox = QCheckBox(self.page_settings_login)
+        self.checkBox.setObjectName(u"checkBox")
+        self.checkBox.setFont(font8)
+        self.checkBox.setStyleSheet(u"QCheckBox {\n"
+"    color:black;\n"
+"}\n"
+"\n"
+"QCheckBox::indicator {\n"
+"    width: 10px;\n"
+"    height: 10px;\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:unchecked {\n"
+"    border:2px solid rgb(51,51,51);\n"
+"	background:rgb(91,90,90);\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:unchecked:pressed {\n"
+"	border:2px solid rgb(51,51,51);\n"
+"   	background:rgb(0,143,170);\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked {\n"
+"	background-color:rgb(0,143,170);\n"
+"    border: 2px solid rgb(51,51,51);\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked:pressed {\n"
+"    border:2px solid rgb(51,51,51);\n"
+"	background:rgb(91,90,90);\n"
+"}\n"
+"")
+
+        self.horizontalLayout_23.addWidget(self.checkBox)
+
+        self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_23.addItem(self.horizontalSpacer_13)
+
+
+        self.verticalLayout_27.addLayout(self.horizontalLayout_23)
+
         self.verticalSpacer_9 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_27.addItem(self.verticalSpacer_9)
@@ -1475,7 +1524,7 @@ class Ui_MainWindow(object):
 
         self.stackedWidget.setCurrentIndex(5)
         self.stackedWidget_2.setCurrentIndex(0)
-        self.stackedWidget_3.setCurrentIndex(0)
+        self.stackedWidget_3.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1535,9 +1584,9 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.bn_databaseInfo.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
 #endif // QT_CONFIG(shortcut)
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Numer:", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Profil:", None))
         self.label_13.setText("")
-        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Litera:", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Litera i numer:", None))
         self.label_15.setText("")
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Nazwa:", None))
         self.label_17.setText("")
@@ -1573,6 +1622,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.bn_settings_login_bn.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
 #endif // QT_CONFIG(shortcut)
+        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Zapami\u0119taj has\u0142o (do wy\u0142\u0105czenia programu)", None))
         self.label_36.setText(QCoreApplication.translate("MainWindow", u"!", None))
         self.label_37.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.menuBaza_danych.setTitle(QCoreApplication.translate("MainWindow", u"Baza danych", None))

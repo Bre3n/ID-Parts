@@ -152,7 +152,7 @@ def logintoall(self):
                 "QPushButton{border: none;background-color: rgb(50,150,50);border-radius:5px;}QPushButton:hover {background-color: rgb(100,180,100);}QPushButton:pressed {background-color: rgb(50,150,50);}"
             )
             mycursor = mydb.cursor(buffered=True)
-            mycursor.execute("SELECT * FROM password")
+            mycursor.execute("SELECT * FROM `password`")
             myresult = mycursor.fetchone()
             database_connected = True
             if str(userpassword) == str(myresult[0]):
@@ -165,14 +165,7 @@ def logintoall(self):
                 self.ui.label_3.setText("Zalogowano pomyślnie jako:")
                 self.ui.label_4.setText(userlogin)
 
-                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                val = (
-                    f"Logged to database",
-                    f"{userlogin}/{desktophostname}",
-                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-                )
-                mycursor.execute(sql, val)
-                mydb.commit()
+                logging("Logged to database")
 
             else:
                 self.ui.label_3.setText("Nie zalogowano!")
@@ -201,6 +194,24 @@ def logintoall(self):
         )
         self.ui.bn_databaselogin.setText("Połącz")
         print("database logout")
+
+
+def logging(content):
+    sql = "INSERT INTO `logs` (action, author, datetime) VALUES (%s, %s, %s)"
+    val = (
+        content,
+        f"{userlogin}/{desktophostname}",
+        datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+    )
+    mycursor.execute(sql, val)
+    mydb.commit()
+
+
+def clearLabels(self):
+    self.ui.label.setVisible(False)
+    self.ui.label_2.setVisible(False)
+    self.ui.label_30.setVisible(False)
+    self.ui.label_31.setVisible(False)
 
 
 class errorUi(QDialog):
@@ -249,7 +260,7 @@ class MainWindow(QMainWindow):
 
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
-        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile, defaultSize, database_profile, iterablebool, checkinternetbool, url, desktophostname
+        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile, defaultSize, database_profile, iterablebool, checkinternetbool, url, desktophostname, settingsPassword
 
         (
             logoutses,
@@ -258,6 +269,7 @@ class MainWindow(QMainWindow):
             logged,
             switchEdit,
             checkinternetbool,
+            settingsPassword,
         ) = (
             False,
             False,
@@ -265,6 +277,7 @@ class MainWindow(QMainWindow):
             False,
             False,
             True,
+            False,
         )
         (
             userlogin,
@@ -368,7 +381,7 @@ class MainWindow(QMainWindow):
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_profil)
         positions2 = [(r, c) for r in range(3) for c in range(3)]
         if database_connected == True and logged == True:
-            mycursor.execute("SELECT * FROM global_settings")
+            mycursor.execute("SELECT * FROM `global_settings`")
             myresult = mycursor.fetchall()
             values2 = []
             valuesmin = []
@@ -397,7 +410,7 @@ class MainWindow(QMainWindow):
             text_buforr = text.split("_")
             text_bufor = text_buforr[0]
             for i in range(len(text_buforr) - 1):
-                i += 1
+                i = 1
                 text_bufor += f"\n{text_buforr[i]}"
         else:
             text_bufor = text
@@ -439,8 +452,9 @@ class MainWindow(QMainWindow):
         self.ui.gridLayout_3.addWidget(self.ui.buttons2[text], *position2)
 
     def loginProfil(self, btn):
+        clearLabels(self)
         global database_profile
-        database_profile = btn
+        database_profile = btn.replace("\n", "_")
         self.ui.label_28.setText(database_profile)
         self.reloadButtons(database_profile, 1)
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_main)
@@ -458,7 +472,7 @@ class MainWindow(QMainWindow):
 
         if database_connected == True and logged == True:
             mycursor.execute(
-                f"SELECT * FROM global_settings WHERE name LIKE '{database_profile}'"
+                f"SELECT * FROM `global_settings` WHERE name LIKE '{database_profile}'"
             )
             myresult = mycursor.fetchall()
             values = []
@@ -595,14 +609,7 @@ class MainWindow(QMainWindow):
                 for i in reversed(range(self.ui.gridLayout.count())):
                     self.ui.gridLayout.itemAt(i).widget().setParent(None)
 
-                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                val = (
-                    f"Logout from session",
-                    f"{userlogin}/{desktophostname}",
-                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-                )
-                mycursor.execute(sql, val)
-                mydb.commit()
+                logging("Logout from session")
                 userlogin, userpassword, logged = "", "", False
                 logintoall(self)
         elif var == 2:
@@ -629,14 +636,7 @@ class MainWindow(QMainWindow):
                 for i in reversed(range(self.ui.gridLayout.count())):
                     self.ui.gridLayout.itemAt(i).widget().setParent(None)
 
-                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                val = (
-                    f"Logout from database",
-                    f"{userlogin}/{desktophostname}",
-                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-                )
-                mycursor.execute(sql, val)
-                mydb.commit()
+                logging("Logout from database")
                 databasehostname, databaseuser, databasepassword, database_connected = (
                     "",
                     "",
@@ -687,15 +687,10 @@ class MainWindow(QMainWindow):
                 self.ui.label_30.setVisible(True)
                 self.ui.label_31.setVisible(True)
                 self.ui.label_30.setText(bufor)
-                self.ui.label_2.setText(str(myresult[1]))
-                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                val = (
-                    f"Add part `{str(myresult[0])}.{myresult[1]}.{bufor}` to `{database_profile}`",
-                    f"{userlogin}/{desktophostname}",
-                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+                self.ui.label_2.setText(f"{var} {str(myresult[1])}")
+                logging(
+                    f"Add part `{str(myresult[0])}.{myresult[1]}.{bufor}` to `{database_profile}`"
                 )
-                mycursor.execute(sql, val)
-                mydb.commit()
             else:
                 self.ui.label.setVisible(False)
                 self.ui.label_2.setVisible(False)
@@ -734,7 +729,7 @@ class UserLoginClass:
                 userlogin = (selfui.ui.lineEdit.text()).title()
                 userpassword = selfui.ui.lineEdit_2.text()
 
-                mycursor.execute("SELECT password FROM password")
+                mycursor.execute("SELECT password FROM `password`")
                 myresult = mycursor.fetchone()
                 if str(userpassword) == str(myresult[0]):
                     fileUSER = open(f"{inipath}/fileuserlogin.txt", "wb")
@@ -821,7 +816,7 @@ class DatabaseLogin:
                     pass
                 else:
                     mycursor.execute(
-                        "CREATE TABLE global_settings (name TEXT, letters TEXT, rangemin INTEGER, rangemax INTEGER)"
+                        "CREATE TABLE `global_settings` (name TEXT, letters TEXT, rangemin INTEGER, rangemax INTEGER)"
                     )
 
                 mycursor.execute("SHOW TABLES LIKE 'logs'")
@@ -830,7 +825,7 @@ class DatabaseLogin:
                     pass
                 else:
                     mycursor.execute(
-                        "CREATE TABLE logs (action TEXT, author TEXT, datetime TEXT, hostname TEXT)"
+                        "CREATE TABLE `logs` (action TEXT, author TEXT, datetime TEXT, hostname TEXT)"
                     )
 
                 selfui.ui.lineEdit_3.setPlaceholderText(selfui.ui.lineEdit_3.text())
@@ -838,7 +833,7 @@ class DatabaseLogin:
                 selfui.ui.lineEdit_4.setPlaceholderText(selfui.ui.lineEdit_4.text())
                 selfui.ui.lineEdit_4.setText("")
                 selfui.ui.lineEdit_5.setText("")
-                mycursor.execute("SELECT * FROM password")
+                mycursor.execute("SELECT * FROM `password`")
                 myresult = mycursor.fetchone()
                 database_connected = True
                 selfui.ui.bn_databaselogin.setText("Połączono")
@@ -948,8 +943,14 @@ class EditDatabase:
                 f"SELECT * FROM `{database_profile}` WHERE number = {splitted[1]} AND letter LIKE '{splitted[0]}'"
             )
             buforr = mycursor.fetchone()
+            buforrr = buforr[6].split("/")
+            bufor = [buforr[2][i : i + 9] for i in range(0, len(buforr[2]), 9)]
+            buforName = f"{bufor[0]}"
+            for i in range(len(bufor)):
+                bufor = 1
+                buforName += f"\n{bufor[i]}"
             selfui.ui.label_39.setText(
-                f"{buforr[0]} {buforr[1]}\n {buforr[2]} \n{buforr[6]}\n {buforr[7]}"
+                f"Profil: `{database_profile}`\nLitera i numer: {buforr[0]} {buforr[1]}\nNazwa: {buforName}\nAutor: {buforrr[0]}\nData: {buforr[7]}"
             )
 
     def databaseSet(self, selfui):
@@ -982,14 +983,7 @@ class EditDatabase:
                 index = selfui.ui.comboBox.findText(bufor)
                 selfui.ui.comboBox.removeItem(index)
                 selfui.ui.label_39.clear()
-                sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-                val = (
-                    f"Del '{bufor}' from '{database_profile}'",
-                    f"{userlogin}/{desktophostname}",
-                    datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-                )
-                mycursor.execute(sql, val)
-                mydb.commit()
+                logging(f"Del '{bufor}' from '{database_profile}'")
 
 
 class ShowDatabase:
@@ -1093,12 +1087,13 @@ class ShowDatabase:
                 f"SELECT * FROM `{database_profile}` WHERE number = {splitted[1]} AND letter LIKE '{splitted[0]}'"
             )
             buforr = mycursor.fetchone()
-            selfui.ui.label_13.setText(f"{buforr[1]}")
-            selfui.ui.label_15.setText(f"{buforr[0]}")
+            buforrr = buforr[6].split("/")
+            selfui.ui.label_13.setText(f"`{database_profile}`")
+            selfui.ui.label_15.setText(f"{buforr[0]} {buforr[1]}")
             selfui.ui.label_17.setText(f"{buforr[2]}")
             selfui.ui.label_19.setText(f"{buforr[3]}")
             selfui.ui.label_21.setText(f"{buforr[4]}-{buforr[5]}")
-            selfui.ui.label_23.setText(f"{buforr[6]}")
+            selfui.ui.label_23.setText(f"{buforrr[0]}")
             selfui.ui.label_25.setText(f"{buforr[7]}")
 
 
@@ -1133,23 +1128,32 @@ class SettingsPage:
             lambda: self.settingslogin(selfui)
         )
 
+        if selfui.ui.checkBox.isChecked() == True:
+            self.settingslogin(selfui)
+
         selfui.ui.comboBox_3.clear()
         selfui.ui.comboBox_4.clear()
         self.reloadCombo(selfui)
 
     def settingslogin(self, selfui):
-        mycursor.execute("SELECT secret FROM password")
+        global settingsPassword
+        mycursor.execute("SELECT secret FROM `password`")
         myresult = mycursor.fetchone()
+        if settingsPassword == True:
+            selfui.ui.stackedWidget_3.setCurrentWidget(selfui.ui.page_settings_global)
+            return
         if str(selfui.ui.lineEdit_12.text()) != str(myresult[0]):
             MainWindow.errorexec(selfui, f"Niepoprawny kod dostępu!", "Ok")
             return None
         else:
+            if selfui.ui.checkBox.isChecked() == True:
+                settingsPassword = True
             selfui.ui.stackedWidget_3.setCurrentWidget(selfui.ui.page_settings_global)
         selfui.ui.lineEdit_12.setText("")
 
     def reloadCombo(self, selfui):
         global values_profiles, values_profiles_letters, values_profiles_min, values_profiles_max, mydb, mycursor
-        mycursor.execute("SELECT * FROM global_settings")
+        mycursor.execute("SELECT * FROM `global_settings`")
         myresult = mycursor.fetchall()
         values_profiles = []
         values_profiles_letters = []
@@ -1168,7 +1172,7 @@ class SettingsPage:
         global mydb, mycursor
         bufor = selfui.ui.comboBox_3.currentText()
         selfui.ui.comboBox_4.clear()
-        mycursor.execute(f"SELECT letters FROM global_settings WHERE name='{bufor}'")
+        mycursor.execute(f"SELECT letters FROM `global_settings` WHERE name='{bufor}'")
         myresult = mycursor.fetchone()
         myresult = (
             str(myresult)
@@ -1193,7 +1197,7 @@ class SettingsPage:
             MainWindow.errorexec(selfui, f"Najpierw ustaw profil!", "Ok")
             return
         bufor2 = selfui.ui.comboBox_4.currentText()
-        mycursor.execute(f"SELECT letters FROM global_settings WHERE name='{bufor}'")
+        mycursor.execute(f"SELECT letters FROM `global_settings` WHERE name='{bufor}'")
         myresult = mycursor.fetchone()
         myresult = (
             str(myresult)
@@ -1215,13 +1219,7 @@ class SettingsPage:
         mycursor.execute(
             f"UPDATE `global_settings` SET `letters`='{bufor3}' WHERE name='{bufor}'"
         )
-        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-        val = (
-            f"DELETE letter `{bufor2}` from `{bufor}`",
-            f"{userlogin}/{desktophostname}",
-            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-        )
-        mycursor.execute(sql, val)
+        logging(f"DELETE letter `{bufor2}` from `{bufor}`")
         date = datetime.datetime.now().strftime("m%m_d%d_h%H_s%S")
         mycursor.execute(
             f"UPDATE `{bufor}` SET letter='{date}_{bufor2}' WHERE letter='{bufor2}'"
@@ -1262,7 +1260,9 @@ class SettingsPage:
                 )
             else:
 
-                mycursor.execute(f"SELECT * FROM global_settings WHERE name='{bufor}'")
+                mycursor.execute(
+                    f"SELECT * FROM `global_settings` WHERE name='{bufor}'"
+                )
                 myresult = mycursor.fetchall()
 
                 valuesl = []
@@ -1305,7 +1305,7 @@ class SettingsPage:
                     selfui.ui.lineEdit_11.setText("")
 
                     for i in range(valueslmin, valueslmax + 1):
-                        sql = f"INSERT INTO {bufor} (letter,number, name, comment,rangemin,rangemax,author,datetime) VALUES (%s, %s, %s,%s,%s,%s,%s,%s)"
+                        sql = f"INSERT INTO `{bufor}` (letter,number, name, comment,rangemin,rangemax,author,datetime) VALUES (%s, %s, %s,%s,%s,%s,%s,%s)"
                         val = (
                             bufor2,
                             i,
@@ -1326,17 +1326,12 @@ class SettingsPage:
                     MainWindow.reloadButtons(selfui, database_profile, 0)
                     added = True
         if added == True:
-            sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-            val = (
-                f"Add letter `{buforlet}` to `{bufor}` with {valueslmax-valueslmin} rows",
-                f"{userlogin}/{desktophostname}",
-                datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
+            logging(
+                f"Add letter `{buforlet}` to `{bufor}` with {valueslmax-valueslmin} rows"
             )
-            mycursor.execute(sql, val)
-            mydb.commit()
 
     def SaveProfile(self, selfui):
-        mycursor.execute(f"SELECT name FROM global_settings")
+        mycursor.execute(f"SELECT name FROM `global_settings`")
         myresult = mycursor.fetchall()
         bufor = selfui.ui.lineEdit_8.text().replace(" ", "_")
         for i in myresult:
@@ -1367,16 +1362,9 @@ class SettingsPage:
             f"INSERT INTO `global_settings`(`name`, `letters`, `rangemin`, `rangemax`) VALUES ('{bufor}','','{selfui.ui.lineEdit_9.text()}','{selfui.ui.lineEdit_10.text()}')"
         )
         mycursor.execute(
-            f"CREATE TABLE {bufor} (letter TEXT, number INTEGER, name TEXT, comment TEXT, rangemin INTEGER, rangemax INTEGER, author TEXT, datetime TEXT)"
+            f"CREATE TABLE `{bufor}` (letter TEXT, number INTEGER, name TEXT, comment TEXT, rangemin INTEGER, rangemax INTEGER, author TEXT, datetime TEXT)"
         )
-        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-        val = (
-            f"Saved profile `{bufor}`",
-            f"{userlogin}/{desktophostname}",
-            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-        )
-        mycursor.execute(sql, val)
-        mydb.commit()
+        logging(f"Saved profile `{bufor}`")
 
         self.reloadCombo(selfui)
         self.setProfile(selfui)
@@ -1393,16 +1381,8 @@ class SettingsPage:
             return
         mycursor.execute(f"DELETE FROM `global_settings` WHERE name='{bufor}'")
         date = datetime.datetime.now().strftime("m%m_d%d_h%H_s%S")
-        mycursor.execute(f"RENAME TABLE {bufor} TO del_{date}_{bufor}")
-        sql = "INSERT INTO logs (action, author, datetime) VALUES (%s, %s, %s)"
-        val = (
-            f"DELETE DATABASE `{bufor}`",
-            f"{userlogin}/{desktophostname}",
-            datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S"),
-        )
-        mycursor.execute(sql, val)
-
-        mydb.commit()
+        mycursor.execute(f"RENAME TABLE `{bufor}` TO `del_{date}_{bufor}`")
+        logging(f"DELETE DATABASE `{bufor}`")
 
         database_profile = ""
 
