@@ -6,9 +6,11 @@ import random
 import sys
 import threading
 import time
+import traceback
 import webbrowser
 from multiprocessing import Process
 from os import path
+import smtplib
 import mysql.connector
 import psutil
 import requests
@@ -214,6 +216,13 @@ def clearLabels(self):
     self.ui.label_31.setVisible(False)
 
 
+def sendReport(MESS):
+    import yagmail
+    
+    yag = yagmail.SMTP("report@partsid.cba.pl", 'pass')
+    yag.send("report@partsid.cba.pl", "report@partsid.cba.pl", MESS)
+
+
 class errorUi(QDialog):
     def __init__(self, parent=None):
 
@@ -260,7 +269,7 @@ class MainWindow(QMainWindow):
 
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
-        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile, defaultSize, database_profile, iterablebool, checkinternetbool, url, desktophostname, settingsPassword
+        global positions, value, position, values, widthsize, heightsize, logoutses, logout_database, database_connected, config, inipath, userlogin, userpassword, databasehostname, databaseuser, databasepassword, logged, switchEdit, mycursor, profile, defaultSize, database_profile, iterablebool, checkinternetbool, url, desktophostname, settingsPassword, reportmail
 
         (
             logoutses,
@@ -288,6 +297,7 @@ class MainWindow(QMainWindow):
             database_profile,
             url,
             desktophostname,
+            reportmail,
         ) = (
             "",
             "",
@@ -297,6 +307,7 @@ class MainWindow(QMainWindow):
             "",
             "https://www.google.com",
             os.getlogin(),
+            "report@partsid.cba.pl",
         )
 
         defaultSize = 50
@@ -1136,20 +1147,28 @@ class SettingsPage:
         self.reloadCombo(selfui)
 
     def settingslogin(self, selfui):
-        global settingsPassword
-        mycursor.execute("SELECT secret FROM `password`")
-        myresult = mycursor.fetchone()
-        if settingsPassword == True:
-            selfui.ui.stackedWidget_3.setCurrentWidget(selfui.ui.page_settings_global)
-            return
-        if str(selfui.ui.lineEdit_12.text()) != str(myresult[0]):
-            MainWindow.errorexec(selfui, f"Niepoprawny kod dostępu!", "Ok")
-            return None
-        else:
-            if selfui.ui.checkBox.isChecked() == True:
-                settingsPassword = True
-            selfui.ui.stackedWidget_3.setCurrentWidget(selfui.ui.page_settings_global)
-        selfui.ui.lineEdit_12.setText("")
+        # global settingsPassword
+        try:
+            mycursor.execute("SELECT secret FROM `password`")
+            myresult = mycursor.fetchone()
+            if settingsPassword == True:
+                selfui.ui.stackedWidget_3.setCurrentWidget(
+                    selfui.ui.page_settings_global
+                )
+                return
+            if str(selfui.ui.lineEdit_12.text()) != str(myresult[0]):
+                MainWindow.errorexec(selfui, f"Niepoprawny kod dostępu!", "Ok")
+                return None
+            else:
+                if selfui.ui.checkBox.isChecked() == True:
+                    settingsPassword = True
+                selfui.ui.stackedWidget_3.setCurrentWidget(
+                    selfui.ui.page_settings_global
+                )
+            selfui.ui.lineEdit_12.setText("")
+        except Exception as e:
+            mess = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+            sendReport(mess)
 
     def reloadCombo(self, selfui):
         global values_profiles, values_profiles_letters, values_profiles_min, values_profiles_max, mydb, mycursor
