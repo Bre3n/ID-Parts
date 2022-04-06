@@ -6,11 +6,16 @@ import random
 import sys
 import threading
 import time
+
+
 import traceback
+import smtplib
+
+
 import webbrowser
 from multiprocessing import Process
 from os import path
-import smtplib
+
 import mysql.connector
 import psutil
 import requests
@@ -215,7 +220,7 @@ def clearLabels(self):
     self.ui.label_30.setVisible(False)
     self.ui.label_31.setVisible(False)
 
-
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 def sendReport(MESS):
     import yagmail
     
@@ -1166,6 +1171,7 @@ class SettingsPage:
                     selfui.ui.page_settings_global
                 )
             selfui.ui.lineEdit_12.setText("")
+        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         except Exception as e:
             mess = "".join(traceback.format_exception(type(e), e, e.__traceback__))
             sendReport(mess)
