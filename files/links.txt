@@ -1,4 +1,4 @@
-.zip == 1.4.9.1
+partsID_main.exe == 1.4.9
 filedbpassword.txt == 1.0
-https://raw.githubusercontent.com/Bre3n/ID-Parts/master/dist/partsID_main/main.zip
+https://raw.githubusercontent.com/Bre3n/ID-Parts/master/dist/main.exe
 https://raw.githubusercontent.com/Bre3n/ID-Parts/master/files/filedbpassword.txt
