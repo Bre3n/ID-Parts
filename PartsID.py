@@ -52,7 +52,6 @@ if __name__ == "__main__":
     import sys, os, traceback, types
 
     import coloredlogs
-    import enlighten
     import requests
     import win32com.client
     import winshell
